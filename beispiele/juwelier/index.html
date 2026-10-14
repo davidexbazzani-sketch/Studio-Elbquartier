@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Holst &amp; Tochter – Juweliere am Neuen Wall (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: ein erfundener Juwelier mit Schmuck in 3D zum Drehen und Heranzoomen.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#fdfcfa">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/img/juwelier/elbe-gelbgold.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="juwelier.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../../assets/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="hut">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Holst &amp; Tochter ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="hut-nav" id="nav">
+    <nav class="hut-nav__links" aria-label="Hauptnavigation">
+      <a href="#kollektion">Kollektion</a>
+      <a href="#atelier">Atelier</a>
+    </nav>
+    <a class="hut-logo" href="#top" aria-label="Holst und Tochter – zum Seitenanfang">
+      <span class="hut-logo__name">Holst &amp; Tochter</span>
+      <span class="hut-logo__sub">Juweliere · Neuer Wall</span>
+    </a>
+    <a class="hut-nav__cta" href="#termin">Termin</a>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Hero: Ring in 3D -->
+    <section class="hut-hero" id="top" aria-labelledby="hero-title">
+      <div class="hut-hero__text">
+        <p class="hut-eyebrow" data-hero>Solitär „Elbe“</p>
+        <h1 class="hut-hero__title" id="hero-title" data-hero>Für Momente,<br><em>die bleiben.</em></h1>
+      </div>
+
+      <div class="hut-stage" id="stage" data-hero>
+        <img class="hut-stage__poster" id="poster" src="../../assets/img/juwelier/elbe-gelbgold.webp"
+             width="1200" height="1200" alt="Solitärring „Elbe“ in Gelbgold mit einem Brillanten" fetchpriority="high">
+        <div class="hut-stage__canvas" id="stage-canvas" aria-label="Ring in 3D. Ziehen zum Drehen, Doppeltippen zeigt den Stein."></div>
+        <div class="hut-stage__spinner" aria-hidden="true"></div>
+        <p class="hut-stage__hint" id="hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l3-3M4 12l3 3M20 12l-3-3M20 12l-3 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ziehen zum Drehen · Doppeltippen für den Stein
+        </p>
+        <button class="hut-stage__load" id="load3d" type="button" hidden>
+          <span>In 3D ansehen</span><small id="load3d-why"></small>
+        </button>
+      </div>
+
+      <div class="hut-controls" data-hero>
+        <div class="hut-metals" role="radiogroup" aria-label="Metall wählen" id="hero-metals">
+          <button type="button" role="radio" aria-checked="true" data-metal="gelbgold"><span class="hut-dot hut-dot--gelbgold"></span>Gelbgold</button>
+          <button type="button" role="radio" aria-checked="false" data-metal="weissgold"><span class="hut-dot hut-dot--weissgold"></span>Weißgold</button>
+          <button type="button" role="radio" aria-checked="false" data-metal="rosegold"><span class="hut-dot hut-dot--rosegold"></span>Roségold</button>
+        </div>
+        <div class="hut-tools" id="hero-tools" hidden>
+          <button type="button" class="hut-tool" data-act="zoom-out" aria-label="Verkleinern">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="hut-tool" data-act="zoom-in" aria-label="Vergrößern">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="hut-tool hut-tool--text" data-act="closeup">Stein ansehen</button>
+          <button type="button" class="hut-tool" data-act="spin" aria-label="Drehung anhalten" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M9 7l8 5-8 5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="hut-tool" data-act="reset" aria-label="Ansicht zurücksetzen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 4v4h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="hut-hero__meta" data-hero><span id="hero-meta">750er Gelbgold · Brillant 1,00 ct</span> · <strong>ab 5.900 €</strong></p>
+    </section>
+
+    <!-- Haltung -->
+    <section class="hut-statement" aria-label="Über uns">
+      <p class="hut-statement__text" id="statement">
+        Seit 1962 fassen wir am Neuen Wall Steine, die Geschichten erzählen: von Verlobungen, Jubiläen und
+        Neuanfängen. Heute in dritter Generation, und mit derselben Sorgfalt wie am ersten Tag.
+      </p>
+    </section>
+
+    <!-- Details -->
+    <section class="hut-details" aria-labelledby="details-title">
+      <h2 class="visually-hidden" id="details-title">Im Detail</h2>
+      <figure class="hut-detail">
+        <div class="hut-detail__media"><img src="../../assets/img/juwelier/detail-brillant.webp" width="1500" height="1000" loading="lazy" alt="Nahaufnahme des Brillanten mit Farbspiel"></div>
+        <figcaption class="hut-detail__text" data-reveal>
+          <p class="hut-eyebrow">Der Stein</p>
+          <h3 class="hut-h3">57 Facetten.</h3>
+          <p>Der Brillantschliff lenkt das Licht durch den Stein zurück zu Ihnen und bricht es in alle Farben. Jeden Diamanten wählen wir selbst unter der Lupe aus.</p>
+        </figcaption>
+      </figure>
+      <figure class="hut-detail hut-detail--flip">
+        <div class="hut-detail__media"><img src="../../assets/img/juwelier/detail-krappen.webp" width="1500" height="1000" loading="lazy" alt="Seitenansicht der sechs Krappen, die den Stein halten"></div>
+        <figcaption class="hut-detail__text" data-reveal>
+          <p class="hut-eyebrow">Die Fassung</p>
+          <h3 class="hut-h3">Sechs Krappen.</h3>
+          <p>Sie halten den Stein sicher und lassen ihm trotzdem Luft zum Funkeln. Gefertigt in unserer Werkstatt, eine nach der anderen.</p>
+        </figcaption>
+      </figure>
+      <figure class="hut-detail">
+        <div class="hut-detail__media"><img src="../../assets/img/juwelier/detail-gold.webp" width="1500" height="1000" loading="lazy" alt="Drei Ringe in Roségold, Gelbgold und Weißgold"></div>
+        <figcaption class="hut-detail__text" data-reveal>
+          <p class="hut-eyebrow">Das Metall</p>
+          <h3 class="hut-h3">Ihr Gold.</h3>
+          <p>Gelb-, Weiß- oder Roségold, immer 750er Qualität. Geschmiedet in Hamburg und von Hand poliert.</p>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- Kollektion -->
+    <section class="hut-collection" id="kollektion" aria-labelledby="kollektion-title">
+      <div class="hut-collection__head" data-reveal>
+        <p class="hut-eyebrow">Kollektion Hafen</p>
+        <h2 class="hut-h2" id="kollektion-title">Sechs Stücke, <em>eine Stadt.</em></h2>
+        <p class="hut-lead">Jedes Stück können Sie in 3D drehen und ganz nah heranholen.</p>
+      </div>
+      <div class="hut-rail-wrap">
+        <ul class="hut-rail" id="rail"></ul>
+      </div>
+    </section>
+
+    <!-- Atelier -->
+    <section class="hut-atelier" id="atelier" aria-labelledby="atelier-title">
+      <div class="hut-atelier__text" data-reveal>
+        <p class="hut-eyebrow">Atelier</p>
+        <h2 class="hut-h2" id="atelier-title">Ihr Entwurf, <em>bevor er entsteht.</em></h2>
+        <p class="hut-lead">Wir zeigen Ihnen Ihr Schmuckstück in 3D, in jedem Gold und aus jedem Blickwinkel. Erst wenn es Ihnen gefällt, beginnt unsere Goldschmiedin mit der Arbeit.</p>
+        <ol class="hut-steps">
+          <li><span>01</span><div><strong>Beratung im Laden</strong><p>Bei einem Kaffee sprechen wir über Anlass, Stil und Budget.</p></div></li>
+          <li><span>02</span><div><strong>Entwurf in 3D</strong><p>Sie sehen Ihr Stück, bevor es existiert, und entscheiden mit.</p></div></li>
+          <li><span>03</span><div><strong>Fertigung in Hamburg</strong><p>In vier bis sechs Wochen ist Ihr Unikat fertig.</p></div></li>
+        </ol>
+      </div>
+      <div class="hut-atelier__media" data-reveal>
+        <img src="../../assets/img/juwelier/atelier-rosegold.webp" width="1000" height="1250" loading="lazy" alt="Solitärring in Roségold, von schräg oben">
+      </div>
+    </section>
+
+    <!-- Termin -->
+    <section class="hut-visit" id="termin" aria-labelledby="termin-title">
+      <div class="hut-visit__info" data-reveal>
+        <p class="hut-eyebrow">Besuch</p>
+        <h2 class="hut-h2" id="termin-title">Wir freuen uns <em>auf Sie.</em></h2>
+        <dl class="hut-facts">
+          <div><dt>Adresse</dt><dd>Neuer Wall<br>20354 Hamburg</dd></div>
+          <div><dt>Öffnungszeiten</dt><dd>Di–Fr 10–18 Uhr<br>Sa 10–16 Uhr</dd></div>
+          <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+        </dl>
+      </div>
+      <form class="hut-form" id="visit-form" novalidate data-reveal>
+        <p class="hut-form__title">Persönliche Beratung</p>
+        <label class="hut-field"><span>Name</span><input name="name" autocomplete="name" required></label>
+        <div class="hut-form__row">
+          <label class="hut-field"><span>Wunschtermin</span><input name="datum" type="date" required></label>
+          <label class="hut-field"><span>Uhrzeit</span>
+            <select name="zeit"><option>10:00</option><option>11:30</option><option>14:00</option><option>16:00</option></select>
+          </label>
+        </div>
+        <label class="hut-field"><span>Anlass</span>
+          <select name="anlass"><option>Verlobung</option><option>Hochzeit</option><option>Geschenk</option><option>Anfertigung nach Wunsch</option><option>Reparatur</option></select>
+        </label>
+        <button class="hut-btn" type="submit">Termin anfragen</button>
+        <p class="hut-form__note" id="visit-status" role="status" aria-live="polite">Beispiel-Formular: Es werden keine Daten gesendet.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hut-footer">
+    <p class="hut-logo hut-logo--small"><span class="hut-logo__name">Holst &amp; Tochter</span></p>
+    <p>Ein erfundenes Geschäft. Alle Schmuckstücke auf dieser Seite sind 3D-Modelle, entworfen und programmiert von <a href="../../index.html">Studio Elbquartier</a>.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#juwelier">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <!-- 3D-Ansicht im Vollbild für die Kollektion -->
+  <dialog class="hut-viewer" id="viewer" aria-labelledby="viewer-title">
+    <div class="hut-viewer__stage" id="viewer-stage">
+      <div class="hut-stage__spinner" aria-hidden="true"></div>
+    </div>
+    <header class="hut-viewer__head">
+      <div>
+        <p class="hut-eyebrow" id="viewer-type"></p>
+        <h2 class="hut-viewer__title" id="viewer-title"></h2>
+      </div>
+      <button type="button" class="hut-tool" id="viewer-close" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <footer class="hut-viewer__foot">
+      <div class="hut-metals" role="radiogroup" aria-label="Metall wählen" id="viewer-metals">
+        <button type="button" role="radio" aria-checked="false" data-metal="gelbgold"><span class="hut-dot hut-dot--gelbgold"></span>Gelbgold</button>
+        <button type="button" role="radio" aria-checked="false" data-metal="weissgold"><span class="hut-dot hut-dot--weissgold"></span>Weißgold</button>
+        <button type="button" role="radio" aria-checked="false" data-metal="rosegold"><span class="hut-dot hut-dot--rosegold"></span>Roségold</button>
+      </div>
+      <div class="hut-tools">
+        <button type="button" class="hut-tool" data-act="zoom-out" aria-label="Verkleinern">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="hut-tool" data-act="zoom-in" aria-label="Vergrößern">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="hut-tool hut-tool--text" data-act="closeup">Näher</button>
+        <button type="button" class="hut-tool" data-act="reset" aria-label="Ansicht zurücksetzen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 4v4h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <p class="hut-viewer__meta"><span id="viewer-meta"></span> · <strong id="viewer-price"></strong></p>
+    </footer>
+  </dialog>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="juwelier.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Design System – Studio Elbquartier</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/page.css">
+  <style>
+    /* nur für diese Übersichtsseite */
+    .ds-section { padding-block: var(--space-8); border-top: 1px solid var(--c-line); display: grid; gap: var(--space-6); }
+    .ds-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .swatch { border-radius: var(--radius-m); overflow: hidden; box-shadow: inset 0 0 0 1px var(--c-line); background: var(--c-surface); }
+    .swatch div { height: 88px; }
+    .swatch p { padding: 10px 12px; font-size: var(--fs-micro); line-height: 1.4; }
+    .swatch code { color: var(--c-ink-3); }
+    .type-row { display: grid; gap: var(--space-2); padding-block: var(--space-4); border-bottom: 1px solid var(--c-line); }
+    .space-row { display: flex; align-items: center; gap: var(--space-4); font-size: var(--fs-micro); color: var(--c-ink-3); }
+    .space-row span { height: 14px; background: var(--c-sand); border-radius: 3px; }
+    .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+    .radius-box { width: 96px; height: 96px; background: var(--c-sage); display: grid; place-items: center; font-size: var(--fs-micro); }
+  </style>
+</head>
+<body>
+  <header class="nav is-scrolled">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="index.html">← Studio Elbquartier</a>
+      <span class="badge badge--outline">Intern</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <header class="page__head">
+        <p class="eyebrow">Version 1.0</p>
+        <h1 class="t-h1">Design System</h1>
+        <p class="t-lead" style="max-width:40rem">Warm, ruhig, hochwertig. Viel Weißraum, große Typografie, zarte Pastelltöne. Alle Werte stehen als CSS-Variablen in <code>assets/css/design-system.css</code>, und jede Seite nutzt nur diese.</p>
+      </header>
+
+      <section class="ds-section">
+        <h2 class="t-h3">Farben · Flächen & Text</h2>
+        <div class="ds-grid">
+          <div class="swatch"><div style="background:var(--c-bg)"></div><p>Hintergrund<br><code>--c-bg #faf7f2</code></p></div>
+          <div class="swatch"><div style="background:var(--c-bg-alt)"></div><p>Hintergrund alt<br><code>--c-bg-alt #f4efe7</code></p></div>
+          <div class="swatch"><div style="background:var(--c-surface)"></div><p>Fläche<br><code>--c-surface #fffdf9</code></p></div>
+          <div class="swatch"><div style="background:var(--c-ink)"></div><p>Text<br><code>--c-ink #1f1c18</code></p></div>
+          <div class="swatch"><div style="background:var(--c-ink-2)"></div><p>Text 2<br><code>--c-ink-2 #5d574f</code></p></div>
+          <div class="swatch"><div style="background:var(--c-ink-3)"></div><p>Text 3<br><code>--c-ink-3 #8e877d</code></p></div>
+        </div>
+        <h2 class="t-h3">Farben · Pastell-Akzente</h2>
+        <div class="ds-grid">
+          <div class="swatch"><div style="background:var(--c-sand)"></div><p>Sand<br><code>#ebdfcb / #a88a5f</code></p></div>
+          <div class="swatch"><div style="background:var(--c-sage)"></div><p>Salbei<br><code>#dde4d4 / #6f8263</code></p></div>
+          <div class="swatch"><div style="background:var(--c-rose)"></div><p>Rosé<br><code>#f1ddd7 / #b07a6d</code></p></div>
+          <div class="swatch"><div style="background:var(--c-elbe)"></div><p>Elbe<br><code>#dbe3e7 / #637b88</code></p></div>
+          <div class="swatch"><div style="background:#efe3cc"></div><p>Honig (Illustration)<br><code>#efe3cc</code></p></div>
+          <div class="swatch"><div style="background:#dcd6e4"></div><p>Flieder (Illustration)<br><code>#dcd6e4</code></p></div>
+        </div>
+        <p class="t-small">Regel: Pastell nur als Fläche, die tiefe Variante nur für kleine Details (Punkte, Linien, Icons). Fließtext bleibt immer Ink.</p>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="t-h3">Typografie</h2>
+        <p class="t-small">Inter (variabel, 100–900) für alles Funktionale · Instrument Serif kursiv für emotionale Akzente. Beide lokal eingebunden, Lizenz OFL.</p>
+        <div>
+          <div class="type-row"><span class="t-micro">Display · --fs-display · 560</span><span class="t-display" style="font-weight:560">Elbquartier</span></div>
+          <div class="type-row"><span class="t-micro">H1 · --fs-h1</span><span class="t-h1">Guten Morgen, Hamburg.</span></div>
+          <div class="type-row"><span class="t-micro">H2 · --fs-h2 + Serif-Akzent</span><span class="t-h2">Persönlich. <span class="t-serif-italic">Vor Ort.</span></span></div>
+          <div class="type-row"><span class="t-micro">H3 · --fs-h3</span><span class="t-h3">Wir kommen vorbei</span></div>
+          <div class="type-row"><span class="t-micro">Lead · --fs-lead</span><span class="t-lead">Wir bauen Websites, die so schön sind wie Ihr Laden.</span></div>
+          <div class="type-row"><span class="t-micro">Body · 17px / 1.6</span><span>Fließtext für Beschreibungen, Speisekarten und alles, was man in Ruhe liest.</span></div>
+          <div class="type-row"><span class="t-micro">Eyebrow</span><span class="eyebrow">Abschnittsname</span></div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="t-h3">Abstände · 4er-Raster</h2>
+        <div style="display:grid;gap:10px">
+          <div class="space-row"><span style="width:var(--space-2)"></span>--space-2 · 8px</div>
+          <div class="space-row"><span style="width:var(--space-4)"></span>--space-4 · 16px</div>
+          <div class="space-row"><span style="width:var(--space-5)"></span>--space-5 · 24px</div>
+          <div class="space-row"><span style="width:var(--space-6)"></span>--space-6 · 32px</div>
+          <div class="space-row"><span style="width:var(--space-7)"></span>--space-7 · 48px</div>
+          <div class="space-row"><span style="width:var(--space-8)"></span>--space-8 · 64px</div>
+          <div class="space-row"><span style="width:var(--space-9)"></span>--space-9 · 96px</div>
+          <div class="space-row"><span style="width:var(--space-10)"></span>--space-10 · 128px</div>
+        </div>
+        <p class="t-small">Abschnitte: <code>--section-y</code> (96–176px, fließend). Seitenrand: <code>--gutter</code> (20–40px). Maximale Breite: 1200px.</p>
+        <h2 class="t-h3">Radien & Schatten</h2>
+        <div class="row">
+          <div class="radius-box" style="border-radius:var(--radius-s)">s · 10</div>
+          <div class="radius-box" style="border-radius:var(--radius-m)">m · 18</div>
+          <div class="radius-box" style="border-radius:var(--radius-l)">l · 28</div>
+          <div class="radius-box" style="border-radius:var(--radius-xl)">xl · 40</div>
+          <div class="radius-box" style="border-radius:var(--radius-l);background:var(--c-surface);box-shadow:var(--shadow-1)">shadow-1</div>
+          <div class="radius-box" style="border-radius:var(--radius-l);background:var(--c-surface);box-shadow:var(--shadow-2)">shadow-2</div>
+          <div class="radius-box" style="border-radius:var(--radius-l);background:var(--c-surface);box-shadow:var(--shadow-3)">shadow-3</div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="t-h3">Komponenten</h2>
+        <div class="row">
+          <a class="btn" href="#">Primär</a>
+          <a class="btn btn--secondary" href="#">Sekundär</a>
+          <a class="btn btn--ghost" href="#">Ghost</a>
+          <a class="btn btn--small" href="#">Klein</a>
+          <button class="icon-btn" aria-label="Weiter"><svg viewBox="0 0 20 20"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <a class="link-arrow" href="#">Mehr erfahren →</a>
+        </div>
+        <div class="row">
+          <span class="badge">Sand</span><span class="badge badge--sage">Salbei</span><span class="badge badge--rose">Rosé</span><span class="badge badge--elbe">Elbe</span><span class="badge badge--outline">Outline</span>
+        </div>
+        <div class="ds-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+          <div class="card"><p class="eyebrow">Karte</p><h3 class="t-h3" style="margin-top:12px">Standard</h3><p class="t-small">Fläche, weicher Schatten, Radius l.</p></div>
+          <div class="card card--feature"><p class="eyebrow">Karte</p><h3 class="t-h3" style="margin-top:12px">Hervorgehoben</h3><p class="t-small">Für die eine wichtige Sache.</p></div>
+          <div class="card" style="display:grid;gap:16px">
+            <label class="field"><span class="field__label">Eingabefeld</span><input class="field__input" placeholder="Platzhalter"></label>
+            <label class="checkbox"><input type="checkbox" checked><span>Checkbox mit Text</span></label>
+          </div>
+          <div class="card"><ul class="check-list"><li>Liste mit Häkchen</li><li>Farbe per <code>--check-bg</code></li></ul></div>
+        </div>
+        <p class="t-small">Marker für Muster-Websites: <code>.demo-flag</code> (fest unten mittig, Glas-Optik).</p>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="t-h3">Bewegung</h2>
+        <ul class="check-list">
+          <li>Kurven: <code>--ease-out</code> (Standard), <code>--ease-in-out</code> (Schleifen). In GSAP: <code>power3.out</code>.</li>
+          <li>Dauer: 180ms (Hover), 380ms (Zustände), 900–1200ms (Einblenden beim Scrollen).</li>
+          <li>Einblenden: 28px von unten, Deckkraft 0 → 1, gestaffelt 0,1s.</li>
+          <li>„Reduzierte Bewegung“: keine Scroll-Animationen, 3D durch ruhige Ersatzansicht ersetzt.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© 2026 Studio Elbquartier · Hamburg</p>
+      <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="lizenzen.html">Bildnachweise</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

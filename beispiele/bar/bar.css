@@ -1,0 +1,293 @@
+/* Nachtfalter – Muster-Website Bar
+   Baut auf design-system.css auf: Nacht-Aubergine, Elfenbein, Bernstein, Flieder. */
+
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("../../assets/fonts/bodoni-moda-wght.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("../../assets/fonts/bodoni-moda-wght-italic.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+.nf {
+  --n-bg: #100c10;
+  --n-card: #1b151a;
+  --n-ink: #efe6d8;
+  --n-ink-2: #b8ada3;
+  --n-ink-3: #8a7f78;
+  --n-amber: #e6b56e;
+  --n-lilac: #b9a3d9;
+  --n-line: rgba(239, 230, 216, 0.12);
+  --n-serif: "Bodoni Moda", var(--font-serif);
+  --c-focus: var(--n-amber);
+  --nav-h: 64px;
+  background: var(--n-bg);
+  color: var(--n-ink);
+}
+.nf ::selection { background: #4b3a60; color: #fff; }
+
+/* ---------- Typografie ---------- */
+.nf-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--n-amber); }
+.nf-h2, .nf-h3, .nf-hero__title, .nf-logo span, .nf-drink h3, .nf-nights__list h3 {
+  font-family: var(--n-serif); font-weight: 500; letter-spacing: -0.02em;
+}
+.nf em { font-style: italic; font-weight: 400; }
+.nf-h2 { font-size: clamp(2.3rem, 1.5rem + 3.2vw, 4.4rem); line-height: 1.02; margin-top: 1rem; text-wrap: balance; }
+.nf-h3 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem); line-height: 1.1; }
+.nf-lead { font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem); line-height: 1.6; color: var(--n-ink-2); max-width: 34rem; margin-top: 1.5rem; }
+
+.nf-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 50px; padding: 0 24px; border: 0; border-radius: var(--radius-pill);
+  background: var(--n-amber); color: #1d140a; font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-base);
+}
+.nf-btn:hover { background: #f1c789; }
+.nf-btn:active { transform: scale(0.97); }
+.nf-btn--ghost {
+  background: rgba(239, 230, 216, 0.06); color: var(--n-ink); font-weight: 500;
+  box-shadow: inset 0 0 0 1px rgba(239, 230, 216, 0.3);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.nf-btn--ghost:hover { background: rgba(239, 230, 216, 0.14); }
+
+/* ---------- Navigation ---------- */
+.nf-nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 1.5rem;
+  height: var(--nav-h); padding: 0 var(--gutter);
+  background: rgba(16, 12, 16, 0.62);
+  -webkit-backdrop-filter: saturate(140%) blur(16px); backdrop-filter: saturate(140%) blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur-base), border-color var(--dur-base);
+}
+.nf-nav.is-scrolled { background: rgba(16, 12, 16, 0.86); border-bottom-color: var(--n-line); }
+.nf-logo { display: inline-flex; align-items: center; gap: 10px; }
+.nf-logo svg { width: 36px; height: 24px; color: var(--n-amber); }
+.nf-logo span { font-size: 1.35rem; font-style: italic; }
+.nf-nav__links { display: flex; gap: 1.9rem; margin-inline: auto; font-size: 14.5px; color: var(--n-ink-2); }
+.nf-nav__links a { transition: color var(--dur-fast); }
+.nf-nav__links a:hover { color: var(--n-ink); }
+.nf-status { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; color: var(--n-ink-2); white-space: nowrap; }
+.nf-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--n-ink-3); flex: none; }
+.nf-status.is-open i { background: #9bd48f; box-shadow: 0 0 0 4px rgba(155, 212, 143, 0.16); }
+@media (max-width: 760px) {
+  .nf-nav__links { display: none; }
+  .nf-status { margin-left: auto; font-size: 12px; }
+}
+.nf-status__short { display: none; }
+@media (max-width: 440px) {
+  .nf-status__long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .nf-status__short { display: inline; }
+}
+
+/* ---------- Hero ---------- */
+.nf-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: calc(100svh - var(--nav-h));
+  display: flex; align-items: flex-end;
+  padding: 6rem var(--gutter) clamp(3rem, 9vh, 6.5rem);
+}
+.nf-hero__media { position: absolute; inset: 0; z-index: -2; }
+.nf-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+.nf-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(16, 12, 16, 0.35) 0%, rgba(16, 12, 16, 0.08) 26%, rgba(16, 12, 16, 0.72) 62%, var(--n-bg) 100%),
+    linear-gradient(90deg, rgba(16, 12, 16, 0.7), rgba(16, 12, 16, 0) 70%);
+}
+.nf-hero__text { width: 100%; max-width: calc(var(--container)); margin-inline: auto; }
+.nf-hero__title { font-size: clamp(3.2rem, 1.9rem + 6.2vw, 7.6rem); line-height: 0.98; letter-spacing: -0.03em; margin-top: 1.1rem; }
+.nf-hero .nf-lead { color: rgba(239, 230, 216, 0.82); }
+.nf-hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2.2rem; }
+
+/* ---------- Die Bar ---------- */
+.nf-intro, .nf-menu, .nf-more, .nf-nights, .nf-visit {
+  width: 100%; max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto; padding: var(--section-y) var(--gutter);
+}
+.nf-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.nf-intro__text { grid-column: 1 / -1; margin-bottom: 2rem; }
+.nf-intro__photo { border-radius: var(--radius-l); overflow: hidden; aspect-ratio: 4 / 5; background: var(--n-card); }
+.nf-intro__photo img { width: 100%; height: 100%; object-fit: cover; }
+.nf-intro__photo--a { margin-top: 3rem; }
+.nf-points { display: grid; gap: 0; margin-top: 2.5rem; max-width: 34rem; }
+.nf-points li { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; padding: 14px 0; border-top: 1px solid var(--n-line); color: var(--n-ink-2); font-size: 15px; }
+.nf-points strong { color: var(--n-ink); font-weight: 500; }
+@media (max-width: 520px) { .nf-points li { grid-template-columns: 1fr; gap: 2px; } }
+.nf-intro .nf-h2 { font-size: clamp(2.2rem, 1.4rem + 2.6vw, 3.7rem); max-width: 18ch; }
+@media (min-width: 1100px) {
+  .nf-intro { grid-template-columns: 1.2fr 0.6fr 0.6fr; gap: 1.5rem; align-items: start; }
+  .nf-intro__text { grid-column: auto; margin: 0; padding-right: 2.5rem; }
+  .nf-intro__photo--a { margin-top: 9rem; }
+}
+
+/* ---------- Karte mit Bühne: ein kurzer Film je Drink ---------- */
+.nf-menu { padding-bottom: calc(var(--section-y) * 0.5); }
+.nf-menu__head { max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.nf-menu__grid { display: grid; }
+
+.nf-stage { position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius-l); background: #0e0a0a; }
+.nf-stage [hidden] { display: none !important; }
+.nf-stage__poster, .nf-stage__view { position: absolute; inset: 0; width: 100%; height: 100%; }
+.nf-stage__poster { object-fit: cover; transition: opacity 0.35s var(--ease-out); }
+.nf-stage.is-live .nf-stage__poster { opacity: 0; }
+.nf-film { position: absolute; inset: 0; visibility: hidden; }
+.nf-film.is-shown { visibility: visible; }
+.nf-film__inner { position: absolute; inset: 0; background: center / cover no-repeat; }
+.nf-film video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nf-film__shade { position: absolute; inset: 0; background: #0a0709; opacity: 0; pointer-events: none; }
+/* Leuchtender Rand der Iris, die sich beim Wechsel aus der Glasmitte öffnet */
+.nf-iris {
+  --glow: 230 181 110;
+  position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 50%;
+  pointer-events: none; opacity: 0;
+  box-shadow: 0 0 0 1.5px rgb(var(--glow) / 0.9), 0 0 34px 8px rgb(var(--glow) / 0.45), inset 0 0 26px 4px rgb(var(--glow) / 0.35);
+}
+.nf-stage::after { /* weiche Vignette, verbindet die Bühne mit dem Seitenhintergrund */
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  box-shadow: inset 0 0 80px 10px rgba(10, 7, 9, 0.55);
+  border-radius: inherit;
+}
+.nf-stage__ui {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+  background: linear-gradient(rgba(10, 7, 9, 0), rgba(10, 7, 9, 0.6));
+  pointer-events: none;
+}
+.nf-stage__ui > * { pointer-events: auto; }
+.nf-stage__name { margin-right: auto; display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+.nf-stage__name span { font-size: 12px; letter-spacing: 0.18em; color: var(--n-amber); }
+.nf-stage__name strong { font-family: var(--n-serif); font-style: italic; font-weight: 500; font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nf-stage__btn {
+  flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: rgba(239, 230, 216, 0.1); color: var(--n-ink);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background var(--dur-fast);
+}
+.nf-stage__btn:hover { background: rgba(239, 230, 216, 0.2); }
+.nf-stage__btn svg { width: 18px; height: 18px; }
+.nf-stage__btn .i-play, .nf-stage__btn[aria-pressed="true"] .i-pause { display: none; }
+.nf-stage__btn[aria-pressed="true"] .i-play { display: block; }
+.nf-stage__note {
+  position: absolute; top: 14px; left: 14px; right: 14px; z-index: 2;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  font-size: 12.5px; color: var(--n-ink-2);
+}
+.nf-stage__note button {
+  border: 0; border-radius: var(--radius-pill); padding: 7px 14px; cursor: pointer;
+  background: rgba(239, 230, 216, 0.12); color: var(--n-ink); font-size: 12.5px;
+}
+
+.nf-drink {
+  display: flex; flex-direction: column; justify-content: center; gap: 16px;
+  padding: 2.75rem 0; border-top: 1px solid var(--n-line);
+  transition: opacity 0.5s var(--ease-out);
+}
+.nf-js .nf-drink { opacity: 0.32; }
+.nf-js .nf-drink.is-active { opacity: 1; }
+.nf-drink__num { display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: 0.2em; color: var(--n-ink-3); }
+.nf-tag { padding: 4px 10px; border-radius: var(--radius-pill); background: rgba(230, 181, 110, 0.12); color: var(--n-amber); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; }
+.nf-tag--free { background: rgba(185, 163, 217, 0.14); color: var(--n-lilac); }
+.nf-drink h3 { font-size: clamp(2.1rem, 1.5rem + 2.4vw, 3.5rem); line-height: 1.02; }
+.nf-drink__pick { all: unset; cursor: pointer; }
+.nf-drink__pick:focus-visible { outline: 2px solid var(--n-amber); outline-offset: 6px; border-radius: 6px; }
+.nf-drink__desc { color: var(--n-ink-2); max-width: 31rem; }
+.nf-taste { display: grid; grid-template-columns: repeat(2, max-content); gap: 10px 2.75rem; margin-top: 4px; font-size: 13px; color: var(--n-ink-2); }
+.nf-taste div { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-width: 9.5rem; }
+.nf-taste dd { margin: 0; }
+.nf-dots {
+  --v: 0;
+  display: block; width: 80px; height: 8px;
+  background: linear-gradient(90deg, var(--n-amber) calc(var(--v) * 20%), rgba(239, 230, 216, 0.16) 0);
+  -webkit-mask: radial-gradient(circle at 4px 4px, #000 3.3px, transparent 3.8px) 0 0 / 16px 8px repeat-x;
+  mask: radial-gradient(circle at 4px 4px, #000 3.3px, transparent 3.8px) 0 0 / 16px 8px repeat-x;
+}
+.nf-free { font-size: 12px; color: var(--n-lilac); }
+@media (max-width: 520px) {
+  .nf-taste { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 1.25rem; }
+  .nf-taste div { min-width: 0; }
+  .nf-dots { width: 64px; -webkit-mask-size: 13px 8px; mask-size: 13px 8px; background: linear-gradient(90deg, var(--n-amber) calc(var(--v) * 13px), rgba(239, 230, 216, 0.16) 0); }
+}
+.nf-drink__meta {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  max-width: 31rem; margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--n-line);
+  font-size: 14px; color: var(--n-ink-3);
+}
+.nf-drink__meta strong { font-family: var(--n-serif); font-size: 1.7rem; font-weight: 500; color: var(--n-ink); }
+
+@media (min-width: 960px) {
+  .nf-menu__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(2.5rem, 5vw, 5rem); align-items: start; }
+  .nf-stage { position: sticky; top: calc(var(--nav-h) + 1.25rem); aspect-ratio: 4 / 5; max-height: calc(100svh - var(--nav-h) - 2.5rem); min-height: 480px; }
+  .nf-drink { min-height: 74svh; }
+  .nf-drink:first-child { border-top: 0; }
+}
+@media (max-width: 959px) {
+  .nf-stage {
+    position: sticky; top: var(--nav-h); z-index: 3;
+    height: min(56svh, 125vw); margin-inline: calc(var(--gutter) * -1); border-radius: 0;
+  }
+  .nf-stage::after { border-radius: 0; }
+  .nf-drinks { position: relative; z-index: 1; }
+  .nf-drink { min-height: 46svh; padding: 2.25rem 0; }
+  .nf-drink:last-child { min-height: 40svh; }
+}
+
+/* ---------- Weitere Karte ---------- */
+.nf-more { padding-top: calc(var(--section-y) * 0.5); }
+.nf-more .nf-h3 { margin-bottom: 2.5rem; }
+.nf-more__cols { display: grid; gap: 2.5rem 3rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.nf-list { margin-top: 1rem; }
+.nf-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 13px 0; border-bottom: 1px solid var(--n-line); color: var(--n-ink-2); }
+.nf-list b { font-weight: 500; color: var(--n-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ---------- Abende ---------- */
+.nf-nights { display: grid; gap: 3rem; border-top: 1px solid var(--n-line); }
+.nf-nights__photo { border-radius: var(--radius-l); overflow: hidden; aspect-ratio: 4 / 5; max-height: 80svh; background: var(--n-card); }
+.nf-nights__photo img { width: 100%; height: 100%; object-fit: cover; }
+.nf-nights__list { margin-top: 2.5rem; }
+.nf-nights__list li { display: grid; grid-template-columns: 12rem 1fr; gap: 0.35rem 1.5rem; padding: 1.5rem 0; border-top: 1px solid var(--n-line); }
+.nf-nights__day { grid-row: span 2; padding-top: 0.55rem; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--n-amber); }
+.nf-nights__list h3 { font-size: 1.65rem; line-height: 1.15; }
+.nf-nights__list p:last-child { color: var(--n-ink-2); }
+@media (max-width: 600px) {
+  .nf-nights__list li { grid-template-columns: 1fr; }
+  .nf-nights__day { grid-row: auto; padding: 0; }
+}
+@media (min-width: 960px) {
+  .nf-nights { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; align-items: center; }
+}
+
+/* ---------- Besuch ---------- */
+.nf-visit { display: grid; gap: 3rem; }
+.nf-facts { margin-top: 2.5rem; max-width: 36rem; }
+.nf-facts div { display: grid; grid-template-columns: 8rem 1fr; gap: 1rem; padding: 14px 0; border-top: 1px solid var(--n-line); }
+.nf-facts dt { font-size: 14px; color: var(--n-ink-3); }
+.nf-facts dd { margin: 0; }
+.nf-hours { padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: var(--radius-l); background: var(--n-card); box-shadow: inset 0 0 0 1px var(--n-line); }
+.nf-hours table { width: 100%; margin-top: 1.25rem; border-collapse: collapse; }
+.nf-hours th, .nf-hours td { padding: 12px 0; border-bottom: 1px solid var(--n-line); font-weight: 400; text-align: left; }
+.nf-hours td { text-align: right; color: var(--n-ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nf-hours tr.is-today th, .nf-hours tr.is-today td { color: var(--n-amber); }
+.nf-hours tr.is-today th::after { content: " · heute"; font-size: 12px; letter-spacing: 0.04em; }
+.nf-hours__note { margin-top: 1.25rem; font-size: 13px; color: var(--n-ink-3); }
+@media (max-width: 520px) { .nf-facts div { grid-template-columns: 1fr; gap: 2px; } }
+@media (min-width: 960px) { .nf-visit { grid-template-columns: 1.15fr 0.85fr; gap: 5rem; align-items: center; } }
+
+/* ---------- Footer ---------- */
+.nf-footer {
+  display: grid; justify-items: center; gap: 1rem; text-align: center;
+  padding: 3rem var(--gutter) 3.5rem; border-top: 1px solid var(--n-line);
+  font-size: 13px; color: var(--n-ink-3);
+}
+.nf-footer p:last-child { max-width: 40rem; }
+.nf-footer a { color: var(--n-ink-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(239, 230, 216, 0.3); }
+.nf-logo--small span { font-size: 1.45rem; color: var(--n-ink); }

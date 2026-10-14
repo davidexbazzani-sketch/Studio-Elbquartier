@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kaffeehaus Möwe – Kaffee und Kuchen in Altona (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: ein erfundenes Café in Altona. Die vier Lieblingsgetränke des Hauses in kurzen Filmen, mit Vorbestellung zum Abholen.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f6f0e7">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="cafe.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+</head>
+<body class="km">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Kaffeehaus Möwe ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="km-nav" id="nav">
+    <a class="km-logo" href="#top" aria-label="Kaffeehaus Möwe – zum Seitenanfang">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="currentColor"/>
+        <path d="M9 21c2.4-4.4 6.6-5 9.6-1.2C21.4 15.8 26.4 15 31 20" fill="none" stroke="#f6f0e7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Kaffeehaus <b>Möwe</b></span>
+    </a>
+    <nav class="km-nav__links" aria-label="Hauptnavigation">
+      <a href="#getraenke">Getränke</a>
+      <a href="#kuchen">Kuchen</a>
+      <a href="#karte">Karte</a>
+      <a href="#besuch">Besuch</a>
+    </nav>
+    <a class="km-btn km-btn--small" href="#getraenke">Vorbestellen</a>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Hero -->
+    <section class="km-hero" id="top" aria-labelledby="hero-title">
+      <div class="km-hero__text">
+        <p class="km-eyebrow" data-hero>Kaffeehaus · Altona</p>
+        <h1 class="km-hero__title" id="hero-title" data-hero>Guter Kaffee <em>und ein Platz am Fenster.</em></h1>
+        <p class="km-lead" data-hero>Wir rösten jede Woche selbst, backen ab sechs Uhr morgens und nehmen uns für jede Tasse Zeit. Wer es eilig hat, bestellt hier vor und holt seine Tasse fertig an der Theke ab.</p>
+        <div class="km-hero__cta" data-hero>
+          <a class="km-btn" href="#getraenke">Unsere Lieblinge</a>
+          <a class="km-btn km-btn--ghost" href="#karte">Zur Karte</a>
+        </div>
+        <ul class="km-hero__facts" data-hero>
+          <li><strong id="today">Heute geöffnet</strong><span id="today-hours">8–18 Uhr</span></li>
+          <li><strong>Eigene Röstung</strong><span>jeden Dienstag</span></li>
+          <li><strong>Hafer- und Mandelmilch</strong><span>ohne Aufpreis</span></li>
+        </ul>
+      </div>
+      <figure class="km-hero__media" data-hero>
+        <img src="../../assets/img/cafe/cafe-fenster.webp" width="760" height="1400" alt="Heller Tresen am großen Fenster mit Holzstühlen, draußen ein Baum" fetchpriority="high">
+        <svg class="km-badge" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="km-circle" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs>
+          <circle cx="60" cy="60" r="58" fill="#2b1d14"/>
+          <text font-size="10.5" fill="#f6f0e7" font-family="Inter, system-ui, sans-serif" font-weight="600"><textPath href="#km-circle" textLength="270" lengthAdjust="spacing">FRISCH GERÖSTET · ALTONA · SEIT 2019 ·</textPath></text>
+          <path d="M42 63c3-5.6 8.4-6.4 12.2-1.5C57.8 56.4 64.2 55.4 70 61.8" fill="none" stroke="#e7b77d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 -2)"/>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Getränke -->
+    <section class="km-drinks" id="getraenke" data-drink="crema" aria-labelledby="getraenke-title">
+      <p class="km-drinks__ghost" aria-hidden="true"><span data-id="crema" class="is-active">Crema</span><span data-id="matcha">Matcha</span><span data-id="cappuccino">Cappuccino</span><span data-id="schokolade">Kakao</span></p>
+      <div class="km-drinks__inner">
+        <header class="km-drinks__head">
+          <p class="km-eyebrow" data-reveal>Unsere Lieblinge</p>
+          <h2 class="km-h2" id="getraenke-title" data-reveal>Vier Tassen, <em>für die man wiederkommt.</em></h2>
+        </header>
+        <div class="km-drinks__media" hidden>
+          <div class="km-drinks__stage" id="drink-stage" aria-hidden="true"></div>
+          <button class="km-drinks__toggle" id="drink-toggle" type="button" aria-pressed="false">
+            <svg class="km-i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="km-i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
+            <span class="visually-hidden" id="drink-toggle-label">Videos anhalten</span>
+          </button>
+        </div>
+        <div class="km-drinks__tabs" role="tablist" aria-label="Getränk wählen" hidden>
+          <button class="km-tab" type="button" role="tab" id="tab-crema" data-id="crema" aria-controls="drink-crema" aria-selected="true">
+            <span class="km-tab__thumb"><img src="../../assets/img/cafe/getraenke/crema-klein.webp" width="200" height="250" alt=""><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="km-tab__track" cx="32" cy="32" r="30.5"/><circle class="km-tab__ring" cx="32" cy="32" r="30.5" pathLength="1"/></svg></span>
+            <span class="km-tab__name">Café Crema</span>
+          </button>
+          <button class="km-tab" type="button" role="tab" id="tab-matcha" data-id="matcha" aria-controls="drink-matcha" aria-selected="false" tabindex="-1">
+            <span class="km-tab__thumb"><img src="../../assets/img/cafe/getraenke/matcha-klein.webp" width="200" height="250" alt=""><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="km-tab__track" cx="32" cy="32" r="30.5"/><circle class="km-tab__ring" cx="32" cy="32" r="30.5" pathLength="1"/></svg></span>
+            <span class="km-tab__name">Matcha Latte</span>
+          </button>
+          <button class="km-tab" type="button" role="tab" id="tab-cappuccino" data-id="cappuccino" aria-controls="drink-cappuccino" aria-selected="false" tabindex="-1">
+            <span class="km-tab__thumb"><img src="../../assets/img/cafe/getraenke/cappuccino-klein.webp" width="200" height="250" alt=""><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="km-tab__track" cx="32" cy="32" r="30.5"/><circle class="km-tab__ring" cx="32" cy="32" r="30.5" pathLength="1"/></svg></span>
+            <span class="km-tab__name">Cappuccino</span>
+          </button>
+          <button class="km-tab" type="button" role="tab" id="tab-schokolade" data-id="schokolade" aria-controls="drink-schokolade" aria-selected="false" tabindex="-1">
+            <span class="km-tab__thumb"><img src="../../assets/img/cafe/getraenke/schokolade-klein.webp" width="200" height="250" alt=""><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="km-tab__track" cx="32" cy="32" r="30.5"/><circle class="km-tab__ring" cx="32" cy="32" r="30.5" pathLength="1"/></svg></span>
+            <span class="km-tab__name">Heiße Schokolade</span>
+          </button>
+        </div>
+        <div class="km-drinks__panels">
+          <article class="km-drink is-active" id="drink-crema" data-id="crema" role="tabpanel" aria-labelledby="tab-crema">
+            <figure class="km-drink__img"><img src="../../assets/img/cafe/getraenke/crema.webp" width="720" height="900" loading="lazy" alt="Espresso läuft aus dem Siebträger in eine weiße Tasse, darin bildet sich die Crema"></figure>
+            <p class="km-drink__no"><span>01</span> Der Klassiker</p>
+            <h3 class="km-drink__name">Café Crema</h3>
+            <p class="km-drink__text">Länger durchgelaufen als ein Espresso, mild und rund, mit dichter, haselnussbrauner Crema. Aus unserer Hausröstung „Elbe“: Schokolade, Nuss und kaum Säure.</p>
+            <dl class="km-drink__facts"><div><dt>Bohne</dt><dd>Hausröstung „Elbe“</dd></div><div><dt>Tasse</dt><dd>200 ml</dd></div><div><dt>Dazu</dt><dd>ein Glas Wasser</dd></div></dl>
+            <div class="km-drink__buy">
+              <p class="km-drink__price">2,90 €</p>
+              <button class="km-btn" type="button" data-order="crema">Vorbestellen</button>
+            </div>
+          </article>
+          <article class="km-drink" id="drink-matcha" data-id="matcha" role="tabpanel" aria-labelledby="tab-matcha">
+            <figure class="km-drink__img"><img src="../../assets/img/cafe/getraenke/matcha.webp" width="720" height="900" loading="lazy" alt="Aufgeschlagener Matcha wird aus einer Schale in ein Glas mit Milch gegossen"></figure>
+            <p class="km-drink__no"><span>02</span> Grün und sanft</p>
+            <h3 class="km-drink__name">Matcha Latte</h3>
+            <p class="km-drink__text">Feiner Matcha aus Japan, mit dem Bambusbesen schaumig geschlagen und über Milch gegossen. Grasig, mild und ein kleines bisschen süß, warm oder auf Eis.</p>
+            <dl class="km-drink__facts"><div><dt>Matcha</dt><dd>aus Japan, frisch aufgeschlagen</dd></div><div><dt>Milch</dt><dd>Hafer, Mandel oder Kuhmilch</dd></div><div><dt>Glas</dt><dd>300 ml</dd></div></dl>
+            <div class="km-drink__buy">
+              <p class="km-drink__price">4,20 €</p>
+              <button class="km-btn" type="button" data-order="matcha">Vorbestellen</button>
+            </div>
+          </article>
+          <article class="km-drink" id="drink-cappuccino" data-id="cappuccino" role="tabpanel" aria-labelledby="tab-cappuccino">
+            <figure class="km-drink__img"><img src="../../assets/img/cafe/getraenke/cappuccino.webp" width="720" height="900" loading="lazy" alt="Milchschaum wird zu einer Tulpe in den Espresso gegossen"></figure>
+            <p class="km-drink__no"><span>03</span> Mit Herz</p>
+            <h3 class="km-drink__name">Cappuccino</h3>
+            <p class="km-drink__text">Ein Drittel Espresso, ein Drittel Milch, ein Drittel seidiger Schaum und obendrauf ein bisschen Latte Art. So wie in Italien, nur mit Blick auf Altona.</p>
+            <dl class="km-drink__facts"><div><dt>Espresso</dt><dd>Hausröstung „Elbe“</dd></div><div><dt>Milch</dt><dd>frisch aufgeschäumt</dd></div><div><dt>Tasse</dt><dd>180 ml</dd></div></dl>
+            <div class="km-drink__buy">
+              <p class="km-drink__price">3,60 €</p>
+              <button class="km-btn" type="button" data-order="cappuccino">Vorbestellen</button>
+            </div>
+          </article>
+          <article class="km-drink" id="drink-schokolade" data-id="schokolade" role="tabpanel" aria-labelledby="tab-schokolade">
+            <figure class="km-drink__img"><img src="../../assets/img/cafe/getraenke/schokolade.webp" width="720" height="900" loading="lazy" alt="Heiße Schokolade wird aus einem Kännchen in eine weiße Porzellantasse gegossen"></figure>
+            <p class="km-drink__no"><span>04</span> Für kalte Tage</p>
+            <h3 class="km-drink__name">Heiße Schokolade</h3>
+            <p class="km-drink__text">Echte Schokolade statt Pulver: 70 % Kakao, langsam in Vollmilch geschmolzen und heiß eingegossen. Auf Wunsch mit Sahne und einer Prise Zimt.</p>
+            <dl class="km-drink__facts"><div><dt>Schokolade</dt><dd>70 % Kakao</dd></div><div><dt>Milch</dt><dd>Vollmilch oder Hafer</dd></div><div><dt>Extra</dt><dd>Sahne für 0,50 €</dd></div></dl>
+            <div class="km-drink__buy">
+              <p class="km-drink__price">3,80 €</p>
+              <button class="km-btn" type="button" data-order="schokolade">Vorbestellen</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kuchen -->
+    <section class="km-cakes" id="kuchen" aria-labelledby="kuchen-title">
+      <header class="km-cakes__head">
+        <p class="km-eyebrow" data-reveal>Aus der Backstube</p>
+        <h2 class="km-h2" id="kuchen-title" data-reveal>Kuchen wie bei <em>Oma, nur öfter.</em></h2>
+      </header>
+      <ul class="km-cakes__grid">
+        <li class="km-cake" data-reveal>
+          <figure><img src="../../assets/img/cafe/kuchen-zimtschnecken.webp" width="900" height="900" loading="lazy" alt="Zimtschnecken auf einem Kuchengitter, eine mit Zuckerguss"></figure>
+          <h3>Zimtschnecken</h3>
+          <p>Hefeteig mit viel Zimt und Butter, morgens noch warm. Samstags auch als Franzbrötchen.</p>
+          <span class="km-cake__price">3,20 €</span>
+        </li>
+        <li class="km-cake" data-reveal>
+          <figure><img src="../../assets/img/cafe/kuchen-kaese.webp" width="900" height="900" loading="lazy" alt="Stück gebackener Käsekuchen mit goldbrauner Oberfläche auf einem grünen Teller"></figure>
+          <h3>Käsekuchen</h3>
+          <p>Ohne Boden, mit Quark und Zitrone, oben fast karamellisiert. Unser Klassiker seit dem ersten Tag.</p>
+          <span class="km-cake__price">4,20 €</span>
+        </li>
+        <li class="km-cake" data-reveal>
+          <figure><img src="../../assets/img/cafe/kuchen-apfel.webp" width="900" height="900" loading="lazy" alt="Apfelkuchen mit Streuseln auf einem Kuchengitter, davor ein Stück auf dem Teller"></figure>
+          <h3>Apfelkuchen</h3>
+          <p>Mit Äpfeln aus dem Alten Land und Streuseln. Dazu gern einen Klecks Sahne.</p>
+          <span class="km-cake__price">3,90 €</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Rösterei -->
+    <section class="km-roast" aria-labelledby="roast-title">
+      <figure class="km-roast__media" data-reveal>
+        <img src="../../assets/img/cafe/cafe-roesten.webp" width="1600" height="1000" loading="lazy" alt="Frisch geröstete Kaffeebohnen kühlen in der Trommel des Röstofens ab">
+      </figure>
+      <div class="km-roast__text">
+        <p class="km-eyebrow" data-reveal>Unsere Rösterei</p>
+        <h2 class="km-h2" id="roast-title" data-reveal>Dienstags riecht <em>ganz Altona nach Kaffee.</em></h2>
+        <p class="km-lead" data-reveal>Einmal pro Woche rösten wir hinten im Laden: langsam und eher hell, damit man die Bohne noch schmeckt. Unsere Hausröstung „Elbe“ gibt es auch zum Mitnehmen.</p>
+        <dl class="km-roast__facts" data-reveal>
+          <div><dt>Hausröstung „Elbe“</dt><dd>Brasilien und Peru, Schokolade und Nuss</dd></div>
+          <div><dt>Äthiopien</dt><dd>Beeren und Zitrus, schön als Filterkaffee</dd></div>
+          <div><dt>250 g zum Mitnehmen</dt><dd>9,50 € (38,00 €/kg), auf Wunsch gemahlen</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Karte -->
+    <section class="km-menu" id="karte" aria-labelledby="karte-title">
+      <h2 class="km-h2" id="karte-title" data-reveal>Die Karte</h2>
+      <div class="km-menu__cols">
+        <div data-reveal>
+          <h3 class="km-eyebrow">Kaffee</h3>
+          <ul class="km-list">
+            <li><span>Espresso</span><b>2,40 €</b></li>
+            <li><span>Café Crema</span><b>2,90 €</b></li>
+            <li><span>Cappuccino</span><b>3,60 €</b></li>
+            <li><span>Flat White</span><b>3,90 €</b></li>
+            <li><span>Latte macchiato</span><b>3,90 €</b></li>
+            <li><span>Filterkaffee, Handaufguss</span><b>3,40 €</b></li>
+          </ul>
+        </div>
+        <div data-reveal>
+          <h3 class="km-eyebrow">Tee &amp; mehr</h3>
+          <ul class="km-list">
+            <li><span>Tee, lose aufgegossen</span><b>3,20 €</b></li>
+            <li><span>Matcha Latte</span><b>4,20 €</b></li>
+            <li><span>Chai Latte</span><b>4,20 €</b></li>
+            <li><span>Heiße Schokolade</span><b>3,80 €</b></li>
+            <li><span>Limonade, hausgemacht</span><b>3,90 €</b></li>
+          </ul>
+        </div>
+        <div data-reveal>
+          <h3 class="km-eyebrow">Frühstück bis 12 Uhr</h3>
+          <ul class="km-list">
+            <li><span>Franzbrötchen</span><b>2,80 €</b></li>
+            <li><span>Croissant mit Butter und Marmelade</span><b>3,90 €</b></li>
+            <li><span>Bircher Müsli mit Apfel</span><b>6,50 €</b></li>
+            <li><span>Roggenbrot mit Frischkäse und Radieschen</span><b>7,20 €</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Besuch -->
+    <section class="km-visit" id="besuch" aria-labelledby="besuch-title">
+      <figure class="km-visit__media" data-reveal>
+        <img src="../../assets/img/cafe/cafe-barista.webp" width="1000" height="1250" loading="lazy" alt="Milchschaum wird aus der Kanne zu einem Herz in den Kaffee gegossen">
+      </figure>
+      <div class="km-visit__text">
+        <p class="km-eyebrow" data-reveal>Besuch</p>
+        <h2 class="km-h2" id="besuch-title" data-reveal>Kommen Sie vorbei, <em>der Fensterplatz wartet.</em></h2>
+        <dl class="km-facts" data-reveal>
+          <div><dt>Adresse</dt><dd>Altona, 22767 Hamburg</dd></div>
+          <div><dt>Anfahrt</dt><dd>S-Bahn bis Altona, dann fünf Minuten zu Fuß</dd></div>
+          <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+        </dl>
+        <table class="km-hours" data-reveal>
+          <caption class="visually-hidden">Öffnungszeiten des Kaffeehaus Möwe</caption>
+          <tbody id="hours">
+            <tr data-days="1,2,3,4,5"><th scope="row">Montag bis Freitag</th><td>8 – 18 Uhr</td></tr>
+            <tr data-days="6,0"><th scope="row">Samstag und Sonntag</th><td>9 – 18 Uhr</td></tr>
+          </tbody>
+        </table>
+        <p class="km-visit__note" data-reveal>Am Wochenende bleiben die Laptops zu: Dann gehören die Tische dem Kuchen.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="km-footer">
+    <p class="km-logo km-logo--small"><span>Kaffeehaus <b>Möwe</b></span></p>
+    <p>Ein erfundenes Café, gestaltet und programmiert von <a href="../../index.html">Studio Elbquartier</a>. Fotos: Unsplash, Videos: Pexels.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#cafe">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <dialog class="km-dialog" id="order" aria-labelledby="order-title">
+    <form method="dialog" class="km-dialog__inner" id="order-form">
+      <header>
+        <p class="km-eyebrow">Vorbestellen</p>
+        <h2 class="km-h3" id="order-title">Latte macchiato</h2>
+        <p class="km-dialog__extras" id="order-extras"></p>
+      </header>
+      <fieldset class="km-opt">
+        <legend>Abholen</legend>
+        <div class="km-chips" id="order-time" role="radiogroup" aria-label="Abholzeit"></div>
+      </fieldset>
+      <label class="km-field"><span>Name für den Becher</span><input name="name" autocomplete="given-name" required></label>
+      <p class="km-dialog__total"><span>Zu zahlen beim Abholen</span><strong id="order-total"></strong></p>
+      <div class="km-dialog__actions">
+        <button type="button" class="km-btn km-btn--ghost" id="order-cancel">Zurück</button>
+        <button type="submit" class="km-btn" id="order-submit" value="ok">Vorbestellen</button>
+      </div>
+      <p class="km-dialog__note" id="order-status">Beispiel-Formular: Es wird nichts gesendet.</p>
+    </form>
+  </dialog>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="cafe.js"></script>
+</body>
+</html>

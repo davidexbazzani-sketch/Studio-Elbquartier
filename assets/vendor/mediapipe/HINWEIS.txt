@@ -1,0 +1,8 @@
+MediaPipe Tasks Vision 0.10.21 (npm-Paket @mediapipe/tasks-vision) und Modell „Face Landmarker“
+Copyright Google LLC und die MediaPipe-Autoren
+Lizenz: Apache License 2.0 (Text in der Datei LICENSE in diesem Ordner)
+Quelle: https://github.com/google-ai-edge/mediapipe · https://www.npmjs.com/package/@mediapipe/tasks-vision
+
+Die Dateien in diesem Ordner sind unverändert.
+Geändert (Apache 2.0, Abschnitt 4 b): assets/models/brillen/gesicht.json wurde von Studio Elbquartier
+aus canonical_face_model.obj (MediaPipe) in ein JSON-Format umgewandelt (nur Punkte und Dreiecke).

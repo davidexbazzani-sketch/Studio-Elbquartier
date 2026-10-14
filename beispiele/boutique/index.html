@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Linnen &amp; Lou – Leinenmode in Eppendorf (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: eine erfundene Boutique für Leinenmode in Eppendorf. Mit einem Leinentuch zum Anfassen in 3D, Lookbook und Anprobe-Reservierung.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f2efe9">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/gloock-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="boutique.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../../assets/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="ll">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Linnen &amp; Lou ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="ll-nav" id="nav">
+    <a class="ll-logo" href="#top" aria-label="Linnen und Lou – zum Seitenanfang">Linnen <i>&amp;</i> Lou</a>
+    <nav class="ll-nav__links" aria-label="Hauptnavigation">
+      <a href="#stoff">Der Stoff</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#neu">Neu im Laden</a>
+      <a href="#besuch">Besuch</a>
+    </nav>
+    <button class="ll-fit" id="fit-open" type="button" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a2 2 0 1 1 2 2c-1.1 0-2 .7-2 1.6V10l8.2 5.5a1.4 1.4 0 0 1-.8 2.5H4.6a1.4 1.4 0 0 1-.8-2.5L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Anprobe <span class="ll-fit__count" id="fit-count">0</span>
+    </button>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Hero -->
+    <section class="ll-hero" id="top" aria-labelledby="hero-title">
+      <figure class="ll-hero__media" data-hero>
+        <img src="../../assets/img/boutique/boutique-laden.webp" width="1100" height="1400" alt="Heller Laden mit Leinenkleidung auf einer Stange, Regale mit Taschen und Schuhen" fetchpriority="high">
+      </figure>
+      <div class="ll-hero__text">
+        <p class="ll-eyebrow" data-hero>Boutique · Eppendorf</p>
+        <h1 class="ll-hero__title" id="hero-title" data-hero>Leinen,<br>das bleibt.</h1>
+        <p class="ll-lead" data-hero>Kleidung aus europäischem Leinen, genäht in kleinen Werkstätten. Zum Anfassen, zum Anprobieren und zum lange Tragen.</p>
+        <div class="ll-hero__cta" data-hero>
+          <a class="ll-btn" href="#stoff">Den Stoff fühlen</a>
+          <a class="ll-btn ll-btn--ghost" href="#neu">Neu im Laden</a>
+        </div>
+        <ul class="ll-hero__facts" data-hero>
+          <li><strong>Leinen</strong>aus Belgien und Litauen</li>
+          <li><strong>Genäht</strong>in Porto, in kleinen Serien</li>
+          <li><strong>Reparatur</strong>im ersten Jahr kostenlos</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stoff in 3D -->
+    <section class="ll-fabric" id="stoff" aria-labelledby="stoff-title">
+      <div class="ll-fabric__intro">
+        <p class="ll-eyebrow" data-reveal>Der Stoff</p>
+        <h2 class="ll-h2" id="stoff-title" data-reveal>Fühlen Sie mal.</h2>
+        <p class="ll-lead" data-reveal>Unser Leinen ist dichter gewebt als üblich und wird mit jedem Waschen weicher. Greifen Sie hinein, ziehen Sie am Stoff und sehen Sie, wie er fällt.</p>
+      </div>
+      <div class="ll-fabric__stage" id="fabric-stage" data-mode="image">
+        <img class="ll-fabric__poster" id="fabric-poster" src="../../assets/img/boutique/stoff-sand.webp" width="900" height="1100" alt="Leinenstoff in Sand, in weichen Falten an einem Holzstab hängend" decoding="async">
+        <div class="ll-fabric__view" id="fabric-view"></div>
+        <p class="ll-fabric__hint" id="fabric-hint" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5V4.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1.2a6 6 0 0 1-4.6-2.2L4.4 15.4a1.5 1.5 0 0 1 2.2-2L9 15V7.5a1.5 1.5 0 0 1 3 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Am Stoff ziehen
+        </p>
+        <button class="ll-fabric__load" id="fabric-load" type="button" hidden>In 3D ansehen</button>
+      </div>
+      <div class="ll-fabric__controls">
+        <fieldset class="ll-opt" data-reveal>
+          <legend>Farbe <span id="color-name">Sand</span></legend>
+          <div class="ll-swatches" id="colors" role="radiogroup" aria-label="Farbe des Stoffs"></div>
+        </fieldset>
+        <fieldset class="ll-opt" data-reveal>
+          <legend>Stoffgewicht</legend>
+          <div class="ll-seg" id="weights" role="radiogroup" aria-label="Stoffgewicht"></div>
+          <p class="ll-opt__note" id="weight-note"></p>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Lookbook -->
+    <section class="ll-look" id="lookbook" aria-labelledby="look-title">
+      <header class="ll-look__head">
+        <p class="ll-eyebrow" data-reveal>Lookbook Herbst</p>
+        <h2 class="ll-h2" id="look-title" data-reveal>Naturtöne, <i>zum Kombinieren.</i></h2>
+        <p class="ll-lead" data-reveal>Tippen Sie auf die Punkte: Alles auf der Stange hängt so bei uns im Laden.</p>
+      </header>
+      <figure class="ll-look__media" id="look" data-reveal>
+        <img src="../../assets/img/boutique/boutique-lookbook.webp" width="1600" height="1200" loading="lazy" alt="Kleiderstange mit Bluse, Strick und einer Teddyjacke in Naturtönen, daneben Pampasgras">
+      </figure>
+    </section>
+
+    <!-- Neu im Laden -->
+    <section class="ll-new" id="neu" aria-labelledby="neu-title">
+      <header class="ll-new__head">
+        <p class="ll-eyebrow" data-reveal>Neu im Laden</p>
+        <h2 class="ll-h2" id="neu-title" data-reveal>Hemden für den <i>ganzen Sommer.</i></h2>
+        <p class="ll-lead" data-reveal>Merken Sie sich Ihre Größe vor, wir legen alles in der Kabine bereit. Reserviert ist für drei Tage, bezahlt wird erst im Laden.</p>
+      </header>
+      <ul class="ll-products" id="products"></ul>
+    </section>
+
+    <!-- Material -->
+    <section class="ll-why" aria-labelledby="why-title">
+      <figure class="ll-why__media" data-reveal>
+        <img src="../../assets/img/boutique/leinen-stapel.webp" width="1000" height="1250" loading="lazy" alt="Stapel gefalteter Leinenstoffe in Rosé, Creme und Grau auf einem Holzhocker">
+      </figure>
+      <div class="ll-why__text">
+        <p class="ll-eyebrow" data-reveal>Warum Leinen</p>
+        <h2 class="ll-h2" id="why-title" data-reveal>Ein Stoff, der <i>mit Ihnen älter wird.</i></h2>
+        <ol class="ll-why__list">
+          <li data-reveal><span>01</span><div><h3>Wenig Wasser</h3><p>Flachs wächst in Europa ohne künstliche Bewässerung, fast die ganze Pflanze wird verwendet.</p></div></li>
+          <li data-reveal><span>02</span><div><h3>Wird weicher</h3><p>Leinen kühlt im Sommer, wärmt in der Übergangszeit und wird mit jedem Waschen schöner.</p></div></li>
+          <li data-reveal><span>03</span><div><h3>Hält Jahrzehnte</h3><p>Und wenn doch mal eine Naht aufgeht: Im ersten Jahr reparieren wir kostenlos.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Besuch -->
+    <section class="ll-visit" id="besuch" aria-labelledby="besuch-title">
+      <div class="ll-visit__text">
+        <p class="ll-eyebrow" data-reveal>Besuch</p>
+        <h2 class="ll-h2" id="besuch-title" data-reveal>Zwei Kabinen, <i>viel Tageslicht.</i></h2>
+        <p class="ll-lead" data-reveal>Anprobieren geht ohne Termin. Wer vorher reserviert, findet seine Größen schon in der Kabine.</p>
+        <dl class="ll-facts" data-reveal>
+          <div><dt>Adresse</dt><dd>Eppendorf, 20249 Hamburg</dd></div>
+          <div><dt>Anfahrt</dt><dd>U1 bis Klosterstern oder U3 bis Eppendorfer Baum</dd></div>
+          <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+        </dl>
+      </div>
+      <div class="ll-hours" data-reveal>
+        <h3 class="ll-eyebrow">Öffnungszeiten</h3>
+        <table>
+          <caption class="visually-hidden">Öffnungszeiten von Linnen und Lou</caption>
+          <tbody id="hours">
+            <tr data-days="2,3,4,5"><th scope="row">Dienstag bis Freitag</th><td>11 – 19 Uhr</td></tr>
+            <tr data-days="6"><th scope="row">Samstag</th><td>10 – 16 Uhr</td></tr>
+            <tr data-days="0,1"><th scope="row">Sonntag und Montag</th><td>geschlossen</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ll-footer">
+    <p class="ll-logo ll-logo--small">Linnen <i>&amp;</i> Lou</p>
+    <p>Eine erfundene Boutique. Das Leinentuch zum Anfassen ist eine Stoffsimulation in 3D, entworfen und programmiert von <a href="../../index.html">Studio Elbquartier</a>. Fotos: Unsplash.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#boutique">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <!-- Anprobe reservieren (Demo) -->
+  <dialog class="ll-dialog" id="fit" aria-labelledby="fit-title">
+    <form method="dialog" class="ll-dialog__inner" id="fit-form">
+      <header>
+        <p class="ll-eyebrow">Anprobe reservieren</p>
+        <h2 class="ll-h3" id="fit-title">Ihre Auswahl</h2>
+      </header>
+      <ul class="ll-fitlist" id="fit-list"></ul>
+      <fieldset class="ll-opt">
+        <legend>Tag</legend>
+        <div class="ll-chips" id="fit-days" role="radiogroup" aria-label="Tag der Anprobe"></div>
+      </fieldset>
+      <fieldset class="ll-opt">
+        <legend>Uhrzeit</legend>
+        <div class="ll-chips" id="fit-times" role="radiogroup" aria-label="Uhrzeit der Anprobe"></div>
+      </fieldset>
+      <label class="ll-field"><span>Name</span><input name="name" autocomplete="name" required></label>
+      <label class="ll-field"><span>Telefon oder E-Mail</span><input name="kontakt" autocomplete="email" required></label>
+      <div class="ll-dialog__actions">
+        <button type="button" class="ll-btn ll-btn--ghost" id="fit-cancel">Zurück</button>
+        <button type="submit" class="ll-btn" id="fit-submit" value="ok">Reservieren</button>
+      </div>
+      <p class="ll-dialog__note" id="fit-status">Beispiel-Formular: Es wird nichts gesendet.</p>
+    </form>
+  </dialog>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="boutique.js"></script>
+</body>
+</html>

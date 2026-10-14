@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nachtfalter – Cocktailbar in der Sternschanze (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: eine erfundene Cocktailbar in der Sternschanze. Jeder Drink der Karte in einem kurzen Film: gerührt, abgeseiht, eingegossen.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#100c10">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/bodoni-moda-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="bar.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+</head>
+<body class="nf">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Die Bar Nachtfalter ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="nf-nav" id="nav">
+    <a class="nf-logo" href="#top" aria-label="Nachtfalter – zum Seitenanfang">
+      <svg viewBox="0 0 48 32" aria-hidden="true">
+        <path d="M24 9c-3-6-11-9-17-7-4 1-6 6-3 10 2 3 6 4 10 4-4 1-7 4-6 8 1 3 5 4 8 2 4-2 7-7 8-11 1 4 4 9 8 11 3 2 7 1 8-2 1-4-2-7-6-8 4 0 8-1 10-4 3-4 1-9-3-10-6-2-14 1-17 7z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        <path d="M24 9v17M22.5 6.5 20 2M25.5 6.5 28 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span>Nachtfalter</span>
+    </a>
+    <nav class="nf-nav__links" aria-label="Hauptnavigation">
+      <a href="#karte">Karte</a>
+      <a href="#bar">Die Bar</a>
+      <a href="#besuch">Besuch</a>
+    </nav>
+    <p class="nf-status" id="status"><i aria-hidden="true"></i><span class="nf-status__long">Di–Sa ab 19 Uhr</span><span class="nf-status__short" aria-hidden="true">Ab 19 Uhr</span></p>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Hero -->
+    <section class="nf-hero" id="top" aria-labelledby="hero-title">
+      <picture class="nf-hero__media">
+        <source media="(max-width: 700px)" srcset="../../assets/img/bar/bar-tresen-mobil.webp" width="800" height="1100">
+        <img src="../../assets/img/bar/bar-tresen.webp" width="1600" height="1000" alt="Langer Tresen im warmen Licht, dahinter beleuchtete Regale voller Flaschen" fetchpriority="high">
+      </picture>
+      <div class="nf-hero__text">
+        <p class="nf-eyebrow" data-hero>Cocktailbar · Sternschanze</p>
+        <h1 class="nf-hero__title" id="hero-title" data-hero>Gute Drinks.<br><em>Lange Nächte.</em></h1>
+        <p class="nf-lead" data-hero>Vierundzwanzig Plätze am Tresen, eine kleine Karte, die mit den Jahreszeiten wechselt, und keine Reservierungen. Kommen Sie einfach vorbei.</p>
+        <div class="nf-hero__cta" data-hero>
+          <a class="nf-btn" href="#karte">Zur Karte</a>
+          <a class="nf-btn nf-btn--ghost" href="#besuch">So finden Sie uns</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Die Bar -->
+    <section class="nf-intro" id="bar" aria-labelledby="bar-title">
+      <div class="nf-intro__text">
+        <p class="nf-eyebrow" data-reveal>Die Bar</p>
+        <h2 class="nf-h2" id="bar-title" data-reveal>Ein kleiner Raum, ein langer Tresen <em>und Zeit für jeden Gast.</em></h2>
+        <p class="nf-lead" data-reveal>Wir mixen klassisch und wiegen jede Zutat ab. Sirups, Bitters und das Ginger Beer setzen wir selbst an, Kräuter und Früchte kommen aus Hamburg und dem Alten Land. Wer keinen Alkohol trinkt, bekommt bei uns genauso viel Sorgfalt.</p>
+        <ul class="nf-points" data-reveal>
+          <li><strong>Hausgemacht</strong>Sirups, Bitters und Ginger Beer</li>
+          <li><strong>Aus der Region</strong>Holunder, Rhabarber, Äpfel, Minze</li>
+          <li><strong>Ohne Alkohol</strong>Eigene Drinks statt nur Saft</li>
+        </ul>
+      </div>
+      <figure class="nf-intro__photo nf-intro__photo--a" data-reveal>
+        <img src="../../assets/img/bar/bar-mixen.webp" width="1000" height="1250" loading="lazy" alt="Ein Drink wird aus dem Shaker in eine Cocktailschale gegossen">
+      </figure>
+      <figure class="nf-intro__photo nf-intro__photo--b" data-reveal>
+        <img src="../../assets/img/bar/bar-einschenken.webp" width="1000" height="1250" loading="lazy" alt="Barkeeper gießt mit dem Messbecher über Eis in ein Glas">
+      </figure>
+    </section>
+
+    <!-- Karte: jeder Drink in seinem schönsten Moment, als kurzer Film -->
+    <section class="nf-menu" id="karte" aria-labelledby="karte-title">
+      <header class="nf-menu__head">
+        <p class="nf-eyebrow" data-reveal>Die Karte</p>
+        <h2 class="nf-h2" id="karte-title" data-reveal>Sechs Drinks, <em>frisch gemixt.</em></h2>
+        <p class="nf-lead" data-reveal>Scrollen Sie durch die Karte: Zu jedem Drink zeigen wir seinen schönsten Moment, wenn er gerührt, abgeseiht oder eingegossen wird.</p>
+      </header>
+
+      <div class="nf-menu__grid">
+        <div class="nf-stage" id="stage">
+          <img class="nf-stage__poster" id="stage-poster" src="../../assets/img/bar/drinks/nachtfalter.webp" width="720" height="900" alt="Nachtfalter im Nick-&amp;-Nora-Glas, dunkel wie Brombeere, mit feinem Schaum" loading="lazy" decoding="async">
+          <div class="nf-stage__view" id="stage-view"></div>
+          <div class="nf-stage__ui">
+            <p class="nf-stage__name" aria-hidden="true"><span id="stage-num">01</span><strong id="stage-title">Nachtfalter</strong></p>
+            <button class="nf-stage__btn" id="stage-pause" type="button" aria-pressed="false" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="i-play" d="M8 6.5v11l9-5.5z" fill="currentColor"/></svg>
+              <span class="visually-hidden">Film anhalten</span>
+            </button>
+          </div>
+          <p class="nf-stage__note" id="stage-note" hidden></p>
+        </div>
+
+        <ol class="nf-drinks" id="drinks">
+          <li class="nf-drink" data-drink="nachtfalter" data-alt="Nachtfalter im Nick-&amp;-Nora-Glas, dunkel wie Brombeere, mit feinem Schaum">
+            <p class="nf-drink__num">01 <span class="nf-tag">Hausdrink</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Nachtfalter</button></h3>
+            <p class="nf-drink__desc">Gin, Veilchenlikör, Brombeere und frische Zitrone, kräftig geschüttelt und fein abgeseiht. Dunkel wie die Schanze um halb zwei.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:1" role="img" aria-label="1 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Nick &amp; Nora · 12 cl</span><strong>13 €</strong></p>
+          </li>
+          <li class="nf-drink" data-drink="elbtonic" data-alt="Elbtonic im bauchigen Copa-Glas mit Eis, Limette und Wacholderbeeren">
+            <p class="nf-drink__num">02 <span class="nf-tag">Hausdrink</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Elbtonic</button></h3>
+            <p class="nf-drink__desc">Gin aus Hamburg, unser eigenes Tonic, Limette und ein paar Wacholderbeeren, einmal sanft umgerührt. Lang, kühl und klar.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:1" role="img" aria-label="1 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Copa-Glas · 35 cl</span><strong>11 €</strong></p>
+          </li>
+          <li class="nf-drink" data-drink="negroni" data-alt="Negroni wird aus dem Rührglas auf einen großen Eisblock im Kristall-Tumbler gegossen">
+            <p class="nf-drink__num">03 <span class="nf-tag">Klassiker</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Negroni</button></h3>
+            <p class="nf-drink__desc">Gin, roter Wermut und Bitterlikör zu gleichen Teilen, im Rührglas kalt gerührt und auf einen großen, klaren Eisblock gegossen.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:0" role="img" aria-label="0 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:5" role="img" aria-label="5 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-dots" style="--v:4" role="img" aria-label="4 von 5"></span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Tumbler · 9 cl</span><strong>12 €</strong></p>
+          </li>
+          <li class="nf-drink" data-drink="espresso" data-alt="Espresso Martini läuft durch das Sieb in eine Kristall-Coupette">
+            <p class="nf-drink__num">04 <span class="nf-tag">Klassiker</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Espresso Martini</button></h3>
+            <p class="nf-drink__desc">Wodka, Kaffeelikör und ein frisch gezogener Espresso von der Rösterei nebenan, so lange geschüttelt, bis eine dichte Crema entsteht.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:0" role="img" aria-label="0 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Coupette · 10 cl</span><strong>12 €</strong></p>
+          </li>
+          <li class="nf-drink" data-drink="mule" data-alt="Ginger Beer wird aus einer Kupferkanne in einen verzierten Kupferbecher gegossen">
+            <p class="nf-drink__num">05 <span class="nf-tag">Longdrink</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Moscow Mule</button></h3>
+            <p class="nf-drink__desc">Wodka, Limette und scharfes Ginger Beer aus eigener Herstellung, am Tisch aufgegossen. Im Kupferbecher, der lange kalt bleibt.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:0" role="img" aria-label="0 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Kupferbecher · 30 cl</span><strong>11 €</strong></p>
+          </li>
+          <li class="nf-drink" data-drink="holunder" data-alt="Holunder-Minze ohne Alkohol im hohen Glas mit zerstoßenem Eis, Minze und getrockneter Limette">
+            <p class="nf-drink__num">06 <span class="nf-tag nf-tag--free">Alkoholfrei</span></p>
+            <h3><button type="button" class="nf-drink__pick" aria-controls="stage">Holunder-Minze</button></h3>
+            <p class="nf-drink__desc">Holunderblütensirup aus dem Alten Land, Limette, viel frische Minze und Soda auf zerstoßenem Eis. Erfrischt wie ein Mojito, ganz ohne Alkohol.</p>
+            <dl class="nf-taste">
+              <div><dt>Süße</dt><dd><span class="nf-dots" style="--v:3" role="img" aria-label="3 von 5"></span></dd></div>
+              <div><dt>Säure</dt><dd><span class="nf-dots" style="--v:2" role="img" aria-label="2 von 5"></span></dd></div>
+              <div><dt>Bitter</dt><dd><span class="nf-dots" style="--v:0" role="img" aria-label="0 von 5"></span></dd></div>
+              <div><dt>Stärke</dt><dd><span class="nf-free">ohne Alkohol</span></dd></div>
+            </dl>
+            <p class="nf-drink__meta"><span>Hurricane-Glas · 35 cl</span><strong>8 €</strong></p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Weitere Karte -->
+    <section class="nf-more" aria-labelledby="more-title">
+      <h2 class="nf-h3" id="more-title" data-reveal>Außerdem an der Bar</h2>
+      <div class="nf-more__cols">
+        <div data-reveal>
+          <h3 class="nf-eyebrow">Klassiker</h3>
+          <ul class="nf-list">
+            <li><span>Old Fashioned</span><b>12 €</b></li>
+            <li><span>Whiskey Sour</span><b>12 €</b></li>
+            <li><span>Daiquiri</span><b>11 €</b></li>
+            <li><span>Gin Fizz</span><b>11 €</b></li>
+          </ul>
+        </div>
+        <div data-reveal>
+          <h3 class="nf-eyebrow">Ohne Alkohol</h3>
+          <ul class="nf-list">
+            <li><span>Mineralwasser 0,3 l</span><b>3 €</b></li>
+            <li><span>Rhabarber-Tonic 0,3 l</span><b>7 €</b></li>
+            <li><span>Ingwer-Limonade, hausgemacht, 0,3 l</span><b>6 €</b></li>
+            <li><span>Apfel-Thymian-Schorle 0,3 l</span><b>5 €</b></li>
+          </ul>
+        </div>
+        <div data-reveal>
+          <h3 class="nf-eyebrow">Bier, Wein &amp; etwas zu knabbern</h3>
+          <ul class="nf-list">
+            <li><span>Fassbier 0,3 l</span><b>4,50 €</b></li>
+            <li><span>Hauswein 0,2 l</span><b>7 €</b></li>
+            <li><span>Oliven mit Zitrone</span><b>5 €</b></li>
+            <li><span>Geröstete Mandeln</span><b>4,50 €</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Abende -->
+    <section class="nf-nights" aria-labelledby="nights-title">
+      <figure class="nf-nights__photo" data-reveal>
+        <img src="../../assets/img/bar/bar-drink-hand.webp" width="1000" height="1250" loading="lazy" alt="Hand reicht einen rosafarbenen Drink in der Coupette mit Zitronenzeste über den Tresen">
+      </figure>
+      <div class="nf-nights__text">
+        <p class="nf-eyebrow" data-reveal>Unter der Woche</p>
+        <h2 class="nf-h2" id="nights-title" data-reveal>Jeder Abend <em>hat sein eigenes Tempo.</em></h2>
+        <ol class="nf-nights__list">
+          <li data-reveal><p class="nf-nights__day">Dienstag</p><h3>Neue Drinks</h3><p>Die Crew probiert Rezepte für die nächste Karte. Sie trinken mit und entscheiden mit.</p></li>
+          <li data-reveal><p class="nf-nights__day">Donnerstag</p><h3>Vinyl am Tresen</h3><p>Ab 21 Uhr laufen Platten aus unserer Sammlung. Wünsche nehmen wir an der Bar entgegen.</p></li>
+          <li data-reveal><p class="nf-nights__day">Erster Mittwoch im Monat</p><h3>Barkurs</h3><p>Zwei Stunden vor dem Öffnen, drei Drinks und ein Shaker für zu Hause. Anmeldung an der Bar.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Besuch -->
+    <section class="nf-visit" id="besuch" aria-labelledby="besuch-title">
+      <div class="nf-visit__text">
+        <p class="nf-eyebrow" data-reveal>Besuch</p>
+        <h2 class="nf-h2" id="besuch-title" data-reveal>Keine Reservierung. <em>Einfach klingeln.</em></h2>
+        <p class="nf-lead" data-reveal>Die Plätze am Tresen vergeben wir an die, die da sind. Für Gruppen ab acht Personen rufen Sie bitte vorher an.</p>
+        <dl class="nf-facts" data-reveal>
+          <div><dt>Adresse</dt><dd>Sternschanze, 20357 Hamburg</dd></div>
+          <div><dt>Anfahrt</dt><dd>U3 oder S-Bahn bis Sternschanze, dann drei Minuten zu Fuß</dd></div>
+          <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+        </dl>
+      </div>
+      <div class="nf-hours" data-reveal>
+        <h3 class="nf-eyebrow">Öffnungszeiten</h3>
+        <table>
+          <caption class="visually-hidden">Öffnungszeiten der Bar Nachtfalter</caption>
+          <tbody id="hours">
+            <tr data-day="2"><th scope="row">Dienstag</th><td>19 – 1 Uhr</td></tr>
+            <tr data-day="3"><th scope="row">Mittwoch</th><td>19 – 1 Uhr</td></tr>
+            <tr data-day="4"><th scope="row">Donnerstag</th><td>19 – 1 Uhr</td></tr>
+            <tr data-day="5"><th scope="row">Freitag</th><td>19 – 3 Uhr</td></tr>
+            <tr data-day="6"><th scope="row">Samstag</th><td>19 – 3 Uhr</td></tr>
+            <tr data-day="0"><th scope="row">Sonntag</th><td>Ruhetag</td></tr>
+            <tr data-day="1"><th scope="row">Montag</th><td>Ruhetag</td></tr>
+          </tbody>
+        </table>
+        <p class="nf-hours__note">Ausschank nur an Gäste ab 18 Jahren.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="nf-footer">
+    <p class="nf-logo nf-logo--small"><span>Nachtfalter</span></p>
+    <p>Eine erfundene Bar, gestaltet und programmiert von <a href="../../index.html">Studio Elbquartier</a>. Fotos: Unsplash, Filme: Pexels. Bitte trinken Sie verantwortungsvoll.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#bar">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="bar.js"></script>
+</body>
+</html>

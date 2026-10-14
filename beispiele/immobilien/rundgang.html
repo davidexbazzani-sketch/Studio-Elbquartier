@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>3D-Rundgang · Elbblick-Residenz – Solmund Private Immobilien (Beispiel-Website)</title>
+  <meta name="description" content="Begehbarer 3D-Rundgang durch eine 3-Zimmer-Wohnung mit Balkon und Elbblick. Beispiel-Website von Studio Elbquartier.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1f1d1a">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/cormorant-garamond-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="immobilien.css">
+  <script type="importmap">
+    { "imports": { "three": "../../assets/vendor/three/three.module.min.js", "three/addons/": "../../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body class="sm rg">
+  <canvas id="rg-canvas" class="rg-canvas" role="img" aria-label="Begehbare 3D-Ansicht der Elbblick-Residenz"></canvas>
+
+  <!-- Start / Laden -->
+  <section class="rg-start" id="rg-start" aria-labelledby="rg-titel">
+    <div class="rg-start__inner">
+      <a class="rg-back" href="index.html#objekte">← Zurück zu Solmund</a>
+      <svg class="sm-mark rg-start__mark" aria-hidden="true" viewBox="0 0 64 40">
+        <path d="M14 22a18 18 0 0 1 36 0" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M6 28h52M12 33h40M20 38h24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <p class="rg-kicker">Objekt 01 · Övelgönne</p>
+      <h1 id="rg-titel" class="rg-title">Elbblick-Residenz</h1>
+      <p class="rg-facts">3 Zimmer · 148 m² · Südbalkon zur Elbe · oberstes Geschoss</p>
+      <div class="rg-load" role="progressbar" aria-label="Rundgang wird geladen" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="rg-load__bar" id="rg-bar"></span>
+      </div>
+      <p class="rg-load__text" id="rg-load-text" aria-live="polite">Wohnung wird geladen …</p>
+      <button class="sm-btn sm-btn--light rg-go" id="rg-go" type="button" disabled>Rundgang starten</button>
+      <div class="rg-help">
+        <p class="rg-help__desk"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> gehen · Maus oder Touchpad: umsehen · <kbd>⇧</kbd> schneller · <kbd>Esc</kbd> Pause<br>Nur Tastatur: <kbd>↑</kbd><kbd>↓</kbd> gehen, <kbd>←</kbd><kbd>→</kbd> drehen, <kbd>Q</kbd><kbd>E</kbd> drehen</p>
+        <p class="rg-help__touch">Linker Daumen: gehen · rechts wischen: umsehen · auf den Boden tippen: dorthin gehen</p>
+      </div>
+      <p class="rg-legal">Beispiel-Website von <a href="../../index.html">Studio Elbquartier</a> – Objekt, Makler und Preise sind erfunden. 3D-Möbel und Bäume teils von Sketchfab-Urhebern (CC BY 4.0).<br>
+        <a href="../../impressum.html">Impressum</a> · <a href="../../datenschutz.html">Datenschutz</a> · <a href="../../lizenzen.html#rundgang-modelle">Bildnachweise &amp; Lizenzen</a></p>
+    </div>
+  </section>
+
+  <!-- Bedienoberfläche im Rundgang -->
+  <div class="rg-hud" id="rg-hud" hidden>
+    <a class="rg-hud__back" href="index.html#objekte" aria-label="Solmund – Rundgang beenden">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span>Solmund</span>
+    </a>
+    <p class="rg-room" id="rg-room" aria-live="polite"></p>
+    <nav class="rg-rooms" id="rg-rooms" aria-label="Zu einem Raum gehen"></nav>
+    <button class="rg-plan-btn" id="rg-plan-btn" type="button" aria-expanded="true" aria-controls="rg-plan">Grundriss</button>
+    <div class="rg-plan" id="rg-plan"><svg id="rg-plan-svg" viewBox="-0.8 -2.8 17.6 13.8" role="img" aria-label="Grundriss mit Ihrem Standort"></svg></div>
+    <div class="rg-stick" id="rg-stick" aria-hidden="true"><span class="rg-stick__knob"></span></div>
+  </div>
+
+  <!-- Pause -->
+  <div class="rg-pause" id="rg-pause" role="dialog" aria-modal="true" aria-label="Pause" hidden>
+    <div class="rg-pause__inner">
+      <p class="rg-kicker">Pause</p>
+      <button class="sm-btn sm-btn--light" id="rg-weiter" type="button">Weiter umsehen</button>
+      <a class="rg-pause__link" href="index.html#kontakt">Besichtigung vor Ort anfragen</a>
+    </div>
+  </div>
+
+  <noscript><p class="rg-noscript">Der 3D-Rundgang braucht JavaScript und WebGL.</p></noscript>
+  <script type="module" src="rundgang-seite.js"></script>
+</body>
+</html>

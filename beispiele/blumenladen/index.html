@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Blütenkontor – Blumen in Ottensen (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: ein erfundener Blumenladen mit Sträußen der Woche und einem Strauß-Konfigurator in 3D.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#fbf8f3">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/fraunces-latin-full.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="blumen.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../../assets/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="bk">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Blütenkontor ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="bk-nav" id="nav">
+    <a class="bk-logo" href="#top" aria-label="Blütenkontor – zum Seitenanfang">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+          <path d="M16 29V14"/>
+          <path d="M16 20c-4-1-6.5-3.5-7-7 3.5.2 6.2 2.5 7 7z"/>
+          <path d="M16 14c-3.2-1.6-4.2-5-2.6-8.6C16.5 7 17.6 10.5 16 14z"/>
+          <path d="M16 14c3.2-1.6 4.2-5 2.6-8.6C15.5 7 14.4 10.5 16 14z"/>
+        </g>
+      </svg>
+      <span>Blütenkontor</span>
+    </a>
+    <nav class="bk-nav__links" aria-label="Hauptnavigation">
+      <a href="#woche">Sträuße</a>
+      <a href="#binden">Strauß binden</a>
+      <a href="#besuch">Besuch</a>
+    </nav>
+    <a class="bk-btn bk-btn--small" href="#binden">Strauß binden</a>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Hero -->
+    <section class="bk-hero" id="top" aria-labelledby="hero-title">
+      <div class="bk-hero__media">
+        <picture>
+          <source media="(max-width: 700px)" srcset="../../assets/img/blumen/hero-schaufenster-mobil.webp" width="800" height="1000">
+          <img src="../../assets/img/blumen/hero-schaufenster.webp" width="1800" height="1174" alt="Schaufenster mit Eimern voller Rosen, Ranunkeln und Hortensien" fetchpriority="high">
+        </picture>
+      </div>
+      <div class="bk-hero__text">
+        <p class="bk-eyebrow" data-hero>Blumen · Ottensen</p>
+        <h1 class="bk-hero__title" id="hero-title" data-hero>Frisch gebunden,<br><em>mitten in Ottensen.</em></h1>
+        <p class="bk-hero__lead" data-hero>Saisonale Blumen, Sträuße mit Haltung und Ihr eigener Strauß: live zusammengestellt, mit Preis auf den Cent.</p>
+        <div class="bk-hero__cta" data-hero>
+          <a class="bk-btn" href="#binden">Strauß binden</a>
+          <a class="bk-btn bk-btn--light" href="#woche">Sträuße der Woche</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="bk-ticker" aria-label="Diese Woche frisch">
+      <div class="bk-ticker__track" id="ticker">
+        <span>Diese Woche frisch</span><span>Dahlien aus dem Umland</span><span>Eukalyptus</span><span>Rosen aus den Vierlanden</span><span>Schleierkraut</span><span>Lavendel</span><span>Ranunkeln</span>
+      </div>
+    </div>
+
+    <!-- Sträuße der Woche -->
+    <section class="bk-week" id="woche" aria-labelledby="woche-title">
+      <header class="bk-head" data-reveal>
+        <p class="bk-eyebrow">Sträuße der Woche</p>
+        <h2 class="bk-h2" id="woche-title">Gebunden heute früh. <em>Abholbereit ab 9 Uhr.</em></h2>
+      </header>
+      <ul class="bk-week__grid" id="week"></ul>
+    </section>
+
+    <!-- Konfigurator -->
+    <section class="bk-config" id="binden" aria-labelledby="binden-title">
+      <header class="bk-head bk-head--center" data-reveal>
+        <p class="bk-eyebrow">Strauß-Konfigurator</p>
+        <h2 class="bk-h2" id="binden-title">Binden Sie <em>Ihren Strauß.</em></h2>
+        <p class="bk-lead">Blumen wählen, Farbe aussuchen, Papier und Band dazu. Der Strauß entsteht live, der Preis rechnet mit.</p>
+      </header>
+
+      <div class="bk-config__grid">
+        <div class="bk-config__stage" id="cfg-stage-wrap">
+          <div class="bk-config__canvas" id="cfg-stage" aria-label="Ihr Strauß in 3D. Ziehen zum Drehen."></div>
+          <div class="bk-config__flat" id="cfg-flat" aria-hidden="true"></div>
+          <p class="bk-config__count"><span id="cfg-count">13</span> Stiele</p>
+          <p class="bk-config__hint" id="cfg-hint">Ziehen zum Drehen</p>
+          <button type="button" class="bk-config__load" id="cfg-load3d" hidden>In 3D ansehen</button>
+        </div>
+
+        <div class="bk-config__panel">
+          <fieldset class="bk-group">
+            <legend><span>1</span> Blumen</legend>
+            <ul class="bk-flowers" id="cfg-flowers"></ul>
+          </fieldset>
+
+          <fieldset class="bk-group">
+            <legend><span>2</span> Papier &amp; Band</legend>
+            <p class="bk-sub">Papier</p>
+            <div class="bk-options" role="radiogroup" aria-label="Papier" id="cfg-paper"></div>
+            <p class="bk-sub">Band</p>
+            <div class="bk-options bk-options--dots" role="radiogroup" aria-label="Band" id="cfg-ribbon"></div>
+          </fieldset>
+
+          <fieldset class="bk-group">
+            <legend><span>3</span> Extras</legend>
+            <label class="bk-switch"><input type="checkbox" id="cfg-card"><span class="bk-switch__ui"></span><span>Grußkarte, handgeschrieben <small>+ 2,50 €</small></span></label>
+            <div class="bk-options" role="radiogroup" aria-label="Abholung oder Lieferung" id="cfg-delivery"></div>
+          </fieldset>
+
+          <div class="bk-summary" id="cfg-summary">
+            <div class="bk-summary__total">
+              <span>Ihr Strauß</span>
+              <strong id="cfg-total">0,00 €</strong>
+            </div>
+            <ul class="bk-summary__lines" id="cfg-lines"></ul>
+            <button type="button" class="bk-btn bk-btn--block" id="cfg-order">Strauß reservieren</button>
+            <p class="bk-summary__note">Inkl. MwSt. Bezahlung bei Abholung.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Handwerk -->
+    <section class="bk-craft" aria-labelledby="craft-title">
+      <figure class="bk-craft__img bk-craft__img--a" data-reveal>
+        <img src="../../assets/img/blumen/handwerk-binden.webp" width="1000" height="1250" loading="lazy" alt="Hände binden einen kleinen Strauß mit Alstroemerien und Nelken">
+      </figure>
+      <div class="bk-craft__text" data-reveal>
+        <p class="bk-eyebrow">Unser Handwerk</p>
+        <h2 class="bk-h2" id="craft-title">Jeder Strauß <em>ein Unikat.</em></h2>
+        <p class="bk-lead">Wir kaufen morgens auf dem Großmarkt und bei kleinen Gärtnereien im Umland ein. Gebunden wird von Hand, verpackt ohne Plastik.</p>
+        <ul class="bk-values">
+          <li><strong>Saisonal</strong>Was gerade blüht, kommt in den Strauß.</li>
+          <li><strong>Regional</strong>Wo es geht, aus den Vier- und Marschlanden.</li>
+          <li><strong>Plastikfrei</strong>Papier, Baumwollband, sonst nichts.</li>
+        </ul>
+      </div>
+      <figure class="bk-craft__img bk-craft__img--b" data-reveal>
+        <img src="../../assets/img/blumen/handwerk-pfingstrosen.webp" width="1400" height="933" loading="lazy" alt="Rosa Pfingstrosen mit Eukalyptus in Nahaufnahme">
+      </figure>
+    </section>
+
+    <!-- Besuch -->
+    <section class="bk-visit" id="besuch" aria-labelledby="besuch-title">
+      <div data-reveal>
+        <p class="bk-eyebrow">Besuch</p>
+        <h2 class="bk-h2" id="besuch-title">Kommen Sie <em>vorbei.</em></h2>
+      </div>
+      <dl class="bk-facts" data-reveal>
+        <div><dt>Adresse</dt><dd>Ottensener Hauptstraße<br>22765 Hamburg</dd></div>
+        <div><dt>Öffnungszeiten</dt><dd>Mo–Fr 9–19 Uhr<br>Sa 8–16 Uhr</dd></div>
+        <div><dt>Lieferung</dt><dd>In ganz Hamburg, bestellt bis 12 Uhr, geliefert am selben Tag</dd></div>
+        <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bk-footer">
+    <p class="bk-logo bk-logo--small"><span>Blütenkontor</span></p>
+    <p>Ein erfundenes Geschäft, gestaltet und programmiert von <a href="../../index.html">Studio Elbquartier</a>. Der Strauß-Konfigurator nutzt 3D-Scans echter Blüten (CC BY 4.0, Urheber siehe Bildnachweise). Fotos: Unsplash.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#blumenladen">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <!-- Bestellen (Demo) -->
+  <dialog class="bk-dialog" id="order" aria-labelledby="order-title">
+    <form method="dialog" class="bk-dialog__inner" id="order-form">
+      <header>
+        <p class="bk-eyebrow">Reservierung</p>
+        <h2 class="bk-h3" id="order-title">Ihr Strauß</h2>
+      </header>
+      <ul class="bk-summary__lines" id="order-lines"></ul>
+      <p class="bk-dialog__total"><span>Gesamt</span><strong id="order-total"></strong></p>
+      <label class="bk-field"><span>Name</span><input name="name" autocomplete="name" required></label>
+      <label class="bk-field"><span>Abholen am</span><input name="tag" type="date" required></label>
+      <div class="bk-dialog__actions">
+        <button type="button" class="bk-btn bk-btn--light" id="order-cancel">Zurück</button>
+        <button type="submit" class="bk-btn" id="order-submit" value="ok">Reservieren</button>
+      </div>
+      <p class="bk-dialog__note" id="order-status">Beispiel-Formular: Es wird nichts gesendet.</p>
+    </form>
+  </dialog>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="blumen.js"></script>
+</body>
+</html>

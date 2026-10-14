@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FUNKL Energy – drei Sorten, null Zucker (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: ein erfundener Energy-Drink mit drei Sorten, Motion Graphics in Echtzeit und beschlagenen Dosen in 3D.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#ff2f7d">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/bricolage-grotesque-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="getraenke.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../../assets/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="fk" data-flavor="mango">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>FUNKL ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <header class="fk-nav" id="nav">
+    <a class="fk-nav__logo" href="#top" aria-label="FUNKL – zum Seitenanfang">FUNKL<span aria-hidden="true">✦</span></a>
+    <nav class="fk-nav__links" aria-label="Hauptnavigation">
+      <a href="#sorten">Sorten</a>
+      <a href="#shop">Shop</a>
+      <a href="#info">Was drin ist</a>
+    </nav>
+    <button class="fk-cart-btn" id="cart-open" type="button" aria-label="Warenkorb öffnen, 0 Artikel">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z M9 7V6a3 3 0 0 1 6 0v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <span class="fk-cart-btn__count" id="cart-count">0</span>
+    </button>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Intro: Motion Graphics in Echtzeit -->
+    <section class="fk-hero" id="top" aria-labelledby="hero-title">
+      <picture>
+        <source media="(max-aspect-ratio: 4/5)" srcset="../../assets/img/funkl/hero-hoch.webp">
+        <img class="fk-hero__poster" id="hero-poster" src="../../assets/img/funkl/hero.webp" width="1600" height="1000" alt="" aria-hidden="true">
+      </picture>
+      <div class="fk-hero__canvas" id="hero-canvas" aria-hidden="true"></div>
+
+      <h1 class="fk-logo" id="hero-title">
+        <span class="visually-hidden">FUNKL Energy</span>
+        <svg viewBox="-24 -36 500 160" aria-hidden="true" id="logo">
+          <g class="fk-logo__shadow" transform="translate(9 11)"></g>
+          <g class="fk-logo__main">
+            <!-- F -->
+            <path class="fk-piece" d="M14 14 V86"/><path class="fk-piece" d="M14 14 H60"/><path class="fk-piece" d="M14 50 H50"/>
+            <!-- U -->
+            <path class="fk-piece" d="M94 14 V56"/><path class="fk-piece" d="M94 56 A27 27 0 0 0 148 56"/><path class="fk-piece" d="M148 56 V14"/>
+            <!-- N -->
+            <path class="fk-piece" d="M186 86 V14"/><path class="fk-piece" d="M186 14 L238 86"/><path class="fk-piece" d="M238 86 V14"/>
+            <!-- K -->
+            <path class="fk-piece" d="M276 14 V86"/><path class="fk-piece" d="M322 14 L284 52"/><path class="fk-piece" d="M294 44 L324 86"/>
+            <!-- L -->
+            <path class="fk-piece" d="M362 14 V86"/><path class="fk-piece" d="M362 86 H406"/>
+            <!-- Funke -->
+            <path class="fk-spark" d="M440 -14 L446 2 L462 8 L446 14 L440 30 L434 14 L418 8 L434 2 Z"/>
+          </g>
+        </svg>
+      </h1>
+
+      <div class="fk-hero__foot">
+        <div class="fk-hero__left">
+          <div class="fk-hero__flavor" aria-hidden="true">
+            <span class="fk-hero__dot"></span>
+            <span id="hero-flavor">Mango Maracuja</span>
+            <small id="hero-tag">Sonne in der Dose</small>
+          </div>
+          <p class="fk-hero__claim" data-intro>Energy mit <em>null</em> Zucker. Drei Sorten, drei Farben, null Langeweile.</p>
+        </div>
+        <div class="fk-hero__actions" data-intro>
+          <a class="fk-btn fk-btn--light" href="#shop">Jetzt probieren</a>
+          <a class="fk-btn fk-btn--ghost" href="#sorten">Sorten entdecken</a>
+        </div>
+      </div>
+      <button class="fk-hero__motion" id="motion-toggle" type="button" aria-pressed="false" aria-label="Animation anhalten">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M9 7l8 5-8 5z" fill="currentColor"/></svg>
+      </button>
+    </section>
+
+    <!-- Laufband -->
+    <div class="fk-ticker" aria-hidden="true">
+      <div class="fk-ticker__track" id="ticker">
+        <span>Zero Zucker</span><i>✦</i><span>80 mg Koffein</span><i>✦</i><span>3 kcal pro Dose</span><i>✦</i><span>Vegan</span><i>✦</i><span>Eiskalt am besten</span><i>✦</i><span>Made in Hamburg</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- Sorten -->
+    <section class="fk-flavors" id="sorten" aria-labelledby="sorten-title">
+      <h2 class="visually-hidden" id="sorten-title">Die drei Sorten</h2>
+      <div class="fk-flavors__stage" id="stage">
+        <img class="fk-flavors__poster" id="stage-poster" src="../../assets/img/funkl/dose-mango.webp" width="900" height="1200" alt="" aria-hidden="true">
+        <div class="fk-flavors__canvas" id="stage-canvas" aria-label="FUNKL-Dose in 3D, beschlagen. Zum Drehen waagerecht ziehen."></div>
+        <p class="fk-flavors__hint" id="wipe-hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l3-3M4 12l3 3M20 12l-3-3M20 12l-3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Zum Drehen ziehen</span>
+        </p>
+      </div>
+      <div class="fk-flavors__panels" id="panels"></div>
+    </section>
+
+    <!-- Angeber-Band -->
+    <section class="fk-cold" aria-labelledby="cold-title">
+      <p class="fk-eyebrow">4 °C trifft 24 °C</p>
+      <h2 class="fk-h2" id="cold-title">Jede Perle ist <em>echt berechnet.</em></h2>
+      <p class="fk-lead">Wenn die kalte Dose auf warme Luft trifft, beschlägt sie: erst ein feiner Nebel, dann Tropfen, die langsam wachsen, ineinanderlaufen und schließlich als Spur nach unten rinnen. Genau das passiert oben in Echtzeit, im Browser, auf jedem Gerät.</p>
+    </section>
+
+    <!-- Shop -->
+    <section class="fk-shop" id="shop" aria-labelledby="shop-title">
+      <div class="fk-shop__head">
+        <p class="fk-eyebrow">Shop</p>
+        <h2 class="fk-h2" id="shop-title">Pack dir <em>Funken</em> ein.</h2>
+        <p class="fk-lead">Versandkostenfrei ab 24 Dosen. Lieferung in 1–2 Werktagen, gut gekühlt verpackt.</p>
+      </div>
+      <ul class="fk-products" id="products"></ul>
+    </section>
+
+    <!-- Info -->
+    <section class="fk-info" id="info" aria-labelledby="info-title">
+      <div class="fk-info__text">
+        <p class="fk-eyebrow">Was drin ist</p>
+        <h2 class="fk-h2" id="info-title">Wenig drin, <em>viel drauf.</em></h2>
+        <p class="fk-lead">Ohne Zucker, ohne Farbstoffe, vegan. Gesüßt mit Sucralose, gefärbt nur von der Dose.</p>
+        <p class="fk-info__ingredients"><strong>Zutaten:</strong> Wasser, Kohlensäure, Säuerungsmittel Citronensäure, natürliches Aroma, Taurin (0,4 %), Koffein (0,032 %), Säureregulator Natriumcitrate, Süßungsmittel Sucralose, Vitamine (Niacin, B6, B12). Mit Süßungsmittel. Kühl genießen. Hersteller (erfunden): FUNKL Getränke, Hamburg.</p>
+        <p class="fk-info__warn">Erhöhter Koffeingehalt (32 mg/100 ml). Für Kinder und schwangere oder stillende Frauen nicht empfohlen. Nicht mehr als zwei Dosen pro Tag.</p>
+      </div>
+      <table class="fk-table">
+        <caption>Nährwerte pro 100 ml</caption>
+        <tbody>
+          <tr><th scope="row">Energie</th><td>5 kJ / 1 kcal</td></tr>
+          <tr><th scope="row">Fett</th><td>0 g</td></tr>
+          <tr><th scope="row">Kohlenhydrate</th><td>0,3 g</td></tr>
+          <tr><th scope="row">davon Zucker</th><td>0 g</td></tr>
+          <tr><th scope="row">Eiweiß</th><td>0 g</td></tr>
+          <tr><th scope="row">Salz</th><td>0,05 g</td></tr>
+          <tr><th scope="row">Koffein</th><td>32 mg</td></tr>
+          <tr><th scope="row">Taurin</th><td>400 mg</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="fk-footer">
+    <p class="fk-nav__logo">FUNKL<span aria-hidden="true">✦</span></p>
+    <p>Eine erfundene Marke. Motion Graphics, Dosen und Kondenswasser sind Echtzeit-3D, gestaltet und programmiert von <a href="../../index.html">Studio Elbquartier</a>.</p>
+    <p class="fk-footer__small">Alle Preise inkl. MwSt., zzgl. 0,25 € Pfand je Einwegdose, Versand 4,90 € (gratis ab 24 Dosen). Beispiel-Shop: Es wird nichts verkauft.</p>
+    <p class="fk-footer__small">Im echten Shop stehen hier zusätzlich AGB und Widerrufsbelehrung. Für diese Beispielseite gelten Impressum und Datenschutzerklärung von Studio Elbquartier.</p>
+    <p class="fk-footer__small">3D-Früchte (CC BY 4.0, für das Web verkleinert): „<a href="https://sketchfab.com/3d-models/mango-e5fd174d7a2e4ac894e3e69a4550d1e2" rel="noopener">Mango</a>“ von Meerschaum Digital (nach „Small Mango #2“ von mjkzz), „<a href="https://sketchfab.com/3d-models/mango-slice-without-pit-3d-fruit-scan-1a8acf811bbe4b05bb32c55a8528b286" rel="noopener">Mango Slice Without Pit</a>“, „<a href="https://sketchfab.com/3d-models/mango-slice-with-pit-3d-fruit-scan-103e066a3c9545e4b3bfd2f176b38f52" rel="noopener">Mango Slice With Pit</a>“ und „<a href="https://sketchfab.com/3d-models/lime-slice-3d-scan-9a1c7a00013745ab8b79be940e77f824" rel="noopener">Lime Slice 3D Scan</a>“ von Arkify 3D, „<a href="https://sketchfab.com/3d-models/slice-of-watermelon-9cd77994e4ae48c084698000133c8a76" rel="noopener">slice of watermelon</a>“ von sv1nks, „<a href="https://sketchfab.com/3d-models/gourmet-blueberry-62f6c6368c484dd6a85a2a162133d2e0" rel="noopener">Gourmet Blueberry</a>“ von inciprocal, „<a href="https://sketchfab.com/3d-models/yuzu-japanese-orange-polycam-fb57d2cf33af44349e11161069ae222c" rel="noopener">Yuzu (Japanese) Orange</a>“ von rocknrodent; Limette und Zitrone von Poly Haven (CC0). Studiolicht: Poly Haven (CC0).</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#getraenke">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <!-- Warenkorb -->
+  <aside class="fk-drawer" id="drawer" aria-labelledby="drawer-title" hidden>
+    <div class="fk-drawer__panel">
+      <header class="fk-drawer__head">
+        <h2 id="drawer-title">Dein Warenkorb</h2>
+        <button type="button" class="fk-drawer__close" id="cart-close" aria-label="Warenkorb schließen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+      <ul class="fk-drawer__items" id="cart-items"></ul>
+      <p class="fk-drawer__empty" id="cart-empty">Noch leer. Zeit für einen Funken!</p>
+      <footer class="fk-drawer__foot">
+        <div class="fk-progress" id="cart-progress" hidden><span></span><b><i></i></b></div>
+        <p class="fk-drawer__small"><span>Zwischensumme</span><span id="cart-sum">0,00 €</span></p>
+        <p class="fk-drawer__small"><span>Pfand (Einweg)</span><span id="cart-deposit">0,00 €</span></p>
+        <p class="fk-drawer__small"><span>Versand (gratis ab 24 Dosen)</span><span id="cart-ship">gratis</span></p>
+        <p><span>Gesamt <small>inkl. MwSt.</small></span><strong id="cart-total">0,00 €</strong></p>
+        <button type="button" class="fk-btn fk-btn--dark" id="checkout">Zur Kasse</button>
+        <p class="fk-drawer__small" id="checkout-note" role="status" aria-live="polite"></p>
+      </footer>
+    </div>
+  </aside>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="getraenke.js"></script>
+</body>
+</html>

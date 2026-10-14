@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Bilder und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Datenschutz – Studio Elbquartier</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/page.css">
+</head>
+<body>
+  <header class="nav is-scrolled">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="index.html">← Studio Elbquartier</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container container--narrow">
+      <header class="page__head">
+        <p class="eyebrow">Rechtliches</p>
+        <h1 class="t-h1">Datenschutz&shy;erklärung</h1>
+        <p class="t-lead">Kurz gesagt: keine Cookies, kein Tracking, keine externen Dienste. Alle Schriften und Programmbibliotheken liegen auf unserem eigenen Server.</p>
+      </header>
+      <div class="prose">
+        <h2>1. Verantwortlicher</h2>
+        <p>Davide Bazzani, Studio Elbquartier<br>
+          Wandsbeker Chaussee 31a, 22089 Hamburg<br>
+          E-Mail: <a href="mailto:hallo@studio-elbquartier.de">hallo@studio-elbquartier.de</a><br>
+          Telefon: <a href="tel:+4917631685816">0176 31685816</a></p>
+
+        <h2>2. Hosting und Server-Logfiles</h2>
+        <p>Diese Website und unser E-Mail-Postfach liegen bei der netcup GmbH, Daimlerstraße 25, 76185 Karlsruhe (Server in Deutschland). Mit netcup besteht ein Vertrag zur Auftragsverarbeitung nach Art.&nbsp;28 DSGVO.</p>
+        <p>Beim Aufruf der Website verarbeitet der Server technisch notwendige Daten: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite bzw. Datei, übertragene Datenmenge, Referrer-URL, Browsertyp und Betriebssystem. Das ist nötig, um die Website auszuliefern und den sicheren, stabilen Betrieb zu gewährleisten (z.&nbsp;B. Abwehr von Angriffen). Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO; unser berechtigtes Interesse liegt in genau diesen Zwecken. Die Logfiles werden gelöscht, sobald sie dafür nicht mehr erforderlich sind, spätestens nach <span class="todo">[Tage laut netcup-Einstellung]</span> Tagen. Eine Zusammenführung mit anderen Daten findet nicht statt.</p>
+        <p>Die Verbindung zur Website ist per TLS (https) verschlüsselt.</p>
+
+        <h2>3. Keine Cookies, kein Tracking, keine externen Dienste</h2>
+        <p>Wir setzen keine Cookies und verwenden keine Analyse-, Tracking- oder Werbedienste. Schriften, Programmbibliotheken, Videos und 3D-Modelle liegen auf unserem eigenen Server; beim Besuch werden keine Daten an Dritte wie Google übertragen.</p>
+        <p>Einzige Ausnahme vom „nichts im Browser speichern“: Der Warenkorb der Beispielseite FUNKL merkt sich Ihre Auswahl im lokalen Speicher Ihres Browsers (localStorage, Eintrag „funkl-cart“), damit sie beim Neuladen erhalten bleibt. Die Daten verlassen Ihr Gerät nicht. Das ist für die von Ihnen gewünschte Funktion unbedingt erforderlich (§&nbsp;25 Abs.&nbsp;2 Nr.&nbsp;2 TDDDG). Sie können den Eintrag jederzeit über die Website-Daten Ihres Browsers löschen.</p>
+
+        <h2>4. Kontaktformular, E-Mail, Telefon</h2>
+        <p>Wenn Sie uns über das Formular, per E-Mail oder telefonisch kontaktieren, verarbeiten wir Ihre Angaben: Name, E-Mail-Adresse und Nachricht (Pflichtangaben, ohne sie können wir die Anfrage nicht beantworten) sowie freiwillig Laden oder Unternehmen, Telefonnummer, gewünschtes Paket und Gesprächsform. Die Nachricht aus dem Formular wird uns per E-Mail an hallo@studio-elbquartier.de zugestellt; sie wird nicht in einer Datenbank gespeichert.</p>
+        <p>Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO, wenn Ihre Anfrage auf einen Vertrag zielt, sonst Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (unser berechtigtes Interesse, Anfragen zu beantworten). Wir löschen Anfragen sechs Monate nach der letzten Nachricht, wenn daraus kein Auftrag wird. Kommt ein Auftrag zustande, bewahren wir geschäftliche Korrespondenz so lange auf, wie es das Handels- und Steuerrecht verlangt (sechs bzw. zehn Jahre, §&nbsp;257 HGB, §&nbsp;147 AO).</p>
+
+        <h2>5. WhatsApp</h2>
+        <p>Der WhatsApp-Link auf unserer Seite ist ein einfacher Link. Erst wenn Sie ihn anklicken, öffnet sich WhatsApp (WhatsApp Ireland Ltd., Merrion Road, Dublin 4, Irland) und erhält Ihre Telefonnummer und den vorausgefüllten Nachrichtentext. Dabei können Daten an Meta Platforms Inc. in den USA übermittelt werden; Meta ist nach dem EU-U.S. Data Privacy Framework zertifiziert. Wenn Sie uns per WhatsApp schreiben, verarbeiten wir Ihre Nachricht wie unter Punkt&nbsp;4 beschrieben. Es gelten außerdem die Datenschutzbestimmungen von WhatsApp. Wenn Sie das nicht möchten, erreichen Sie uns jederzeit per E-Mail oder Telefon.</p>
+
+        <h2>6. Beispiel-Websites und Live-Anprobe</h2>
+        <p>Die Formulare, Warenkörbe und Buchungen auf unseren Beispiel-Websites (Ordner „beispiele“) senden keine Daten; Eingaben bleiben in Ihrem Browser und sind nach dem Schließen weg.</p>
+        <p>Die Live-Anprobe der Beispiel-Seite Klarsund nutzt Ihre Kamera nur, wenn Sie die Anprobe starten und den Zugriff in Ihrem Browser erlauben. Die Gesichtserkennung (MediaPipe, auf unserem Server abgelegt) läuft vollständig auf Ihrem Gerät. Kamerabilder und Gesichtsmerkmale werden weder gespeichert noch an uns oder Dritte übertragen. Ein Foto entsteht nur, wenn Sie den Auslöser drücken, und bleibt auf Ihrem Gerät, bis Sie es selbst speichern oder teilen. Beim Schließen der Anprobe wird die Kamera beendet.</p>
+
+        <h2>7. Ihre Rechte</h2>
+        <p>Sie haben jederzeit das Recht auf Auskunft (Art.&nbsp;15 DSGVO), Berichtigung (Art.&nbsp;16), Löschung (Art.&nbsp;17), Einschränkung der Verarbeitung (Art.&nbsp;18) und Datenübertragbarkeit (Art.&nbsp;20). Eine Nachricht an hallo@studio-elbquartier.de genügt.</p>
+        <p><strong>Widerspruchsrecht (Art.&nbsp;21 DSGVO):</strong> Soweit wir Daten auf Grundlage unseres berechtigten Interesses verarbeiten (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO), können Sie dieser Verarbeitung aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen. Wir verarbeiten die Daten dann nicht mehr, es sei denn, es gibt zwingende schutzwürdige Gründe oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen.</p>
+        <p>Sie können sich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren (Art.&nbsp;77 DSGVO), zum Beispiel beim Hamburgischen Beauftragten für Datenschutz und Informationsfreiheit, Ludwig-Erhard-Straße 22, 20459 Hamburg.</p>
+        <p>Eine automatisierte Entscheidungsfindung oder Profilbildung findet nicht statt.</p>
+        <p class="t-small">Stand: Oktober 2026</p>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© 2026 Studio Elbquartier · Hamburg</p>
+      <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="lizenzen.html">Bildnachweise</a></nav>
+    </div>
+  </footer>
+</body>
+</html>
