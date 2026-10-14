@@ -12,12 +12,11 @@ rsync -a --delete --delete-excluded \
   --exclude 'tools/' --exclude 'Druckdaten/' --exclude 'Vorschau/' --exclude 'Upload/' \
   --exclude 'README.md' --exclude 'CREDITS.md' \
   --exclude 'assets/img/funkl-test/' --exclude 'assets/img/autohaus-test/' \
-  --exclude 'beispiele/autohaus/' --exclude 'assets/img/autohaus/' --exclude 'assets/models/autos/' --exclude 'assets/video/autohaus/' \
   ./ "$ZIEL/"
 # Kontrolle: nichts davon darf im Paket sein
-for x in tools Druckdaten Vorschau README.md CREDITS.md .gitignore .git beispiele/autohaus assets/models/autos assets/img/funkl-test; do
+for x in tools Druckdaten Vorschau README.md CREDITS.md .gitignore .git assets/img/funkl-test assets/img/autohaus-test; do
   if [ -e "$ZIEL/$x" ]; then echo "FEHLER: $x ist im Paket"; exit 1; fi
 done
 # Verweise der Seiten auf ausgeschlossene Dateien finden
-grep -rlE "autohaus/|funkl-test|elbe-morgen|elbe-abend|CREDITS\.md" "$ZIEL" --include='*.html' --include='*.css' | sed 's/^/Hinweis: Verweis in /' || true
+grep -rlE "funkl-test|autohaus-test|elbe-morgen|elbe-abend|intro-g\.mp4|porsche|ferrari|g63|CREDITS\.md" "$ZIEL" --include='*.html' --include='*.css' | sed 's/^/Hinweis: Verweis in /' || true
 echo "Paket fertig: $(du -sh "$ZIEL" | cut -f1), $(find "$ZIEL" -type f | wc -l | tr -d ' ') Dateien in $ZIEL/"

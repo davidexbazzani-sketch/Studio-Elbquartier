@@ -19,7 +19,7 @@ const log = (t) => { document.getElementById('log').textContent = t; };
 const t0 = performance.now();
 const sr = await createShowroom({ container: document.getElementById('s'), quality: q.get('q') || undefined, autoRotate: false });
 window.sr = sr;
-await sr.setCar(q.get('car') || 'porsche', { instant: true, paint: q.get('paint') || undefined });
+await sr.setCar(q.get('car') || ORDER[0], { instant: true, paint: q.get('paint') || undefined });
 if (q.get('view')) sr.setView(q.get('view'));
 sr.lightsOn();
 if (document.visibilityState === 'visible') await sr.whenRendered();
@@ -31,7 +31,7 @@ for (const v of ['schraeg', 'front', 'seite', 'heck', 'oben']) btn(v, () => sr.s
 window.__ready = true;
 // ?bake : Ersatz- und Kartenbilder nach assets/img/autohaus/ (Bühne 1600×1000, Karten 1200×1020)
 if (q.has('bake')) {
-  for (const c of ['porsche', 'ferrari', 'g63']) {
+  for (const c of ORDER) {
     await sr.setCar(c, { instant: true });
     for (const [name, w, h] of [[c, 1600, 1000], ['karte-' + c, 1200, 1020]]) {
       const url = sr.snapshot({ width: w, height: h, view: 'schraeg', type: 'image/webp', quality: 0.86 });

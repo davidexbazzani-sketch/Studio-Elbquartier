@@ -80,15 +80,15 @@ Licht und Spiegelungen der FUNKL-Dosen kommen aus dem Studio-HDRI `assets/hdri/s
 
 ### 3D-Automodelle (Autohaus)
 
-Alle drei stehen unter [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (Namensnennung nötig, gewerbliche Nutzung erlaubt). Am 10. Oktober 2026 über ein Sketchfab-Konto heruntergeladen (GLB), mit glTF-Transform verkleinert (Texturen WebP, Geometrie mit Meshopt komprimiert) und neu materialisiert/lackiert. Die Namensnennung steht auch im Seitenfuß des Autohauses. Originale in `tools/models/autos-quelle/` (nicht hochladen).
+Seit 14. Oktober 2026 zeigt das Autohaus nur noch **markenlose Fahrzeuge**: eigene Entwürfe des Urhebers, keine Nachbildungen echter Modelle, keine Logos. Alle unter [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (Namensnennung, gewerbliche Nutzung erlaubt), über das Sketchfab-Konto des Teams geladen, mit glTF-Transform verkleinert und im Showroom neu materialisiert/lackiert. Die Namensnennung steht im Seitenfuß des Autohauses und in `lizenzen.html`. Originale in `tools/models/quelle/` (nicht hochladen).
 
-| Datei (`assets/models/autos/`) | Modell | Urheber | Quelle |
-|---|---|---|---|
-| `porsche-911.glb` | FREE 1975 Porsche 911 (930) Turbo | Lionsharp Studios (Karol Miklas) | [sketchfab.com/3d-models/…8568d9d1](https://sketchfab.com/3d-models/free-1975-porsche-911-930-turbo-8568d9d14a994b9cae59499f0dbed21e) |
-| `ferrari-roma.glb` | 2020 Ferrari Roma | Ddiaz Design | [sketchfab.com/3d-models/…cbc0c13c](https://sketchfab.com/3d-models/2020-ferrari-roma-cbc0c13c0fb54fc8bbfa79a9ff99e3aa) |
-| `g63.glb` | Mersedes-Benz G63 AMG | Black Snow | [sketchfab.com/3d-models/…e5e2a1d2](https://sketchfab.com/3d-models/mersedes-benz-g63-amg-e5e2a1d2238048a1a494b3df983c16bb) |
+| Datei (`assets/models/autos/`) | Im Showroom | Modell | Urheber | Quelle |
+|---|---|---|---|---|
+| `gt-coupe.glb` | GT Coupé | Generic Sport Coupé Car | MMC Works | [Sketchfab](https://sketchfab.com/3d-models/generic-sport-coupe-car-820a13c4831c41959ce75e6c2014e882) |
+| `limousine.glb` | Limousine | Generic Sedan Car | MMC Works | [Sketchfab](https://sketchfab.com/3d-models/generic-sedan-car-58c33766470d46e7b2aed542650494e5) |
+| `suv.glb` | SUV | MMC Generic Small SUV Car | MMC Works | [Sketchfab](https://sketchfab.com/3d-models/mmc-generic-small-suv-car-5db696c6ed5d4bdc87905c1040fa072a) |
 
-**Stand 13.10.2026: Das Autohaus ist nicht veröffentlicht** (auf der Startseite ausgeblendet, nicht im Upload-Paket und nicht im GitHub-Repository). Die CC-Lizenz deckt nur die Arbeit der Modellierer, nicht Design und Marken der Hersteller, und die Herkunft zweier Modelle ist nicht eindeutig belegt. Vor einer Veröffentlichung werden die Fahrzeuge durch markenfreie Modelle mit eindeutiger Lizenz ersetzt.
+Die früheren Modelle (Porsche 911, Ferrari Roma, Mercedes G63) und der Intro-Film mit einer G-Klasse sind nicht mehr auf der Website: Hersteller-Designs und -Marken sind durch die CC-Lizenz nicht gedeckt, und die Herkunft zweier Modelle war nicht eindeutig belegt. Sie liegen nur noch in `tools/models/autos-quelle/marken/` und `tools/archiv/autohaus-alt/` (nicht hochladen, nicht im GitHub-Repository).
 
 ## Fotos & Videos
 
@@ -160,11 +160,11 @@ Die Filme der sechs Bar-Drinks stammen ebenfalls von Pexels (gleiche Lizenz, am 
 
 Die Standbilder in `assets/img/bar/drinks/` sind Einzelbilder aus diesen Filmen.
 
-Der Intro-Film des Autohauses stammt ebenfalls von Pexels (gleiche Lizenz, am 10. Oktober 2026 heruntergeladen und geprüft). Er wurde auf 10 Sekunden gekürzt, in Schwarz-Weiß umgewandelt und das Kennzeichen in jedem Bild weichgezeichnet (`tools/video/cut.swift --mono --blur tools/video/intro-g-kennzeichen.txt`). Keine Personen im Bild; die Marke Mercedes-Benz ist am Fahrzeug erkennbar.
+Der Intro-Film des Autohauses stammt ebenfalls von Pexels (gleiche Lizenz, am 14. Oktober 2026 heruntergeladen und geprüft): eine nächtliche Fahrt durch einen Tunnel, ohne erkennbare Fahrzeuge, Marken oder Personen. Auf 10 Sekunden gekürzt und in Schwarz-Weiß umgewandelt (`tools/video/cut.swift --mono`).
 
 | Datei | Motiv | Filmer/in | Quelle |
 |---|---|---|---|
-| `assets/video/autohaus/intro-g.mp4`, Standbild `assets/img/autohaus/intro-poster.jpg` | Schwarze G-Klasse fährt auf die Kamera zu und vorbei | Harrun Muhammad | [pexels.com/video/36515300](https://www.pexels.com/video/36515300/) |
+| `assets/video/autohaus/intro-tunnel.mp4`, Standbild `assets/img/autohaus/intro-poster.jpg` | Nachtfahrt durch einen beleuchteten Tunnel | 정규송 Nui MALAMA | [pexels.com/video/33938671](https://www.pexels.com/video/33938671/) |
 
 | Datei (`assets/img/boutique/`) | Motiv | Fotograf/in | Quelle |
 |---|---|---|---|

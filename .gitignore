@@ -22,8 +22,5 @@ Vorschau/
 assets/img/funkl-test/
 assets/img/autohaus-test/
 
-# Autohaus: nicht veröffentlicht (Rechte an Fahrzeugmodellen und Marken ungeklärt)
-beispiele/autohaus/
-assets/models/autos/
-assets/img/autohaus/
-assets/video/autohaus/
+# Frühere Autohaus-Fassung mit Hersteller-Marken (nicht veröffentlichen)
+tools/archiv/autohaus-alt/

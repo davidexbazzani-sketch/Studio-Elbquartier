@@ -58,8 +58,6 @@ const ALLE = [
   },
   {
     id: 'autohaus',
-    // vorerst nicht veröffentlicht: Automodelle mit Hersteller-Marken, zwei vermutlich aus Spielen (siehe README „Rechte“)
-    aus: true,
     type: 'Autohaus',
     name: 'Halden Automobile',
     district: 'HafenCity',

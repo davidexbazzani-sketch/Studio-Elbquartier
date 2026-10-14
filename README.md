@@ -27,7 +27,7 @@ Tipps zum Testen:
 | `assets/js/` | Startseite, Drehscheibe, gemeinsame Helfer (`capability.js` entscheidet, ob 3D läuft) |
 | `assets/js/3d/` | 3D: Autohaus-Showroom (`showroom.js`, `cars.js`), Bühne (`stage.js`), Schmuck (`brilliant.js`, `diamond-material.js`, `jewelry.js`, `viewer.js`), Blumen (`flowers.js`, `bouquet.js`), Boutique (`cloth.js`) |
 | `assets/video/cafe/`, `assets/video/bar/` | Kurze Filme der vier Café-Getränke und der sechs Bar-Drinks (H.264, 720 × 900), Standbilder dazu in `assets/img/cafe/getraenke/` und `assets/img/bar/drinks/` |
-| `beispiele/<laden>/` | Die Muster-Websites: Juwelier, Blumenladen, Restaurant, Bar, Café, Boutique, Getränke-Shop (FUNKL), Immobilienmakler (Solmund), Optiker (Klarsund); das Autohaus ist vorerst nicht veröffentlicht |
+| `beispiele/<laden>/` | Die Muster-Websites: Juwelier, Blumenladen, Restaurant, Bar, Café, Boutique, Getränke-Shop (FUNKL), Immobilienmakler (Solmund), Optiker (Klarsund), Autohaus (Halden Automobile) |
 | `assets/wohnung/`, `assets/video/immobilien/`, `assets/img/immobilien/` | Solmund: begehbare 3D-Wohnung (GLB mit Lightmaps, Raum-Panoramen, Himmel, Gegenufer, Begehbarkeits-Maske), Intro-Filme und Objektfotos; Rundgang-Code in `assets/js/3d/rundgang.js` |
 | `assets/models/autos/`, `assets/video/autohaus/` | Autohaus: drei 3D-Automodelle (GLB, Meshopt-komprimiert) und der Intro-Film (900 × 1600, schwarz-weiß); Showroom-Code in `assets/js/3d/showroom.js` und `cars.js` |
 | `kontakt.php` | Mailversand des Kontaktformulars an hallo@studio-elbquartier.de (das Postfach muss bei netcup angelegt sein) |
@@ -96,7 +96,7 @@ Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenk
 
 Am einfachsten auf dem Mac: `tools/paket.sh` ausführen. Das Skript legt in `Upload/` genau die Dateien ab, die auf den Server gehören, und prüft, dass nichts Internes dabei ist. Den **Inhalt** von `Upload/` per FTP oder netcup-Dateimanager in das Web-Verzeichnis der Domain laden.
 
-Ohne das Skript (z. B. unter Windows): alles hochladen **außer** `tools/`, `Druckdaten/`, `Vorschau/`, `Upload/`, `.git/`, `.gitignore`, `.claude/`, `README.md`, `CREDITS.md`, `assets/img/funkl-test/` und dem Autohaus (`beispiele/autohaus/`, `assets/models/autos/`, `assets/img/autohaus/`, `assets/video/autohaus/`).
+Ohne das Skript (z. B. unter Windows): alles hochladen **außer** `tools/`, `Druckdaten/`, `Vorschau/`, `Upload/`, `.git/`, `.gitignore`, `.claude/`, `README.md`, `CREDITS.md`, `assets/img/funkl-test/` und `assets/img/autohaus-test/`.
 
 PHP 8.1 oder neuer wird für `kontakt.php` benötigt. Vor dem Livegang im netcup-Kundenbereich: SSL-Zertifikat aktivieren, Auftragsverarbeitungsvertrag abschließen, Speicherdauer der Logfiles in `datenschutz.html` eintragen, Kontaktformular einmal testen.
 
@@ -113,9 +113,10 @@ Nur auf dem Mac mit allen Arbeitsdateien möglich: den 3D-Rundgang neu berechnen
 
 ## Autohaus: Modelle und Bilder
 
-- Die Automodelle kommen aus `tools/models/autos-quelle/` und werden mit glTF-Transform verkleinert: erst `optimize … --compress false --simplify false --weld false --instance false --palette false --texture-compress webp`, dann `meshopt … --quantize-normal 12 --quantize-position 16`. Wichtig: nicht vereinfachen und die Normalen fein lassen, sonst spiegelt der Lack wellig.
+- Seit 14.10.2026 nur noch **markenlose** Fahrzeuge (GT Coupé, Limousine, SUV von MMC Works, CC BY 4.0). Die früheren Modelle mit Hersteller-Marken liegen nur noch in `tools/models/autos-quelle/marken/` und dürfen nicht veröffentlicht werden.
+- Neue Modelle: Quelle nach `tools/models/quelle/`, dann `npx @gltf-transform/cli optimize <quelle.glb> assets/models/autos/<name>.glb --compress meshopt --texture-compress webp --texture-size 2048 --simplify false --palette false --join false --instance false --flatten false`. Nicht vereinfachen, sonst spiegelt der Lack wellig.
 - Materialregeln je Auto (welches Material ist Lack, Glas, Chrom, Reifen …) stehen in `assets/js/3d/cars.js`.
-- Prüfen ohne sichtbares Browserfenster: `tools/autohaus-shots.sh "shots=porsche,ferrari,g63&views=schraeg,seite,heck&tag=x"` rendert Standbilder nach `assets/img/autohaus-test/` (Ordner nicht hochladen). `tools/autohaus-shots.sh "bake=1"` erneuert die Bühnen- und Kartenbilder in `assets/img/autohaus/`.
+- Prüfen ohne sichtbares Browserfenster: `tools/autohaus-shots.sh "shots=coupe,limousine,suv&views=schraeg,seite,heck&tag=x"` rendert Standbilder nach `assets/img/autohaus-test/` (Ordner nicht hochladen). `tools/autohaus-shots.sh "bake=1"` erneuert die Bühnen- und Kartenbilder in `assets/img/autohaus/`.
 
 ## FUNKL (Getränke-Shop)
 

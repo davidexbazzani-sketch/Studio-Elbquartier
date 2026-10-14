@@ -432,6 +432,10 @@ function refine(src, kind, paintMat) {
       Object.assign(m, { metalness: 1, roughness: 0.07, metalnessMap: null, roughnessMap: null, envMapIntensity: 1.6 });
       m.color.set('#e8e8e8');
       break;
+    case 'alloy': // Leichtmetallfelge ohne Vorlagen-Textur (deren Färbung passt nicht): helles, fein gebürstetes Aluminium
+      Object.assign(m, { metalness: 1, roughness: 0.22, map: null, metalnessMap: null, roughnessMap: null, transparent: false, opacity: 1, envMapIntensity: 1.8 });
+      m.color.set('#c3c6ca');
+      break;
     case 'satin':
       Object.assign(m, { metalness: 1, roughness: 0.32, transparent: false, opacity: 1, metalnessMap: null, roughnessMap: null });
       m.color.set('#5a5c5e');

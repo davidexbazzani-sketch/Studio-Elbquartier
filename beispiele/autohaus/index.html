@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Hinweis, falls die Seite als Datei statt über einen Webserver geöffnet wird
+    if (!/^https?:$/.test(location.protocol)) addEventListener('DOMContentLoaded', () => {
+      const n = document.createElement('div');
+      n.setAttribute('role', 'alert');
+      n.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:14px 18px;border-radius:14px;background:#1f1c18;color:#faf7f2;font:15px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+      n.innerHTML = 'Das ist nur eine Datei-Vorschau: Design, Filme und 3D fehlen hier. Bitte über den lokalen Server öffnen: <b>http://localhost:8765</b> (siehe README).';
+      document.body.prepend(n);
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Halden Automobile – Ausgewählte Fahrzeuge in der HafenCity (Beispiel-Website)</title>
+  <meta name="description" content="Beispiel-Website von Studio Elbquartier: ein erfundenes Autohaus für ausgewählte Sportwagen, Limousinen und SUV, mit 3D-Showroom zum Umrunden und Heranzoomen.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f2f2f0">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/img/autohaus/intro-poster.jpg" as="image">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="autohaus.css">
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../../assets/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="hd">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <p class="demo-bar">
+    <strong>Beispiel-Website</strong><span class="demo-bar__kurz">Alles erfunden.</span><span>Halden Automobile ist erfunden. Gestaltet von Studio Elbquartier.</span>
+    <a href="../../index.html#beispiele">Zur Übersicht</a>
+  </p>
+
+  <!-- Logo als Symbol, einmal definiert und mehrfach benutzt -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="hd-mark" viewBox="0 0 64 64">
+      <circle class="hd-mark__ring" cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <path class="hd-mark__h" d="M22 17v30M42 17v30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path class="hd-mark__road" d="M4.5 34.5C14 31 22 30.2 32 30.2S50 31 59.5 34.5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <header class="hd-nav" id="nav">
+    <a class="hd-logo" href="#top" aria-label="Halden Automobile – zum Seitenanfang">
+      <svg class="hd-logo__mark" aria-hidden="true"><use href="#hd-mark"/></svg>
+      <span class="hd-logo__text"><span class="hd-logo__name">Halden</span><span class="hd-logo__sub">Automobile</span></span>
+    </a>
+    <nav class="hd-nav__links" aria-label="Hauptnavigation">
+      <a href="#showroom">Showroom</a>
+      <a href="#sammlung">Fahrzeuge</a>
+      <a href="#service">Service</a>
+    </nav>
+    <a class="hd-nav__cta" href="#termin">Probefahrt</a>
+  </header>
+
+  <main id="inhalt">
+
+    <!-- Intro: Nachtfahrt durch einen Tunnel (Schwarz-Weiß) mit Logo-Animation -->
+    <section class="hd-intro" id="top" aria-labelledby="intro-title">
+      <div class="hd-intro__film" id="film">
+        <video id="intro-video" muted playsinline loop preload="auto" poster="../../assets/img/autohaus/intro-poster.jpg" aria-label="Schwarz-weißer Film: nächtliche Fahrt durch einen beleuchteten Tunnel">
+          <source src="../../assets/video/autohaus/intro-tunnel.mp4" type="video/mp4">
+        </video>
+        <div class="hd-intro__grain" aria-hidden="true"></div>
+      </div>
+
+      <div class="hd-intro__brand" id="brand">
+        <svg class="hd-intro__mark" viewBox="0 0 64 64" aria-hidden="true">
+          <circle class="hd-draw" cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="1.1" transform="rotate(-90 32 32)"/>
+          <path class="hd-draw" d="M22 17v30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path class="hd-draw" d="M42 17v30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path class="hd-draw" d="M4.5 34.5C14 31 22 30.2 32 30.2S50 31 59.5 34.5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+        <p class="hd-intro__word" aria-hidden="true"><span>H</span><span>A</span><span>L</span><span>D</span><span>E</span><span>N</span></p>
+        <span class="hd-intro__rule" aria-hidden="true"></span>
+        <p class="hd-intro__sub">Automobile · HafenCity</p>
+      </div>
+
+      <div class="hd-intro__text">
+        <p class="hd-eyebrow" data-intro>Seit 1987 · Hamburg</p>
+        <h1 class="hd-intro__title" id="intro-title" data-intro>Ausgewählte<br><em>Automobile.</em></h1>
+        <p class="hd-lead" data-intro>Sportwagen, Limousinen und SUV in außergewöhnlichem Zustand. Jedes Fahrzeug persönlich geprüft, jedes mit lückenloser Geschichte.</p>
+        <a class="hd-intro__cta" href="#showroom" data-intro>
+          <span>Showroom betreten</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <button class="hd-intro__sound" id="film-toggle" type="button" aria-label="Film anhalten" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M9 7l8 5-8 5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </section>
+
+    <!-- Showroom in 3D -->
+    <section class="hd-showroom" id="showroom" aria-labelledby="showroom-title">
+      <div class="hd-stage" id="stage">
+        <img class="hd-stage__poster" id="poster" src="../../assets/img/autohaus/coupe.webp" width="1600" height="1000" alt="GT Coupé in Graphit metallic im Showroom" loading="lazy">
+        <div class="hd-stage__canvas" id="stage-canvas" aria-label="Fahrzeug in 3D. Ziehen zum Umrunden, Doppelklick fährt an eine Stelle heran."></div>
+        <div class="hd-stage__veil" aria-hidden="true"></div>
+        <div class="hd-stage__progress" id="progress" aria-hidden="true"><span></span></div>
+
+        <div class="hd-stage__head">
+          <p class="hd-eyebrow"><span id="car-make">Halden Edition</span> · <span id="car-year">2024</span></p>
+          <h2 class="hd-stage__title" id="showroom-title"><span id="car-name">GT Coupé</span></h2>
+          <p class="hd-stage__type" id="car-type">Coupé · 2+2</p>
+        </div>
+
+        <div class="hd-stage__price">
+          <p class="hd-eyebrow">Preis</p>
+          <p class="hd-stage__amount" id="car-price">164.900 €</p>
+          <a class="hd-stage__ask" href="#termin">Probefahrt anfragen</a>
+        </div>
+
+        <p class="hd-stage__hint" id="hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l3-3M4 12l3 3M20 12l-3-3M20 12l-3 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Seitlich wischen zum Umrunden · zwei Finger zum Zoomen</span>
+        </p>
+
+        <button class="hd-stage__load" id="load3d" type="button" hidden>
+          <span>Showroom in 3D öffnen</span><small id="load3d-why"></small>
+        </button>
+
+        <div class="hd-stage__foot">
+          <div class="hd-cars" role="radiogroup" aria-label="Fahrzeug wählen" id="cars"></div>
+          <div class="hd-controls">
+            <div class="hd-paints" role="radiogroup" aria-label="Lackfarbe wählen" id="paints"></div>
+            <p class="hd-paint-name" id="paint-name" aria-live="polite"></p>
+            <div class="hd-tools" id="tools" hidden>
+              <div class="hd-views" role="group" aria-label="Ansicht">
+                <button type="button" class="hd-tool hd-tool--text" data-view="front">Front</button>
+                <button type="button" class="hd-tool hd-tool--text" data-view="seite">Seite</button>
+                <button type="button" class="hd-tool hd-tool--text" data-view="heck">Heck</button>
+                <button type="button" class="hd-tool hd-tool--text" data-view="oben">Oben</button>
+              </div>
+              <div class="hd-tools__row">
+                <button type="button" class="hd-tool" data-act="zoom-out" aria-label="Verkleinern">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+                <button type="button" class="hd-tool" data-act="zoom-in" aria-label="Vergrößern">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+                <button type="button" class="hd-tool" data-act="spin" aria-label="Drehscheibe anhalten" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M9 7l8 5-8 5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" class="hd-tool" data-act="reset" aria-label="Ansicht zurücksetzen">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 4v4h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" class="hd-tool" data-act="full" aria-label="Vollbild" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="i-open"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="i-close"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hd-specs" aria-live="polite">
+        <p class="hd-specs__claim" id="car-claim">Der Urtyp. Luftgekühlt, mit Turbo und dem breitesten Heck seiner Zeit.</p>
+        <dl class="hd-specs__list" id="car-specs"></dl>
+      </div>
+    </section>
+
+    <!-- Haltung -->
+    <section class="hd-statement" aria-label="Über uns">
+      <p class="hd-statement__text" id="statement">
+        Wir verkaufen wenige Autos, dafür die richtigen. Jedes Fahrzeug in unserem Showroom haben wir selbst gefahren,
+        geprüft und mit seiner ganzen Geschichte dokumentiert. Damit Sie nur noch eines tun müssen: einsteigen.
+      </p>
+    </section>
+
+    <!-- Sammlung -->
+    <section class="hd-collection" id="sammlung" aria-labelledby="sammlung-title">
+      <div class="hd-collection__head" data-reveal>
+        <p class="hd-eyebrow">Aktuell im Showroom</p>
+        <h2 class="hd-h2" id="sammlung-title">Drei Fahrzeuge, <em>drei Charaktere.</em></h2>
+      </div>
+      <ul class="hd-cards" id="cards"></ul>
+    </section>
+
+    <!-- Service -->
+    <section class="hd-service" id="service" aria-labelledby="service-title">
+      <div class="hd-service__head" data-reveal>
+        <p class="hd-eyebrow">Service</p>
+        <h2 class="hd-h2" id="service-title">Alles aus <em>einer Hand.</em></h2>
+      </div>
+      <ol class="hd-service__list">
+        <li data-reveal><span>01</span><h3>Probefahrt bei Ihnen</h3><p>Wir bringen das Fahrzeug zu Ihnen nach Hause oder ins Büro, in ganz Norddeutschland.</p></li>
+        <li data-reveal><span>02</span><h3>Geprüfte Historie</h3><p>Scheckheft, Gutachten und Gebrauchtwagen-Check eines unabhängigen Sachverständigen liegen jedem Auto bei.</p></li>
+        <li data-reveal><span>03</span><h3>Ankauf &amp; Inzahlungnahme</h3><p>Ihr jetziges Fahrzeug bewerten wir fair und transparent, auf Wunsch am selben Tag.</p></li>
+        <li data-reveal><span>04</span><h3>Finanzierung &amp; Leasing</h3><p>Mit unseren Partnerbanken finden wir eine Lösung, die zu Ihnen passt.</p></li>
+      </ol>
+    </section>
+
+    <!-- Termin -->
+    <section class="hd-visit" id="termin" aria-labelledby="termin-title">
+      <div class="hd-visit__info" data-reveal>
+        <p class="hd-eyebrow">Besuch</p>
+        <h2 class="hd-h2" id="termin-title">Lernen Sie ihn <em>kennen.</em></h2>
+        <dl class="hd-facts">
+          <div><dt>Showroom</dt><dd>Am Sandtorkai<br>20457 Hamburg</dd></div>
+          <div><dt>Öffnungszeiten</dt><dd>Mo–Fr 10–19 Uhr<br>Sa 10–16 Uhr</dd></div>
+          <div><dt>Telefon</dt><dd>040 000 000 00</dd></div>
+        </dl>
+      </div>
+      <form class="hd-form" id="visit-form" novalidate data-reveal>
+        <p class="hd-form__title">Probefahrt vereinbaren</p>
+        <label class="hd-field"><span>Name</span><input name="name" autocomplete="name" required></label>
+        <label class="hd-field"><span>Fahrzeug</span>
+          <select name="auto" id="form-car"></select>
+        </label>
+        <div class="hd-form__row">
+          <label class="hd-field"><span>Wunschtermin</span><input name="datum" type="date" required></label>
+          <label class="hd-field"><span>Ort</span>
+            <select name="ort"><option>Im Showroom</option><option>Bei mir zu Hause</option><option>Im Büro</option></select>
+          </label>
+        </div>
+        <button class="hd-btn" type="submit">Probefahrt anfragen</button>
+        <p class="hd-form__note" id="visit-status" role="status" aria-live="polite">Beispiel-Formular: Es werden keine Daten gesendet.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hd-footer">
+    <p class="hd-logo hd-logo--small"><svg class="hd-logo__mark" aria-hidden="true"><use href="#hd-mark"/></svg><span class="hd-logo__text"><span class="hd-logo__name">Halden</span><span class="hd-logo__sub">Automobile</span></span></p>
+    <p>Ein erfundenes Autohaus. Showroom und Fahrzeuge sind Echtzeit-3D, gestaltet und programmiert von <a href="../../index.html">Studio Elbquartier</a>.</p>
+    <p class="hd-footer__credits" id="credits">Fahrzeuge: markenlose 3D-Entwürfe „<a href="https://sketchfab.com/3d-models/generic-sport-coupe-car-820a13c4831c41959ce75e6c2014e882" rel="noopener">Generic Sport Coupé Car</a>“, „<a href="https://sketchfab.com/3d-models/generic-sedan-car-58c33766470d46e7b2aed542650494e5" rel="noopener">Generic Sedan Car</a>“ und „<a href="https://sketchfab.com/3d-models/mmc-generic-small-suv-car-5db696c6ed5d4bdc87905c1040fa072a" rel="noopener">MMC Generic Small SUV Car</a>“ von MMC Works (<a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="noopener">CC BY 4.0</a>, für das Web verkleinert und neu lackiert). Intro-Film: Pexels. Fahrzeuge, Namen und Preise sind erfunden.</p>
+    <p class="demo-legal"><a href="../../impressum.html">Impressum</a><a href="../../datenschutz.html">Datenschutz</a><a href="../../lizenzen.html#autohaus">Bildnachweise &amp; Lizenzen</a></p>
+  </footer>
+
+  <script src="../../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="autohaus.js"></script>
+</body>
+</html>
