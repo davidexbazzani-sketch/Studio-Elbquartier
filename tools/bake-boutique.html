@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Bilder rendern: Boutique (intern)</title>
+  <style>
+    body { margin: 0; font: 13px/1.5 system-ui; background: #f2efe9; color: #333; }
+    #holder { width: 450px; height: 550px; position: absolute; left: -9999px; }
+    #grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 6px; }
+    #grid img { width: 100%; display: block; }
+    #log { margin: 8px; white-space: pre; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <!-- Rendert das Leinentuch in allen Farben als Ersatzbilder (ohne 3D). Speichern nur mit tools/dev-server.py und ?save. Nicht hochladen. -->
+  <div id="holder"></div>
+  <div id="grid"></div>
+  <div id="log">Rendere …</div>
+  <script type="module">
+    import { createCloth } from '../assets/js/3d/cloth.js';
+    const q = new URLSearchParams(location.search);
+    const save = q.has('save');
+    const W = 900, H = 1100, SS = save ? 2 : 1;
+    const COLORS = { ecru: ['#e6dfd2', 'Ecru'], sand: ['#cdb999', 'Sand'], salbei: ['#9fac94', 'Salbei'], rose: ['#d4aa9c', 'Rosé'], terrakotta: ['#b0664c', 'Terrakotta'], marine: ['#2e3a4e', 'Marine'] };
+    const log = (t) => { document.getElementById('log').textContent += '\n' + t; };
+    const cloth = createCloth({ container: document.getElementById('holder'), textureUrl: '../assets/img/boutique/leinen-textur.webp', reducedMotion: true, preserveDrawingBuffer: true });
+    await cloth.ready;
+    for (const [id, [hex, label]] of Object.entries(COLORS)) {
+      cloth.set({ color: hex, weight: 'mittel', label: [`Leinen · ${label}`, '190 g/m²'] });
+      const big = cloth.snapshot({ width: W * SS, height: H * SS });
+      const img = new Image(); img.src = big; await img.decode();
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, 0, 0, W, H);
+      const url = c.toDataURL('image/webp', 0.82);
+      const el = document.createElement('img'); el.src = url; document.getElementById('grid').appendChild(el);
+      if (save) {
+        const res = await fetch(`/__save?dir=boutique&name=stoff-${id}.webp`, { method: 'POST', body: url });
+        log(`stoff-${id}.webp  ${Math.round((await res.text()) / 1024)} KB`);
+      }
+    }
+    log('Fertig.');
+    document.title = 'Fertig';
+  </script>
+</body>
+</html>

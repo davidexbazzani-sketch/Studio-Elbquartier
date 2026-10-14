@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Autohaus: Modelle prüfen (intern)</title>
+  <style>body{margin:0;font:12px/1.4 system-ui;background:#ddd}#c{width:100vw;height:70vh;display:block}#log{white-space:pre;padding:8px;height:30vh;overflow:auto}</style>
+  <script type="importmap">{ "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }</script>
+</head>
+<body>
+<!-- Interne Prüfseite: lädt ein Automodell (?car=porsche-911|ferrari-roma|g63), zeigt Maße, Ausrichtung und Materialien. Nicht hochladen. -->
+<canvas id="c"></canvas><div id="log"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const log = (t) => { document.getElementById('log').textContent += t + '\n'; };
+const car = new URLSearchParams(location.search).get('car') || 'porsche-911';
+const yaw = +(new URLSearchParams(location.search).get('yaw') || 0.6);
+const canvas = document.getElementById('c');
+const r = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+r.setPixelRatio(devicePixelRatio); r.setSize(canvas.clientWidth, canvas.clientHeight, false);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xdddddd);
+scene.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), 0.04).texture;
+const cam = new THREE.PerspectiveCamera(30, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
+const t0 = performance.now();
+const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(`../assets/models/autos/${car}.glb`);
+log(`${car}: geladen in ${(performance.now() - t0) | 0} ms`);
+const root = gltf.scene; scene.add(root);
+const box = new THREE.Box3().setFromObject(root); const size = box.getSize(new THREE.Vector3()); const c = box.getCenter(new THREE.Vector3());
+log(`Box min ${box.min.toArray().map(v=>v.toFixed(3))} max ${box.max.toArray().map(v=>v.toFixed(3))} Größe ${size.toArray().map(v=>v.toFixed(3))}`);
+let tris = 0, meshes = 0; const mats = new Map();
+root.traverse((o) => { if (o.isMesh) { meshes++; const n = (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; tris += n;
+  for (const m of [].concat(o.material)) { const e = mats.get(m) || { tris: 0, objs: [] }; e.tris += n; if (e.objs.length < 3) e.objs.push(o.name); mats.set(m, e); } } });
+log(`Meshes ${meshes}, Dreiecke ${tris | 0}, Materialien ${mats.size}`);
+for (const [m, e] of [...mats].sort((a, b) => b[1].tris - a[1].tris)) log(`  ${m.name} | ${m.type} col #${m.color?.getHexString()} met ${m.metalness?.toFixed(2)} rough ${m.roughness?.toFixed(2)} op ${m.opacity} tr ${m.transparent} ${m.transmission ? 'transm ' + m.transmission : ''} ${m.clearcoat ? 'cc ' + m.clearcoat : ''} maps ${['map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','alphaMap'].filter(k=>m[k]).join(',')} | ${e.tris | 0} | ${e.objs.join(', ')}`);
+const R = Math.max(size.x, size.y, size.z);
+const target = c.clone();
+const d = R * 1.6;
+const hi = new URLSearchParams(location.search).get('hi');
+if (hi) root.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => m.name.includes(hi))) o.material = new THREE.MeshBasicMaterial({ color: 0xff00ff }); });
+function render(a) { cam.position.set(target.x + Math.sin(a) * d, target.y + R * 0.35, target.z + Math.cos(a) * d); cam.lookAt(target); r.render(scene, cam); }
+render(yaw);
+window.__render = render;
+</script>
+</body>
+</html>

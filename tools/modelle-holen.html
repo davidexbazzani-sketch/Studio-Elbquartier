@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>Modelle holen (intern)</title></head>
+<body style="font:14px system-ui;padding:20px">
+<!-- Interne Hilfsseite: übernimmt Download-Links (im #hash als JSON {name: url}) und speichert die Dateien
+     über den Dev-Server nach tools/models/quelle/. Nicht hochladen. -->
+<pre id="log">Lade …</pre>
+<script>
+(async () => {
+  const log = (t) => { document.getElementById('log').textContent += '\n' + t; };
+  const jobs = JSON.parse(decodeURIComponent(location.hash.slice(1)) || '{}');
+  let ok = 0;
+  for (const [name, url] of Object.entries(jobs)) {
+    try {
+      let r = await fetch(url); let buf = await r.arrayBuffer();
+      if (buf.byteLength < 5000) { const inner = JSON.parse(new TextDecoder().decode(new Uint8Array(buf))).url; r = await fetch(inner); buf = await r.arrayBuffer(); }
+      const s = await fetch('/__savemodel?name=' + name, { method: 'POST', body: buf });
+      log(`${name}: ${buf.byteLength} B → ${s.status}`); ok++;
+    } catch (e) { log(`${name}: Fehler ${e.message}`); }
+  }
+  document.title = `fertig ${ok}/${Object.keys(jobs).length}`;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Kennzeichen im Autohaus-Intro (assets/video/autohaus/intro-g.mp4), Pixel im fertigen 900×1600-Bild
+# Zeit x y Breite Höhe – zwischen den Zeilen wird linear interpoliert; Leerzeile beginnt eine neue Spur
+# vorne
+0.00 595 1016 97 62
+1.00 590 1020 97 63
+2.00 579 1035 96 63
+2.50 593 1040 92 63
+3.00 658 1045 97 67
+3.25 687 1052 96 75
+3.50 730 1064 95 78
+3.75 762 1077 88 85
+4.00 808 1092 82 90
+4.25 862 1104 80 95
+4.60 960 1115 80 95
+
+# hinten
+7.20 -60 1180 160 80
+7.50 137 1185 103 65
+7.75 230 1180 92 55
+8.00 292 1173 84 46
+8.25 323 1170 77 45
+8.50 353 1169 69 37
+8.75 370 1161 63 38
+9.00 380 1172 60 30
+9.50 403 1175 47 24
+10.10 422 1175 43 21

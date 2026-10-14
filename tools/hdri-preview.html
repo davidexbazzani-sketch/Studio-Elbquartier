@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>HDRI-Vorschau (intern)</title>
+  <style>body { margin: 0; background: #222; color: #ccc; font: 12px system-ui; } canvas { display: block; width: 100%; }</style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <p id="info"></p>
+  <script type="module">
+    import * as THREE from 'three';
+    import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+    const name = new URLSearchParams(location.search).get('hdr') || 'studio_small_09';
+    const t = await new HDRLoader().setDataType(THREE.FloatType).loadAsync(`../assets/hdri/${name}_1k.hdr`);
+    const { width: w, height: h, data } = t.image;
+    const c = document.getElementById('c');
+    c.width = w; c.height = h;
+    const g = c.getContext('2d');
+    const img = g.createImageData(w, h);
+    let max = 0, sum = 0;
+    for (let i = 0; i < w * h; i++) {
+      const l = 0.2126 * data[i * 4] + 0.7152 * data[i * 4 + 1] + 0.0722 * data[i * 4 + 2];
+      sum += l; max = Math.max(max, l);
+    }
+    // Reinhard + Gamma; Zeilen von unten nach oben gespeichert? -> so zeichnen wie die Datei
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      for (let k = 0; k < 3; k++) {
+        const v = data[i + k] * 2;
+        img.data[i + k] = 255 * Math.pow(v / (1 + v), 1 / 2.2);
+      }
+      img.data[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    // Raster: u=0.25 Schritte (atan(z,x)), Horizont
+    g.strokeStyle = 'rgba(255,0,0,.6)';
+    for (let k = 1; k < 4; k++) { g.beginPath(); g.moveTo(w * k / 4, 0); g.lineTo(w * k / 4, h); g.stroke(); }
+    g.beginPath(); g.moveTo(0, h / 2); g.lineTo(w, h / 2); g.stroke();
+    document.getElementById('info').textContent = `${name}: ${w}×${h}, mittlere Helligkeit ${(sum / (w * h)).toFixed(3)}, Maximum ${max.toFixed(1)}`;
+  </script>
+</body>
+</html>

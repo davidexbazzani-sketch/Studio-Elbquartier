@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>FUNKL: Dosen-Test (intern)</title>
+  <style>html,body{margin:0;height:100%;background:#222}#s{position:fixed;inset:0}</style>
+  <script type="importmap">{ "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }</script>
+</head>
+<body>
+<!-- Interne Testseite: eine Dose mit Kondenswasser (?f=mango|melone|blau&t=Sekunden&zoom=1&shot=name). Nicht hochladen. -->
+<div id="s"></div>
+<script type="module">
+import * as THREE from 'three';
+import { createCan, Condensation, makeLabel, loadFonts, CAN, FRONT_YAW } from '../assets/js/3d/can.js';
+import { FLAVORS, studioHDR } from '../assets/js/3d/funkl-data.js';
+const q = new URLSearchParams(location.search);
+await loadFonts('../assets/fonts/');
+const el = document.getElementById('s');
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+r.setPixelRatio(1); r.setSize(el.clientWidth, el.clientHeight); el.append(r.domElement);
+r.toneMapping = THREE.NeutralToneMapping; r.toneMappingExposure = 1.0;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(q.get('bg') || '#ff8a3d');
+scene.environment = await studioHDR(r, '../assets/hdri/studio_small_09_1k.hdr'); scene.environmentRotation.set(0, -0.6, 0);
+const f = FLAVORS.find((x) => x.id === (q.get('f') || 'mango'));
+const cond = new Condensation(r, { size: 1024 });
+const can = createCan({ label: makeLabel(f), condensation: cond });
+can.group.rotation.y = FRONT_YAW + +(q.get('yaw') || 0);
+scene.add(can.group);
+const cam = new THREE.PerspectiveCamera(30, el.clientWidth / el.clientHeight, 0.05, 50);
+const zoom = q.get('zoom') === '1';
+cam.position.set(0, 0.75, zoom ? 1.1 : 2.9); cam.lookAt(0, zoom ? 0.68 : 0.67, 0);
+cond.setLevel(+(q.get('lvl') || 0.85));
+const T = +(q.get('t') || 8);
+for (let t = 0; t < T; t += 1 / 30) { cond.step(1 / 30); cond.render(1 / 30); }
+cond.compose();
+r.render(scene, cam);
+window.__info = { drops: cond.drops.length, front: 'u0.75' };
+if (q.get('shot')) {
+  const url = r.domElement.toDataURL('image/jpeg', 0.9);
+  await fetch(`/__save?dir=funkl-test&name=${q.get('shot')}.jpg`, { method: 'POST', body: url });
+  await fetch('/__save?dir=funkl-test&name=zz-fertig.png', { method: 'POST', body: 'data:image/png;base64,AA==' });
+}
+</script>
+</body>
+</html>

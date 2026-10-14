@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strauß-Test (intern)</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f1ede5; font: 13px system-ui; }
+    #stage { position: fixed; inset: 0; }
+    #bar { position: fixed; left: 8px; top: 8px; display: flex; gap: 4px; flex-wrap: wrap; z-index: 2; }
+    #log { position: fixed; left: 8px; bottom: 8px; color: #777; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="bar"></div>
+  <p id="log"></p>
+  <script type="module">
+    import * as THREE from 'three';
+    import { createStage } from '../assets/js/3d/stage.js';
+    import { createBouquet } from '../assets/js/3d/bouquet.js';
+
+    const PAL = {
+      rose: { base: '#c94f6e', tip: '#ec9db0', edge: '#f5c9d3' },
+      tulip: { base: '#e77d97', tip: '#f6b6c5' },
+      peony: { base: '#e7a1b0', tip: '#f8d9de', edge: '#fdf0f2' },
+    };
+    const comp = { peony: 3, rose: 5, tulip: 0, eucalyptus: 3, gypsophila: 2, lavender: 0 };
+    const q = new URLSearchParams(location.search);
+    for (const k of Object.keys(comp)) if (q.has(k)) comp[k] = +q.get(k);
+
+    const stage = createStage({ container: document.getElementById('stage'), autoRotate: q.has('auto'), pitch: +(q.get('pitch') ?? 0.34), shadows: !q.has('noshadow') });
+    const bouquet = createBouquet();
+    stage.pivot.add(bouquet.group);
+    stage.onFrame((dt) => bouquet.update(dt));
+    window.stage = stage; window.bouquet = bouquet;
+
+    function apply() {
+      const stems = [];
+      for (const [type, n] of Object.entries(comp)) for (let i = 0; i < n; i++) stems.push({ id: `${type}-${i}`, key: type, type, palette: PAL[type] || {} });
+      const { cap } = bouquet.set({ stems, paperStyle: q.get('paper') || 'kraft', ribbonColor: q.get('ribbon') || 'salbei' });
+      stage.setFrame(new THREE.Vector3(0, 0.12, 0), 1.0 + cap * 0.32);
+      stage.kick();
+      document.getElementById('log').textContent = JSON.stringify(comp);
+    }
+    const bar = document.getElementById('bar');
+    for (const type of Object.keys(comp)) {
+      for (const d of [-1, 1]) {
+        const b = document.createElement('button');
+        b.textContent = `${d > 0 ? '+' : '−'} ${type}`;
+        b.onclick = () => { comp[type] = Math.max(0, comp[type] + d); apply(); };
+        bar.appendChild(b);
+      }
+    }
+    apply();
+  </script>
+</body>
+</html>

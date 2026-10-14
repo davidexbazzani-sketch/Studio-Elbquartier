@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Bar: Drehbilder rendern (intern)</title>
+  <style>
+    html, body { margin: 0; background: #0d0b0a; color: #bbb; font: 13px/1.5 system-ui; }
+    canvas { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+    #log { position: fixed; left: 8px; bottom: 8px; white-space: pre; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../assets/vendor/three/three.module.min.js",
+        "three/addons/": "../assets/vendor/three/addons/",
+        "three/examples/jsm/": "./vendor/three-addons/",
+        "three-mesh-bvh": "./vendor/three-mesh-bvh/src/index.js",
+        "three-gpu-pathtracer": "./vendor/three-gpu-pathtracer/src/index.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- Rendert jeden Drink der Bar als Drehung in einzelnen Bildern, mit Path Tracing (Lichtbrechung, Absorption,
+       Spiegelung und Schärfentiefe wie bei einem Foto). Interne Seite, nicht hochladen.
+       Ergebnis: assets/img/bar-spin/<drink>/00.webp … Vorhandene Bilder werden übersprungen (fortsetzbar).
+       Archiv: Die Website zeigt die Drinks inzwischen als Filme; die fertigen Bilder liegen in tools/archiv/bar-spin/.
+       Parameter: ?d=negroni,mule (nur diese) · ?frames=24 · ?spp=80 · ?plate=192 · ?test (je Drink ein Probebild) -->
+  <canvas id="c"></canvas>
+  <p id="log"></p>
+  <script type="module">
+    import * as THREE from 'three';
+    import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+    import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+    import { WebGLPathTracer, PhysicalCamera } from 'three-gpu-pathtracer';
+    import { buildDrink, DRINK_IDS } from './models/drinks.js';
+
+    const q = new URLSearchParams(location.search);
+    const IDS = q.get('d') ? q.get('d').split(',') : DRINK_IDS;
+    const W = +(q.get('w') || 640), H = +(q.get('h') || 800);
+    const FRAMES = +(q.get('frames') || 24), SPP = +(q.get('spp') || 80), PLATE_SPP = +(q.get('plate') || 192);
+    const TEST = q.has('test');
+    const EXPOSURE = +(q.get('exp') || 1.15);
+    const YAW0 = { nachtfalter: 0.5, elbtonic: 0.5, negroni: 0.5, espresso: 0.5, mule: 0.5, holunder: 0.5 };
+    const logEl = document.getElementById('log');
+    const log = (t) => { logEl.textContent = t; fetch('/__log', { method: 'POST', body: t }).catch(() => {}); };
+
+    const canvas = document.getElementById('c');
+    // high-performance: auf Macs mit zwei Grafikchips rechnet die schnelle (und zuverlässige) Grafikkarte
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(1);
+    renderer.setSize(W, H, false);
+    renderer.toneMapping = THREE.NeutralToneMapping;
+    renderer.toneMappingExposure = EXPOSURE;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    const gl = renderer.getContext();
+    const gpu = gl.getParameter(gl.getExtension('WEBGL_debug_renderer_info')?.UNMASKED_RENDERER_WEBGL ?? gl.RENDERER);
+    log(`Grafik: ${gpu}`);
+    // Intel-Grafik unter macOS mischt Float-Bilder fehlerhaft: Path Tracer mischt die Samples dann selbst
+    const getExt = renderer.extensions.get.bind(renderer.extensions);
+    renderer.extensions.get = (name) => (name === 'EXT_float_blend' ? null : getExt(name));
+
+    // ---------- Szene: Bartheke, Licht, Umgebung ----------
+    const scene = new THREE.Scene();
+    const hdr = await new HDRLoader().setDataType(THREE.FloatType).loadAsync('./hdri/warm_bar_1k.hdr');
+    hdr.mapping = THREE.EquirectangularReflectionMapping;
+
+    /** Licht der kleinen, extrem hellen Lampen kappen und weich in der Umgebung verteilen.
+        Die Gesamthelligkeit bleibt, aber das Licht kommt aus größeren Flächen: viel weniger Rauschen. */
+    function tame(tex, clip, radius) {
+      const { width: w, height: h, data } = tex.image;
+      const out = new Float32Array(data.length), ex = new Float32Array(w * h * 3);
+      for (let i = 0, j = 0; i < w * h; i++, j += 4) {
+        const r = data[j], g = data[j + 1], b = data[j + 2];
+        const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        const k = l > clip ? clip / l : 1;
+        out[j] = r * k; out[j + 1] = g * k; out[j + 2] = b * k; out[j + 3] = 1;
+        ex[i * 3] = r * (1 - k); ex[i * 3 + 1] = g * (1 - k); ex[i * 3 + 2] = b * (1 - k);
+      }
+      const tmp = new Float32Array(ex.length);
+      const blurH = (src, dst) => {
+        for (let y = 0; y < h; y++) for (let c = 0; c < 3; c++) {
+          let acc = 0;
+          for (let x = -radius; x <= radius; x++) acc += src[(y * w + ((x + w) % w)) * 3 + c];
+          for (let x = 0; x < w; x++) {
+            dst[(y * w + x) * 3 + c] = acc / (2 * radius + 1);
+            acc += src[(y * w + ((x + radius + 1) % w)) * 3 + c] - src[(y * w + ((x - radius + w) % w)) * 3 + c];
+          }
+        }
+      };
+      const blurV = (src, dst) => {
+        for (let x = 0; x < w; x++) for (let c = 0; c < 3; c++) {
+          let acc = 0;
+          for (let y = -radius; y <= radius; y++) acc += src[(Math.min(h - 1, Math.max(0, y)) * w + x) * 3 + c];
+          for (let y = 0; y < h; y++) {
+            dst[(y * w + x) * 3 + c] = acc / (2 * radius + 1);
+            acc += src[(Math.min(h - 1, y + radius + 1) * w + x) * 3 + c] - src[(Math.max(0, y - radius) * w + x) * 3 + c];
+          }
+        }
+      };
+      for (let pass = 0; pass < 3; pass++) { blurH(ex, tmp); blurV(tmp, ex); }
+      for (let i = 0, j = 0; i < w * h; i++, j += 4) { out[j] += ex[i * 3]; out[j + 1] += ex[i * 3 + 1]; out[j + 2] += ex[i * 3 + 2]; }
+      const t = new THREE.DataTexture(out, w, h, THREE.RGBAFormat, THREE.FloatType);
+      t.mapping = THREE.EquirectangularReflectionMapping;
+      t.colorSpace = THREE.LinearSRGBColorSpace;
+      t.magFilter = t.minFilter = THREE.LinearFilter;
+      t.needsUpdate = true;
+      return t;
+    }
+    scene.environment = tame(hdr, 8, 14);
+    scene.background = hdr;
+    scene.backgroundIntensity = 0.8;
+
+    // Theke: dunkler, polierter Stein (spiegelt Glas und Licht)
+    const counter = new THREE.Mesh(new THREE.BoxGeometry(14, 0.4, 7), new THREE.MeshPhysicalMaterial({ color: '#16120f', roughness: 0.2, clearcoat: 0.7, clearcoatRoughness: 0.08 }));
+    counter.position.set(0, -0.2, 0.6);
+    scene.add(counter);
+    // Licht wie in der Getränkefotografie: Streifen von hinten für die Glaskanten, Softbox von vorn oben
+    const rect = (color, power, w, h, pos, target = [0, 0.8, 0]) => {
+      const l = new THREE.RectAreaLight(color, power, w, h);
+      l.position.set(...pos);
+      l.lookAt(...target);
+      scene.add(l);
+    };
+    rect('#fff3e3', 16, 0.35, 3.2, [-2.4, 1.2, -1.6]);
+    rect('#fff3e3', 16, 0.35, 3.2, [2.4, 1.2, -1.6]);
+    rect('#ffe9cf', 14, 1.6, 1.2, [-1.8, 3.2, 2.6], [0, 0.4, 0]);
+
+    // ---------- Drink mit physikalischen Materialien ----------
+    const glassM = new THREE.MeshPhysicalMaterial({
+      color: '#ffffff', transmission: 1, roughness: 0, ior: 1.5, thickness: 0.1,
+      attenuationColor: new THREE.Color('#e3efe9'), attenuationDistance: 3, specularIntensity: 1,
+    });
+    const iceM = new THREE.MeshPhysicalMaterial({
+      color: '#ffffff', transmission: 1, roughness: 0.03, ior: 1.31, thickness: 0.2,
+      attenuationColor: new THREE.Color('#dcebf5'), attenuationDistance: 2.5,
+    });
+    const airM = new THREE.MeshPhysicalMaterial({ color: '#ffffff', transmission: 1, roughness: 0, ior: 0.75, thickness: 0.01 });
+
+    function prepareDrink(id) {
+      const d = buildDrink(id);
+      const swaps = [];
+      d.group.traverse((o) => {
+        if (!o.isMesh) return;
+        if (o.isInstancedMesh) { // Perlage: Instanzen zu einer Geometrie zusammenfassen (Luftbläschen)
+          const parts = [], m4 = new THREE.Matrix4();
+          for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, m4); parts.push(o.geometry.clone().applyMatrix4(m4)); }
+          swaps.push([o, new THREE.Mesh(mergeGeometries(parts), airM)]);
+          return;
+        }
+        const m = o.material;
+        if (Array.isArray(m) || !m.transmission) return;
+        if (m.ior === 1.5) o.material = glassM;
+        else if (Math.abs(m.ior - 1.31) < 0.01) o.material = iceM;
+        else if (Math.abs(m.ior - 1.34) < 0.01) {
+          o.material = new THREE.MeshPhysicalMaterial({
+            color: '#ffffff', transmission: 1, roughness: 0, ior: 1.34, thickness: 1,
+            attenuationColor: m.attenuationColor.clone(), attenuationDistance: m.attenuationDistance,
+          });
+        }
+      });
+      swaps.forEach(([a, b]) => { b.position.copy(a.position); b.quaternion.copy(a.quaternion); b.scale.copy(a.scale); a.parent.add(b); a.parent.remove(a); });
+      // Garnitur: kein Samtglanz, schwächerer Klarlack (eine nasse Oberfläche in der Flüssigkeit spiegelt kaum)
+      d.group.traverse((o) => {
+        if (o.isMesh) for (const m of [o.material].flat()) if (!m.transmission && 'sheen' in m && !m.userData.ptDone) { m.sheen = 0; m.clearcoat *= 0.35; m.userData.ptDone = true; }
+      });
+      // Objekte mit mehreren Materialien zerlegen (der Path Tracer ordnet sonst falsch zu)
+      const multi = [];
+      d.group.traverse((o) => { if (o.isMesh && Array.isArray(o.material)) multi.push(o); });
+      for (const o of multi) {
+        const g = o.geometry, parts = new THREE.Group();
+        parts.position.copy(o.position); parts.quaternion.copy(o.quaternion); parts.scale.copy(o.scale);
+        const all = g.index ? Array.from(g.index.array) : [...Array(g.attributes.position.count).keys()];
+        for (const grp of g.groups) {
+          const sub = g.clone();
+          sub.setIndex(all.slice(grp.start, grp.start + grp.count));
+          sub.clearGroups();
+          parts.add(new THREE.Mesh(sub, o.material[grp.materialIndex]));
+        }
+        o.parent.add(parts);
+        o.parent.remove(o);
+      }
+      d.group.traverse((o) => { if (o.isMesh) o.geometry.clearGroups(); });
+      // größter Abstand von der Drehachse (für den Bildausschnitt, der sich beim Drehen ändert)
+      let R = 0;
+      const v = new THREE.Vector3();
+      d.group.updateMatrixWorld(true);
+      d.group.traverse((o) => {
+        if (!o.isMesh) return;
+        const p = o.geometry.attributes.position;
+        for (let i = 0; i < p.count; i += 3) { v.fromBufferAttribute(p, i).applyMatrix4(o.matrixWorld); R = Math.max(R, Math.hypot(v.x, v.z)); }
+      });
+      d.radius = R;
+      return d;
+    }
+    counter.geometry.clearGroups();
+
+    // ---------- Kamera: Ausschnitt wie auf der Seite, Schärfentiefe wie ein Foto ----------
+    const camera = new PhysicalCamera(24, W / H, 0.05, 100);
+    function frameCamera(d) {
+      const cy = d.height * 0.5, rad = Math.max(d.height * 0.56, 0.66), pitch = 0.28;
+      const vFov = THREE.MathUtils.degToRad(24), hFov = 2 * Math.atan(Math.tan(vFov / 2) * (W / H));
+      const dist = rad / Math.sin(Math.min(vFov, hFov) / 2);
+      camera.position.set(0, cy + Math.sin(pitch) * dist, Math.cos(pitch) * dist);
+      camera.lookAt(0, cy, 0);
+      camera.focusDistance = dist;
+      camera.bokehSize = 90;
+      camera.apertureBlades = 7;
+      camera.clearViewOffset();
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+      camera.updateMatrixWorld(); // sonst projiziert changingRect() mit der alten Kameralage
+    }
+    /** Bildbereich, in dem sich beim Drehen etwas ändert: Drink, Spiegelung und Schatten auf der Theke. */
+    function changingRect(d) {
+      const pts = [], v = new THREE.Vector3();
+      for (let i = 0; i < 24; i++) {
+        const a = (i / 24) * Math.PI * 2;
+        for (const y of [-d.height * 0.55, 0, d.height * 1.02]) pts.push(v.set(Math.cos(a) * d.radius * 1.08, y, Math.sin(a) * d.radius * 1.08).clone().project(camera));
+      }
+      let x0 = W, x1 = 0, y0 = H, y1 = 0;
+      for (const p of pts) {
+        const x = (p.x * 0.5 + 0.5) * W, y = (0.5 - p.y * 0.5) * H;
+        x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+      }
+      const m = 20;
+      x0 = Math.max(0, Math.floor(x0 - m)); y0 = Math.max(0, Math.floor(y0 - m));
+      x1 = Math.min(W, Math.ceil(x1 + m)); y1 = Math.min(H, Math.ceil(y1 + m));
+      return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+    }
+
+    // ---------- Path Tracer ----------
+    const pt = new WebGLPathTracer(renderer);
+    Object.assign(pt, { renderDelay: 0, minSamples: 0, fadeDuration: 0, rasterizeScene: false, bounces: 6, transmissiveBounces: 8, filterGlossyFactor: 0.5 });
+    // viele kleine GPU-Aufträge statt weniger großer: lange Aufträge bricht macOS (vor allem bei Last) stillschweigend ab
+    const TILES = +(q.get('tiles') || 4); // 4 × 4 Kacheln: ein Auftrag rechnet höchstens etwa 130 × 170 Pixel
+    pt.tiles.set(TILES, TILES);
+    const mc = new MessageChannel();
+    const yieldNow = () => new Promise((r) => { mc.port1.onmessage = () => r(); mc.port2.postMessage(0); });
+    const px = new Uint8Array(4);
+    const sync = () => gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); // wartet, bis die GPU fertig ist
+
+    /** spp Samples rechnen, Ergebnis als Float-Puffer (zeilenweise von unten, wie WebGL). */
+    async function trace(spp, w, h, label) {
+      pt.reset();
+      const t0 = performance.now();
+      let lastLog = 0;
+      while (pt.samples < spp) {
+        // jede Kachel einzeln abschicken und abwarten: lange GPU-Aufträge bricht macOS sonst ab
+        for (let i = 0; i < TILES * TILES && pt.samples < spp; i++) { pt.renderSample(); sync(); }
+        await yieldNow();
+        if (performance.now() - lastLog > 15000) { lastLog = performance.now(); log(`${label}: ${Math.round(pt.samples)} / ${spp} (${((performance.now() - t0) / 1000).toFixed(0)} s)`); }
+      }
+      const buf = new Float32Array(w * h * 4);
+      renderer.readRenderTargetPixels(pt._pathTracer.target, 0, 0, w, h, buf);
+      return buf;
+    }
+    /** Zwei unabhängige Hälften: Mittelwert fürs Bild, Unterschied als Maß für das Rauschen. */
+    const PAD_X = 32, PAD_Y = 64; // Intel-Grafik: die erste Kachel (unten links) bleibt schwarz, daher Rand mitrechnen und abschneiden
+    async function traceHalves(spp, rectArea, label) {
+      const { x, y, w, h } = rectArea;
+      const pw = w + PAD_X, ph = h + PAD_Y;
+      renderer.setSize(pw, ph, false);
+      camera.setViewOffset(W, H, x - PAD_X, y, pw, ph);
+      camera.updateProjectionMatrix();
+      pt.setScene(scene, camera);
+      pt._pathTracer.material.sampleClamp = 10;
+      const crop = (buf) => {
+        const out = new Float32Array(w * h * 4);
+        for (let r = 0; r < h; r++) out.set(buf.subarray(((r + PAD_Y) * pw + PAD_X) * 4, ((r + PAD_Y) * pw + PAD_X + w) * 4), r * w * 4);
+        return out;
+      };
+      const a = crop(await trace(spp / 2, pw, ph, `${label} (1/2)`));
+      const b = crop(await trace(spp / 2, pw, ph, `${label} (2/2)`));
+      window.lastHalves = { a, b, w, h }; // zum Nachsehen
+      if (!q.has('debug')) check(a, b, label, w);
+      return { a, b };
+    }
+    /** Hat die GPU wirklich gerechnet? Abgebrochene Aufträge hinterlassen schwarze Flächen oder ein „eingefrorenes“ Rauschen. */
+    function check(a, b, label, w) {
+      const h = a.length / 4 / w, B = 32, n = w * h;
+      let black = 0, frozen = 0;
+      for (let i = 0; i < a.length; i += 4) if (!(a[i] + a[i + 1] + a[i + 2] > 0) || !(b[i] + b[i + 1] + b[i + 2] > 0)) black++;
+      // in Blöcken prüfen: zwei unabhängige Hälften sind nie gleich, außer die GPU hat nichts geschrieben
+      for (let by = 0; by < h; by += B) for (let bx = 0; bx < w; bx += B) {
+        let diff = 0, sum = 0;
+        for (let y = by; y < Math.min(h, by + B); y++) for (let x = bx; x < Math.min(w, bx + B); x++) {
+          const i = (y * w + x) * 4;
+          for (let c = 0; c < 3; c++) { diff += Math.abs(a[i + c] - b[i + c]); sum += a[i + c] + b[i + c]; }
+        }
+        if (sum > 0 && diff / sum < 1e-5) frozen++;
+      }
+      if (black / n > 0.002 || frozen) throw new Error(`GPU-Fehler bei ${label}: ${(100 * black / n).toFixed(1)} % schwarz, ${frozen} eingefrorene Blöcke`);
+    }
+
+    // ---------- Bild entwickeln: Tonwerte, Rauschfilter ----------
+    function neutral(r, g, b, out, o) { // wie THREE.NeutralToneMapping, dann sRGB
+      r *= EXPOSURE; g *= EXPOSURE; b *= EXPOSURE;
+      const x = Math.min(r, g, b), off = x < 0.08 ? x - 6.25 * x * x : 0.04;
+      r -= off; g -= off; b -= off;
+      const peak = Math.max(r, g, b), S = 0.76, D = 0.15;
+      if (peak >= S) {
+        const d = 1 - S, np = 1 - (d * d) / (peak + d - S), k = np / peak;
+        const gg = 1 - 1 / (D * (peak - np) + 1);
+        r = r * k * (1 - gg) + np * gg; g = g * k * (1 - gg) + np * gg; b = b * k * (1 - gg) + np * gg;
+      }
+      const enc = (c) => (c <= 0.0031308 ? 12.92 * Math.max(0, c) : 1.055 * Math.pow(c, 1 / 2.4) - 0.055);
+      out[o] = enc(r); out[o + 1] = enc(g); out[o + 2] = enc(b);
+    }
+
+    /**
+     * Non-Local Means mit Varianz je Pixel (nach Rousselle, Knaus, Zwicker 2012): Filtert nur dort,
+     * wo die zwei Hälften voneinander abweichen, also Rauschen ist. Kanten und Details bleiben.
+     */
+    function denoise(M, Vr, w, h, { S = 6, P = 2, k = 0.42, eps = 2e-5 } = {}) {
+      const N = w * h, out = new Float32Array(N * 3), ws = new Float32Array(N);
+      const D = new Float32Array(N), I = new Float64Array((w + 1) * (h + 1));
+      for (let dy = -S; dy <= S; dy++) for (let dx = -S; dx <= S; dx++) {
+        for (let y = 0; y < h; y++) {
+          const qy = Math.min(h - 1, Math.max(0, y + dy));
+          for (let x = 0; x < w; x++) {
+            const qx = Math.min(w - 1, Math.max(0, x + dx)), p = y * w + x, qq = qy * w + qx;
+            const vp = Vr[p], vq = Vr[qq];
+            const e0 = M[p * 3] - M[qq * 3], e1 = M[p * 3 + 1] - M[qq * 3 + 1], e2 = M[p * 3 + 2] - M[qq * 3 + 2];
+            D[p] = ((e0 * e0 + e1 * e1 + e2 * e2) / 3 - (vp + Math.min(vp, vq))) / (eps + k * k * (vp + vq));
+          }
+        }
+        for (let y = 0; y < h; y++) { // Summentabelle für den Mittelwert über das Fenster
+          let row = 0;
+          for (let x = 0; x < w; x++) { row += D[y * w + x]; I[(y + 1) * (w + 1) + x + 1] = I[y * (w + 1) + x + 1] + row; }
+        }
+        for (let y = 0; y < h; y++) {
+          const ya = Math.max(0, y - P), yb = Math.min(h, y + P + 1), qy = Math.min(h - 1, Math.max(0, y + dy));
+          for (let x = 0; x < w; x++) {
+            const xa = Math.max(0, x - P), xb = Math.min(w, x + P + 1);
+            const sum = I[yb * (w + 1) + xb] - I[ya * (w + 1) + xb] - I[yb * (w + 1) + xa] + I[ya * (w + 1) + xa];
+            const d = sum / ((yb - ya) * (xb - xa));
+            const wt = Math.exp(-Math.max(0, d));
+            if (wt < 1e-3) continue;
+            const p = y * w + x, qq = qy * w + Math.min(w - 1, Math.max(0, x + dx));
+            out[p * 3] += wt * M[qq * 3]; out[p * 3 + 1] += wt * M[qq * 3 + 1]; out[p * 3 + 2] += wt * M[qq * 3 + 2];
+            ws[p] += wt;
+          }
+        }
+      }
+      for (let p = 0; p < N; p++) { const s = ws[p] || 1; out[p * 3] /= s; out[p * 3 + 1] /= s; out[p * 3 + 2] /= s; }
+      return out;
+    }
+
+    /** Hälften (voll oder Ausschnitt) in die Gesamtbilder A und B einsetzen, mit weichem Rand. */
+    function insert(A, B, part, r) {
+      const f = 14; // Breite des Übergangs in Pixeln
+      for (let yy = 0; yy < r.h; yy++) for (let xx = 0; xx < r.w; xx++) {
+        const edge = Math.min(xx, yy, r.w - 1 - xx, r.h - 1 - yy);
+        const t = r.w === W && r.h === H ? 1 : Math.min(1, edge / f);
+        const gx = r.x + xx, gy = H - 1 - (r.y + (r.h - 1 - yy)); // Puffer laufen von unten nach oben
+        const s = (yy * r.w + xx) * 4, o = (gy * W + gx) * 4;
+        for (let c = 0; c < 3; c++) {
+          A[o + c] += (part.a[s + c] - A[o + c]) * t;
+          B[o + c] += (part.b[s + c] - B[o + c]) * t;
+        }
+      }
+    }
+
+    function develop(A, B) {
+      const N = W * H, M = new Float32Array(N * 3), ta = new Float32Array(3), tb = new Float32Array(3), Vr = new Float32Array(N);
+      for (let i = 0; i < N; i++) {
+        const j = i * 4;
+        neutral((A[j] + B[j]) / 2, (A[j + 1] + B[j + 1]) / 2, (A[j + 2] + B[j + 2]) / 2, M, i * 3);
+        neutral(A[j], A[j + 1], A[j + 2], ta, 0);
+        neutral(B[j], B[j + 1], B[j + 2], tb, 0);
+        Vr[i] = ((ta[0] - tb[0]) ** 2 + (ta[1] - tb[1]) ** 2 + (ta[2] - tb[2]) ** 2) / 12;
+      }
+      // Varianzschätzung aus nur zwei Werten schwankt stark: leicht glätten
+      const V2 = new Float32Array(N);
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        let s = 0, n = 0;
+        for (let v = -1; v <= 1; v++) for (let u = -1; u <= 1; u++) {
+          const yy = y + v, xx = x + u;
+          if (yy >= 0 && yy < H && xx >= 0 && xx < W) { s += Vr[yy * W + xx]; n++; }
+        }
+        V2[y * W + x] = s / n;
+      }
+      const out = denoise(M, V2, W, H);
+      const c2 = document.createElement('canvas');
+      c2.width = W; c2.height = H;
+      const g = c2.getContext('2d', { willReadFrequently: true }); // auf der CPU kodieren, ohne Umweg über die GPU
+      const img = g.createImageData(W, H);
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        const s = ((H - 1 - y) * W + x) * 3, o = (y * W + x) * 4;
+        img.data[o] = Math.round(Math.min(1, out[s]) * 255);
+        img.data[o + 1] = Math.round(Math.min(1, out[s + 1]) * 255);
+        img.data[o + 2] = Math.round(Math.min(1, out[s + 2]) * 255);
+        img.data[o + 3] = 255;
+      }
+      g.putImageData(img, 0, 0);
+      return c2.toDataURL('image/webp', 0.86);
+    }
+
+    async function save(dir, name, dataUrl) {
+      for (let tries = 0; tries < 90; tries++) { // übersteht einen Neustart des Dev-Servers
+        try {
+          const res = await fetch(`/__save?dir=${dir}&name=${name}`, { method: 'POST', body: dataUrl });
+          if (res.ok) return Math.round((await res.text()) / 1024);
+        } catch {}
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+      throw new Error(`Speichern fehlgeschlagen: ${dir}/${name}`);
+    }
+    const exists = async (url) => { try { return (await fetch(url, { method: 'HEAD' })).ok; } catch { return false; } };
+
+    // ---------- Ablauf ----------
+    window.pt = pt; window.scene = scene; window.counter = counter; window.traceHalves = traceHalves; window.prepareDrink = prepareDrink; window.frameCamera = frameCamera; window.develop = develop; window.save = save;
+    const start = performance.now();
+    addEventListener('unhandledrejection', (e) => fail(e.reason));
+    function fail(err) { // neuer WebGL-Kontext durch Neuladen; fertige Bilder bleiben, es geht beim nächsten weiter
+      const tries = +(sessionStorage.getItem('bake-retries') || 0) + 1;
+      sessionStorage.setItem('bake-retries', tries);
+      log(`${err?.message || err} → Neustart ${tries}`);
+      if (tries <= 12) setTimeout(() => location.reload(), 1500);
+      else { log('Zu viele Fehler, Abbruch.'); document.title = 'Abbruch'; }
+    }
+    try {
+      for (const id of IDS) {
+        const names = Array.from({ length: TEST ? 1 : FRAMES }, (_, i) => `${String(i).padStart(2, '0')}.webp`);
+        const dir = TEST ? 'bar-spin/test' : `bar-spin/${id}`;
+        const todo = [];
+        for (const [i, n] of names.entries()) if (TEST || !(await exists(`../assets/img/${dir}/${n}`))) todo.push(i);
+        if (!todo.length) { log(`${id}: schon fertig`); continue; }
+        const d = prepareDrink(id);
+        scene.add(d.group);
+        frameCamera(d);
+        const area = changingRect(d);
+        log(`${id}: Ausschnitt ${area.w} × ${area.h} ab ${area.x}, ${area.y}`);
+        // 1. Hintergrund und Theke einmal sehr sauber rechnen
+        d.group.rotation.y = YAW0[id] ?? 0.5;
+        const plate = await traceHalves(TEST ? SPP : PLATE_SPP, { x: 0, y: 0, w: W, h: H }, `${id} Hintergrund`);
+        // 2. je Drehung nur den Bereich, in dem sich etwas ändert
+        for (const i of todo) {
+          const t0 = performance.now();
+          d.group.rotation.y = (YAW0[id] ?? 0.5) + (i / FRAMES) * Math.PI * 2;
+          const A = plate.a.slice(), B = plate.b.slice();
+          if (i !== 0) insert(A, B, await traceHalves(SPP, area, `${id} Bild ${i + 1}/${FRAMES}`), area); // Bild 1 ist der Hintergrund selbst
+          const kb = await save(dir, TEST ? `${id}.webp` : names[i], develop(A, B));
+          sessionStorage.setItem('bake-retries', 0);
+          log(`${id}: Bild ${i + 1}/${names.length} gespeichert (${kb} KB, ${((performance.now() - t0) / 1000).toFixed(0)} s, gesamt ${((performance.now() - start) / 60000).toFixed(1)} min)`);
+        }
+        scene.remove(d.group);
+      }
+      log(`Fertig nach ${((performance.now() - start) / 60000).toFixed(1)} min`);
+      document.title = 'Fertig';
+    } catch (err) { fail(err); }
+  </script>
+</body>
+</html>

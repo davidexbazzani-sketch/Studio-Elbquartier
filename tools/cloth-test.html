@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stoff-Test (intern)</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f2efe9; font: 13px system-ui; }
+    #stage { position: fixed; inset: 0; }
+    #ui { position: fixed; left: 8px; top: 8px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 2; }
+    #ui button { font: inherit; padding: 6px 10px; border-radius: 99px; border: 1px solid #cbb; background: #fff; cursor: pointer; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <!-- Interne Testseite für das 3D-Leinentuch. Nicht hochladen. -->
+  <div id="stage"></div>
+  <div id="ui"></div>
+  <script type="module">
+    import { createCloth } from '../assets/js/3d/cloth.js';
+    const q = new URLSearchParams(location.search);
+    const cloth = createCloth({ container: document.getElementById('stage'), textureUrl: '../assets/img/boutique/leinen-textur.webp', reducedMotion: q.has('still') });
+    window.cloth = cloth;
+    await cloth.ready;
+    cloth.set({ color: '#d8c3a0', weight: 'mittel', label: ['Leinen · Sand', '190 g/m²'] });
+    const C = { ecru: '#e6dfd2', sand: '#cdb999', salbei: '#9fac94', rose: '#d4aa9c', terrakotta: '#b0664c', marine: '#2e3a4e' };
+    for (const [k, c] of Object.entries(C)) {
+      const b = document.createElement('button'); b.textContent = k; b.onclick = () => { cloth.set({ color: c }); cloth.poke(); };
+      document.getElementById('ui').appendChild(b);
+    }
+    for (const w of ['leicht', 'mittel', 'schwer']) {
+      const b = document.createElement('button'); b.textContent = w; b.onclick = () => cloth.set({ weight: w });
+      document.getElementById('ui').appendChild(b);
+    }
+  </script>
+</body>
+</html>

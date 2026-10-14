@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>FUNKL: Bilder rendern (intern)</title>
+  <style>html,body{margin:0;background:#888}#a,#b{width:900px;height:1200px;position:absolute;left:0;top:0}#b{width:1600px;height:1000px}</style>
+  <script type="importmap">{ "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }</script>
+</head>
+<body>
+<!-- Rendert die Shop-Dosen (transparent) und das Intro-Standbild nach assets/img/funkl/ (nur mit tools/dev-server.py). Nicht hochladen. -->
+<div id="a"></div><div id="b"></div>
+<script type="module">
+import { loadFonts } from '../assets/js/3d/can.js';
+import { createShowcase } from '../assets/js/3d/funkl-showcase.js';
+import { createHero } from '../assets/js/3d/funkl-hero.js';
+import { FLAVORS } from '../assets/js/3d/funkl-data.js';
+await loadFonts('../assets/fonts/');
+const save = (dir, name, url) => fetch(`/__save?dir=${dir}&name=${name}`, { method: 'POST', body: url });
+const sc = await createShowcase({ container: document.getElementById('a'), reducedMotion: true });
+for (let i = 0; i < FLAVORS.length; i++) {
+  await save('funkl', `dose-${FLAVORS[i].id}.webp`, sc.snapshotCan({ flavor: i, width: 600, height: 800 }));
+}
+const hero = await createHero({ container: document.getElementById('b'), reducedMotion: true, gsap: null });
+hero.play();
+for (const [name, w, h] of [['hero.webp', 1600, 1000], ['hero-hoch.webp', 780, 1400]]) await save('funkl', name, hero.snapshot({ width: w, height: h }));
+await save('funkl-test', 'zz-fertig.png', 'data:image/png;base64,AA==');
+</script>
+</body>
+</html>

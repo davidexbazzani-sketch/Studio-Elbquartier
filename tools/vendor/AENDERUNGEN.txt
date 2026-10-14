@@ -1,0 +1,18 @@
+Änderungen an den mitgelieferten Bibliotheken (nur für die Bildberechnung in tools/, nicht auf dem Server)
+
+three-gpu-pathtracer/src/materials/pathtracing/PhysicalPathTracingMaterial.js
+- Neuer Parameter sampleClamp: begrenzt die Helligkeit eines einzelnen Samples (Ausreißer, „Glühwürmchen“).
+
+three-gpu-pathtracer/src/core/PathTracingRenderer.js
+- Im Modus mit eigener Mischung (alpha) liefert "target" jetzt das zuletzt gemischte Bild.
+  Vorher kam abwechselnd ein um ein Sample älteres Bild zurück.
+
+three-gpu-pathtracer/src/shader/common/fresnel_functions.glsl.js,
+three-gpu-pathtracer/src/shader/bsdf/ggx_functions.glsl.js,
+three-gpu-pathtracer/src/shader/bsdf/bsdf_functions.glsl.js
+- pow() mit möglicherweise negativer Basis durch Multiplikation ersetzt bzw. die Basis auf ≥ 0 begrenzt.
+  Auf AMD-Grafik (Metal) liefert pow(x, y) für x < 0 NaN: Klarlack, glatte Oberflächen und Lichtbrechung wurden dort schwarz.
+
+three-gpu-pathtracer/src/core/utils/mergeGeometries.js
+- Vertexfarben mit drei Kanälen (RGB) werden jetzt richtig in die zusammengefasste Geometrie (RGBA) kopiert.
+  Vorher wurde in die Quelle statt ins Ziel geschrieben: Garnituren mit Vertexfarben erschienen weiß oder schwarz.

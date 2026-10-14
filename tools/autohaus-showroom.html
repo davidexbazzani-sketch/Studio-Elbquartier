@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Autohaus: Showroom-Test (intern)</title>
+  <style>html,body{margin:0;height:100%;background:#cfcdc8;font:12px system-ui}#s{position:fixed;inset:0}#ui{position:fixed;left:8px;top:8px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}#ui button{font:12px system-ui;padding:4px 8px}#log{position:fixed;left:8px;bottom:8px;z-index:2;background:#fff8;padding:4px;white-space:pre}</style>
+  <script type="importmap">{ "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }</script>
+</head>
+<body>
+<!-- Interne Testseite für den Showroom (?car=porsche|ferrari|g63&view=schraeg&q=high|low). Nicht hochladen. -->
+<div id="s"></div>
+<div id="ui"></div>
+<div id="log"></div>
+<script type="module">
+import { createShowroom } from '../assets/js/3d/showroom.js';
+import { CARS, ORDER } from '../assets/js/3d/cars.js';
+const q = new URLSearchParams(location.search);
+const log = (t) => { document.getElementById('log').textContent = t; };
+const t0 = performance.now();
+const sr = await createShowroom({ container: document.getElementById('s'), quality: q.get('q') || undefined, autoRotate: false });
+window.sr = sr;
+await sr.setCar(q.get('car') || 'porsche', { instant: true, paint: q.get('paint') || undefined });
+if (q.get('view')) sr.setView(q.get('view'));
+sr.lightsOn();
+if (document.visibilityState === 'visible') await sr.whenRendered();
+log(`bereit nach ${(performance.now() - t0) | 0} ms`);
+const ui = document.getElementById('ui');
+const btn = (t, fn) => { const b = document.createElement('button'); b.textContent = t; b.onclick = fn; ui.append(b); };
+for (const id of ORDER) btn(CARS[id].name, () => sr.setCar(id));
+for (const v of ['schraeg', 'front', 'seite', 'heck', 'oben']) btn(v, () => sr.setView(v));
+window.__ready = true;
+// ?bake : Ersatz- und Kartenbilder nach assets/img/autohaus/ (Bühne 1600×1000, Karten 1200×1020)
+if (q.has('bake')) {
+  for (const c of ['porsche', 'ferrari', 'g63']) {
+    await sr.setCar(c, { instant: true });
+    for (const [name, w, h] of [[c, 1600, 1000], ['karte-' + c, 1200, 1020]]) {
+      const url = sr.snapshot({ width: w, height: h, view: 'schraeg', type: 'image/webp', quality: 0.86 });
+      await fetch(`/__save?dir=autohaus&name=${name}.webp`, { method: 'POST', body: url });
+    }
+  }
+  await fetch('/__save?dir=autohaus-test&name=zz-fertig.png', { method: 'POST', body: 'data:image/png;base64,AA==' });
+}
+// ?shots=porsche,ferrari&views=schraeg,heck&tag=x : Standbilder rendern und nach assets/img/autohaus-test/ speichern
+if (q.get('shots')) {
+  const W = +(q.get('w') || 1440), H = +(q.get('h') || 900);
+  for (const c of q.get('shots').split(',')) {
+    await sr.setCar(c, { instant: true, paint: q.get('paint') || undefined });
+    if (q.get('hi')) { const THREE = await import('three'); const re = new RegExp(q.get('hi')); sr.scene.traverse((o) => { if (o.isMesh && o.material && re.test(o.material.name)) o.material = new THREE.MeshBasicMaterial({ color: 0xff00ff }); }); }
+    for (const v of (q.get('views') || 'schraeg').split(',')) {
+      const url = sr.snapshot({ width: W, height: H, view: v, type: 'image/jpeg', quality: 0.9 });
+      await fetch(`/__save?dir=autohaus-test&name=${c}-${v}${q.get('tag') ? '-' + q.get('tag') : ''}.jpg`, { method: 'POST', body: url });
+    }
+  }
+  await fetch('/__save?dir=autohaus-test&name=zz-fertig.png', { method: 'POST', body: 'data:image/png;base64,AA==' });
+  document.title = 'fertig';
+}
+</script>
+</body>
+</html>

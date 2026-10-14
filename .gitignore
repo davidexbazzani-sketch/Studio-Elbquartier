@@ -1,1 +1,29 @@
+# System und Werkzeuge
 .DS_Store
+.claude/
+__pycache__/
+Upload/
+
+# Große Arbeitsstände und heruntergeladene Originale (zu groß für GitHub bzw. nicht zur Weitergabe bestimmt)
+tools/wohnung/arbeit/
+tools/wohnung/quelle/
+tools/models/
+tools/hdri/*_8k.hdr
+tools/brillen/dl/
+tools/brillen/arbeit/
+tools/brillen/fotos/
+tools/blumen/arbeit/
+tools/blumen/fotos/
+tools/archiv/bilder-original/
+tools/archiv/immobilien-alt/
+Vorschau/
+
+# Testbilder
+assets/img/funkl-test/
+assets/img/autohaus-test/
+
+# Autohaus: nicht veröffentlicht (Rechte an Fahrzeugmodellen und Marken ungeklärt)
+beispiele/autohaus/
+assets/models/autos/
+assets/img/autohaus/
+assets/video/autohaus/

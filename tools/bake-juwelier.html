@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Bilder rendern: Juwelier (intern)</title>
+  <style>
+    body { margin: 0; font: 13px/1.5 system-ui, sans-serif; background: #fdfcfa; color: #333; }
+    #holder { width: 480px; height: 480px; border: 1px solid #ddd; margin: 12px; background: #fdfcfa; }
+    #log { margin: 12px; white-space: pre; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <!--
+    Rendert alle Bilder der Juwelier-Seite aus denselben 3D-Modellen wie der Live-Viewer
+    und speichert sie als WebP nach assets/img/juwelier/ (nur mit dem lokalen Dev-Server,
+    der POST /__save kennt). Nicht hochladen.
+  -->
+  <div id="holder"></div>
+  <div id="log">Rendere …</div>
+  <script type="module">
+    import { createViewer } from '../assets/js/3d/viewer.js';
+
+    const SS = 2; // Supersampling: doppelt so groß rendern, dann verkleinern
+    const logEl = document.getElementById('log');
+    const log = (t) => { logEl.textContent += '\n' + t; };
+
+    const v = await createViewer({
+      hdrUrl: '../assets/hdri/studio_small_09_1k.hdr',
+      preserveDrawingBuffer: true, autoRotate: false, bounces: 6, pixelRatioCap: 1,
+    });
+    v.mount(document.getElementById('holder'));
+
+    async function shot(name, { piece, metal, w, h, yaw, pitch, zoom = 1, offsetY = 0 }) {
+      v.setPiece(piece, { metal });
+      const big = await v.snapshot({ width: w * SS, height: h * SS, yaw, pitch, zoom, offsetY, type: 'image/png' });
+      const img = new Image();
+      img.src = big;
+      await img.decode();
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const g = c.getContext('2d');
+      g.imageSmoothingQuality = 'high';
+      g.drawImage(img, 0, 0, w, h);
+      const webp = c.toDataURL('image/webp', 0.86);
+      const res = await fetch(`/__save?dir=juwelier&name=${name}.webp`, { method: 'POST', body: webp });
+      log(`${name}.webp  ${w}×${h}  ${Math.round((await res.text()) / 1024)} KB`);
+    }
+
+    const SHOTS = {
+      // Hero (Poster vor dem 3D-Laden und Ersatz für schwache Geräte), je Metall
+      'elbe-gelbgold': { piece: 'elbe', metal: 'gelbgold', w: 1200, h: 1200 },
+      'elbe-weissgold': { piece: 'elbe', metal: 'weissgold', w: 1200, h: 1200 },
+      'elbe-rosegold': { piece: 'elbe', metal: 'rosegold', w: 1200, h: 1200 },
+      // Kollektion (Hochformat 4:5)
+      'karte-elbe': { piece: 'elbe', metal: 'gelbgold', w: 880, h: 1100, yaw: -0.25, pitch: 0.22 },
+      'karte-speicherstadt': { piece: 'speicherstadt', metal: 'weissgold', w: 880, h: 1100 },
+      'karte-hafenlicht': { piece: 'hafenlicht', metal: 'weissgold', w: 880, h: 1100 },
+      'karte-alster': { piece: 'alster', metal: 'weissgold', w: 880, h: 1100 },
+      'karte-moewe': { piece: 'moewe', metal: 'rosegold', w: 880, h: 1100 },
+      'karte-blankenese': { piece: 'blankenese', metal: 'gelbgold', w: 880, h: 1100 },
+      // Details (Querformat)
+      'detail-brillant': { piece: 'elbe', metal: 'gelbgold', w: 1500, h: 1000, yaw: 0.25, pitch: 0.62, zoom: 0.36, offsetY: -0.13 },
+      'detail-krappen': { piece: 'elbe', metal: 'gelbgold', w: 1500, h: 1000, yaw: 0.95, pitch: 0.04, zoom: 0.4, offsetY: -0.16 },
+      'detail-gold': { piece: 'trio', w: 1500, h: 1000, zoom: 0.68 },
+      // Atelier
+      'atelier-rosegold': { piece: 'elbe', metal: 'rosegold', w: 1000, h: 1250, yaw: 2.3, pitch: 0.38, zoom: 0.92 },
+    };
+
+    const only = new URLSearchParams(location.search).get('only');
+    for (const [name, s] of Object.entries(SHOTS)) {
+      if (only && !only.split(',').includes(name)) continue;
+      await shot(name, s);
+    }
+    log('Fertig.');
+    document.title = 'Fertig';
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viewer-Test (intern)</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #fdfcfa; font: 13px/1.4 system-ui, sans-serif; }
+    #stage { position: fixed; inset: 0; }
+    #bar { position: fixed; left: 8px; top: 8px; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap; }
+    #bar button, #bar select { padding: 4px 8px; }
+    #log { position: fixed; left: 8px; bottom: 8px; z-index: 2; color: #777; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="bar">
+    <select id="piece">
+      <option>elbe</option><option>speicherstadt</option><option>hafenlicht</option>
+      <option>alster</option><option>moewe</option><option>blankenese</option>
+    </select>
+    <select id="metal"><option>gelbgold</option><option>weissgold</option><option>rosegold</option></select>
+    <button id="close">Stein</button>
+    <button id="spin">Auto</button>
+  </div>
+  <p id="log"></p>
+  <script type="module">
+    import { createViewer } from '../assets/js/3d/viewer.js';
+    const q = new URLSearchParams(location.search);
+    const hdr = q.get('hdr') || 'studio_small_09';
+    const t0 = performance.now();
+    const v = await createViewer({ hdrUrl: `../assets/hdri/${hdr}_1k.hdr`, autoRotate: q.has('auto'), lift: +(q.get('lift') ?? 0.45), top: +(q.get('top') ?? 3), envRotation: +(q.get('rot') ?? Math.PI) });
+    window.viewer = v;
+    v.mount(document.getElementById('stage'));
+    const piece = document.getElementById('piece'), metal = document.getElementById('metal');
+    piece.value = q.get('piece') || 'elbe';
+    metal.value = q.get('metal') || 'gelbgold';
+    v.setPiece(piece.value, { metal: metal.value });
+    await v.whenRendered();
+    document.getElementById('log').textContent = `bereit nach ${Math.round(performance.now() - t0)} ms · HDRI ${hdr}`;
+    piece.onchange = () => v.setPiece(piece.value, { metal: metal.value });
+    metal.onchange = () => v.setMetal(metal.value);
+    document.getElementById('close').onclick = () => v.toggleCloseup();
+    document.getElementById('spin').onclick = () => v.setAutoRotate(!v.autoRotate);
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+Auftrag: 100 Visitenkarten mit Softtouch-Oberfläche drucken lassen (Studio Elbquartier)
+
+Bitte lies den ganzen Auftrag, bevor du anfängst. Ich bin während der Aufgabe erreichbar.
+
+WORUM ES GEHT
+Wir sind Studio Elbquartier (Webdesign und Softwarelösungen). Wir brauchen 100 hochwertige Visitenkarten. Das Wichtigste ist die Haptik: Die Karte soll sich samtig-weich anfühlen, wie die matte Soft-Touch-Oberfläche an Apple-Produkten. In Druckereien heißt das meist „Softtouch-Folie“, „Samtfolie“, „Soft-Touch-Kaschierung“ oder „Velvet“.
+
+DRUCKDATEN (fertig, bitte nicht verändern)
+- Beide Seiten in einer Datei (Seite 1 = Vorderseite, Seite 2 = Rückseite):
+  /Users/test1/Documents/Projekte/Studio Elbquatier/Druckdaten/visitenkarte-vorder-und-rueckseite.pdf
+- Einzeln, falls die Druckerei zwei Dateien will:
+  /Users/test1/Documents/Projekte/Studio Elbquatier/Druckdaten/visitenkarte-vorderseite.pdf
+  /Users/test1/Documents/Projekte/Studio Elbquatier/Druckdaten/visitenkarte-rueckseite.pdf
+- Datenformat 91 × 61 mm (Endformat 85 × 55 mm plus 3 mm Beschnitt rundum), Querformat, ohne Schnittmarken, Vektor-PDF, Schriften eingebettet, Farben in RGB.
+- So sehen die Seiten aus: Vorderseite hell cremefarben mit Logo, „Studio Elbquartier“ in der Mitte und darunter „Webdesign & Softwarelösungen“. Rückseite hell blaugrau mit Logo oben links, einer Wellenlinie und den Kontaktdaten unten links.
+
+PRODUKT
+- Visitenkarten, 85 × 55 mm, Querformat, beidseitig farbig bedruckt (4/4)
+- Menge: 100 Stück. Gibt es 100 nicht, nimm die kleinste mögliche Menge und sag mir, welche das ist.
+- Material: mindestens 350 g/m², am liebsten 400 bis 450 g/m², matt gestrichen (z. B. Bilderdruck matt)
+- Veredelung: Softtouch-Folie auf BEIDEN Seiten. Das ist der Hauptgrund für die Bestellung; eine Druckerei ohne echte Softtouch-Folie kommt nicht in Frage.
+- Nicht dazubestellen: Goldprägung/Heißfolie, Spot-Lack, runde Ecken, Farbschnitt. Die Aufpreise für Goldprägung und Farbschnitt nur als Info nennen.
+- Normale Lieferung nach Deutschland, kein Express.
+
+ABLAUF
+1. Recherche: Suche 3 bis 4 deutsche Online-Druckereien, die genau das anbieten. Mögliche Kandidaten sind Flyeralarm, WIRmachenDRUCK, Onlineprinters und MOO; prüfe selbst, ob es dort wirklich passt. Notiere für jede:
+   - Gesamtpreis für 100 Stück inklusive MwSt. und Versand
+   - Papier und Grammatur
+   - ob die Softtouch-Folie auf beiden Seiten ist
+   - Lieferzeit
+   - ob es ein kostenloses Musterset mit Softtouch gibt
+   - Kundenbewertung, falls angezeigt (z. B. Trusted Shops)
+   Zeig mir eine kurze Tabelle mit deiner Empfehlung und warte auf mein OK.
+2. Nach meinem OK: Konfiguriere das Produkt bei der gewählten Druckerei genau wie oben und lade die Druckdaten hoch. Wenn du keine Dateien hochladen kannst, sag Bescheid, sobald das Upload-Feld offen ist; dann wähle ich die Dateien selbst aus.
+3. Prüfe die Vorschau bzw. den Datencheck der Druckerei:
+   - Vorderseite zeigt den Namen, Rückseite die Kontaktdaten (nicht vertauscht)
+   - Querformat, nichts abgeschnitten
+   - Hintergrundfarbe reicht bis zum Rand, keine weißen Streifen
+   Fragt die Druckerei, ob RGB-Farben automatisch umgewandelt werden sollen, wähle „automatisch umwandeln“. Zeigt der Datencheck andere Warnungen (z. B. zu Schriften oder Farben) oder lehnt er die Datei ab: Nichts selbst reparieren und nicht im Online-Designer ändern, sondern mir die Meldung zeigen.
+4. Leg das Produkt in den Warenkorb und HALTE VOR DER KASSE AN. Zeig mir eine Zusammenfassung: Druckerei, Produkt, Material, Veredelung, Menge, Preis inklusive Versand, voraussichtliches Lieferdatum.
+
+REGELN
+- Kein Kundenkonto anlegen, nicht einloggen, keine Adresse und keine Zahlungsdaten eingeben. Login, Adresse und Bezahlung mache ich selbst.
+- Nichts bestellen oder kaufen ohne mein ausdrückliches OK.
+- Cookie-Banner: nur notwendige Cookies. Keinen Newsletter, keine kostenpflichtigen Extras (Express, Profi-Datencheck, Versicherung).
+- Bei einer Bot-Prüfung oder einem CAPTCHA: Sag mir Bescheid, das löse ich selbst.

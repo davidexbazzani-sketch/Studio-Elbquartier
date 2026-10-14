@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blumen-Test (intern)</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f4f1ea; font: 13px system-ui; }
+    #stage { position: fixed; inset: 0; }
+    #log { position: fixed; left: 8px; bottom: 8px; color: #777; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <p id="log"></p>
+  <script type="module">
+    import * as THREE from 'three';
+    import { createStage } from '../assets/js/3d/stage.js';
+    import { flowerGeometry, createFlowerMaterial } from '../assets/js/3d/flowers.js';
+
+    const q = new URLSearchParams(location.search);
+    const only = q.get('type');
+    const stage = createStage({ container: document.getElementById('stage'), autoRotate: q.has('auto'), pitch: +(q.get('pitch') ?? 0.5), shadows: true });
+    window.stage = stage;
+    const mat = createFlowerMaterial();
+    const types = only ? [only] : ['rose', 'tulip', 'peony', 'eucalyptus', 'gypsophila', 'lavender'];
+    const palettes = {
+      rose: { base: '#c94f6e', tip: '#ec9db0', edge: '#f5c9d3' },
+      tulip: { base: '#e2708c', tip: '#f6b6c5' },
+      peony: { base: '#e7a1b0', tip: '#f8d9de', edge: '#fdf0f2' },
+    };
+    const t0 = performance.now();
+    let tris = 0;
+    types.forEach((t, i) => {
+      const geo = flowerGeometry(t, palettes[t] || {}, 0);
+      tris += geo.attributes.position.count / 3;
+      const m = new THREE.Mesh(geo, mat);
+      m.castShadow = m.receiveShadow = true;
+      m.position.x = (i - (types.length - 1) / 2) * 0.62;
+      stage.pivot.add(m);
+    });
+    stage.setFrame(new THREE.Vector3(0, 0.18, 0), only ? 0.32 : types.length * 0.33);
+    await stage.whenRendered();
+    document.getElementById('log').textContent = `${Math.round(performance.now() - t0)} ms · ${Math.round(tris)} Dreiecke`;
+  </script>
+</body>
+</html>
