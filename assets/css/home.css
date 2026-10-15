@@ -278,6 +278,36 @@
 .person__portrait--rose { --portrait-bg: linear-gradient(160deg, #f6e8e3, var(--c-rose)); --portrait-ink: var(--c-rose-deep); }
 .person__portrait--sage { --portrait-bg: linear-gradient(160deg, #eef1e9, var(--c-sage)); --portrait-ink: var(--c-sage-deep); }
 .person__portrait--elbe { --portrait-bg: linear-gradient(160deg, #eef2f4, var(--c-elbe)); --portrait-ink: var(--c-elbe-deep); }
+/* Echte Fotos statt Initialen: Bild füllt die Karte, Lichtkreis und Wasserlinien entfallen */
+.person__portrait--photo { background: var(--c-line); }
+.person__portrait--photo::before, .person__portrait--photo::after { content: none; }
+.person__portrait--photo img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 22%;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.person:hover .person__portrait--photo img { transform: scale(1.035); }
+
+/* Gruppenbild über den Porträts */
+.team-photo {
+  position: relative; margin: 0 0 var(--space-8);
+  border-radius: var(--radius-l); overflow: hidden;
+  aspect-ratio: 2048 / 1360; background: var(--c-line);
+  box-shadow: 0 30px 60px -40px rgba(30, 40, 50, 0.45), inset 0 0 0 1px var(--c-line);
+}
+.team-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.team-photo figcaption {
+  position: absolute; left: var(--space-4); bottom: var(--space-4);
+  padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-size: var(--fs-small); color: var(--c-ink);
+}
+@media (max-width: 639px) {
+  .team-photo { aspect-ratio: 4 / 3; margin-bottom: var(--space-7); }
+  .team-photo img { object-position: 50% 30%; }
+  .team-photo figcaption { left: var(--space-3); bottom: var(--space-3); }
+}
+
 .person__role { font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--c-ink-3); margin-bottom: var(--space-1); }
 
 /* ---------- Kontakt ---------- */
