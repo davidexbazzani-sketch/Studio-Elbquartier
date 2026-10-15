@@ -96,6 +96,10 @@ Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenk
 
 ## Hochladen (netcup)
 
+**Seit 15.10.2026 live über Git:** netcup holt die Website direkt aus diesem GitHub-Repository („Bereitstellung über Git“ im Webhosting-Panel, Verzweigung `main`, automatisch nach `/studio-elbquartier.de/httpdocs`). Für ein Update: Änderungen committen und pushen, dann im netcup-Panel unter Websites & Domains › Git › „Jetzt Pull ausführen“ klicken. Interne Ordner (`tools/`, `Druckdaten/`, README, CREDITS) liegen dabei mit auf dem Server, die `.htaccess` liefert sie aber nicht aus (404). SSL: Let's Encrypt für Domain und www, verlängert sich automatisch. PHP für das Kontaktformular: mindestens 8.1 (PHP-Einstellungen der Domain).
+
+Der folgende manuelle Weg bleibt als Alternative:
+
 Am einfachsten auf dem Mac: `tools/paket.sh` ausführen. Das Skript legt in `Upload/` genau die Dateien ab, die auf den Server gehören, und prüft, dass nichts Internes dabei ist. Den **Inhalt** von `Upload/` per FTP oder netcup-Dateimanager in das Web-Verzeichnis der Domain laden.
 
 Ohne das Skript (z. B. unter Windows): alles hochladen **außer** `tools/`, `Druckdaten/`, `Vorschau/`, `Upload/`, `.git/`, `.gitignore`, `.claude/`, `README.md`, `CREDITS.md`, `assets/img/funkl-test/` und `assets/img/autohaus-test/`.
