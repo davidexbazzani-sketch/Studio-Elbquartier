@@ -34,8 +34,9 @@ function initMotion() {
   // Hero: ruhiges Einblenden, Titel Buchstabe für Buchstabe
   const title = $('.hero__title');
   title.setAttribute('aria-label', title.textContent);
-  title.innerHTML = [...title.textContent].map((ch) =>
-    ch === ' ' ? ' ' : `<span class="char" style="display:inline-block">${ch}</span>`).join('');
+  // Buchstaben einzeln animieren, aber Wörter zusammenhalten (sonst bricht „Elbquartier“ auf dem Handy mitten im Wort um)
+  title.innerHTML = title.textContent.split(' ').map((word) => `<span style="display:inline-block;white-space:nowrap">${
+    [...word].map((ch) => `<span class="char" style="display:inline-block">${ch}</span>`).join('')}</span>`).join(' ');
   const tl = gsap.timeline({ delay: 0.15 });
   tl.from('[data-hero]', { opacity: 0, y: 24, duration: 1.2, stagger: 0.09 })
     .from('.hero__title .char', { opacity: 0, yPercent: 40, rotateX: -50, duration: 1.1, stagger: 0.025 }, 0.15);
@@ -43,6 +44,11 @@ function initMotion() {
   // Hero gleitet beim Scrollen sanft zurück
   gsap.to('.hero__inner', {
     yPercent: -12, opacity: 0.2, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+  });
+  // Die schwebenden Beispiel-Fenster gleiten beim Scrollen auseinander und verblassen
+  gsap.to('.hero__cards', {
+    scale: 1.12, yPercent: -10, opacity: 0, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
   gsap.to('.hero__aura', {
@@ -64,6 +70,24 @@ function initMotion() {
   });
 }
 initMotion();
+
+/* ---------- Hero: Beispiel-Fenster folgen der Maus mit Tiefe ---------- */
+const heroCards = $('.hero__cards');
+if (heroCards && !reducedMotion && matchMedia('(pointer: fine)').matches) {
+  let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+  const step = () => {
+    x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+    heroCards.style.setProperty('--mx', x.toFixed(2));
+    heroCards.style.setProperty('--my', y.toFixed(2));
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.05 ? requestAnimationFrame(step) : 0;
+  };
+  addEventListener('pointermove', (e) => {
+    if (window.scrollY > innerHeight) return; // nur solange das Startbild zu sehen ist
+    tx = (e.clientX / innerWidth - 0.5) * -36;
+    ty = (e.clientY / innerHeight - 0.5) * -28;
+    if (!raf) raf = requestAnimationFrame(step);
+  }, { passive: true });
+}
 
 /* ---------- Drehscheibe ---------- */
 const stage = $('#stage');

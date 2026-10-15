@@ -445,7 +445,7 @@ textarea.field__input { min-height: 140px; resize: vertical; line-height: 1.5; }
 /* Footer */
 .footer { padding-block: var(--space-8) var(--space-7); border-top: 1px solid var(--c-line); font-size: var(--fs-micro); color: var(--c-ink-3); }
 .footer__inner { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); justify-content: space-between; align-items: center; }
-.footer nav { display: flex; gap: var(--space-5); }
+.footer nav { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
 .footer a:hover { color: var(--c-ink); }
 
 /* Trennlinie */

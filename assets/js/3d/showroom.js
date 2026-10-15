@@ -19,7 +19,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+import { toCreasedNormals, mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { CARS } from './cars.js';
 
 const { clamp, lerp, damp } = THREE.MathUtils;
@@ -636,9 +636,56 @@ export async function createShowroom({
     }
 
     if (cfg.paintSoften) paintMat.userData.soften = cfg.paintSoften; // Klarlack minimal weicher bei unebenen Modellen
-    const car = { id, cfg, holder, root, meshes, box, paintMat, shadow: null, paint: null };
+    const merged = mergeByMaterial(root, meshes);
+    const car = { id, cfg, holder, root, meshes: merged, box, paintMat, shadow: null, paint: null };
     setPaint(car, cfg.paint);
     return car;
+  }
+
+  /**
+   * Teile eines Autos mit demselben Material zu einem Mesh verschmelzen (Lage relativ zu root eingebacken).
+   * Die Modelle bestehen aus über 100 Teilen; Auto und Spiegelung brauchten so über 200 Zeichenbefehle pro Bild,
+   * was Handys stark bremst. Materialien bleiben dieselben Objekte, Lackwechsel und Antippen funktionieren weiter.
+   */
+  function mergeByMaterial(root, meshes) {
+    root.updateMatrixWorld(true);
+    const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
+    const rel = new THREE.Matrix4();
+    const shown = (o) => { for (let p = o; p && p !== root; p = p.parent) if (!p.visible) return false; return true; };
+    const toFloat = (g) => {
+      const out = new THREE.BufferGeometry();
+      for (const [name, a] of Object.entries(g.attributes)) {
+        const arr = new Float32Array(a.count * a.itemSize);
+        for (let i = 0; i < a.count; i++) for (let c = 0; c < a.itemSize; c++) arr[i * a.itemSize + c] = a.getComponent(i, c);
+        out.setAttribute(name, new THREE.BufferAttribute(arr, a.itemSize));
+      }
+      if (g.index) out.setIndex(new THREE.BufferAttribute(g.index.array.slice(), 1));
+      return out;
+    };
+    const groups = new Map(), keep = [];
+    for (const m of meshes) {
+      const g = m.geometry;
+      rel.multiplyMatrices(inv, m.matrixWorld);
+      if (!shown(m) || Array.isArray(m.material) || m.morphTargetInfluences || g.groups.length > 1 || rel.determinant() < 0) { keep.push(m); continue; }
+      const key = [m.material.uuid, m.castShadow, m.receiveShadow, m.renderOrder, g.index ? 1 : 0, Object.keys(g.attributes).sort().join()].join('|');
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(m);
+    }
+    const result = [...keep];
+    for (const list of groups.values()) {
+      if (list.length < 2) { result.push(...list); continue; }
+      const geos = list.map((m) => toFloat(m.geometry).applyMatrix4(rel.multiplyMatrices(inv, m.matrixWorld)));
+      const geo = mergeGeometries(geos, false);
+      geos.forEach((g) => g.dispose());
+      if (!geo) { result.push(...list); continue; }
+      const first = list[0];
+      const mesh = new THREE.Mesh(geo, first.material);
+      mesh.castShadow = first.castShadow; mesh.receiveShadow = first.receiveShadow; mesh.renderOrder = first.renderOrder;
+      list.forEach((m) => m.parent?.remove(m));
+      root.add(mesh);
+      result.push(mesh);
+    }
+    return result;
   }
 
   function setPaint(car, paintId) {
@@ -741,6 +788,23 @@ export async function createShowroom({
       root.traverse((o) => [].concat(o.material || []).forEach((m) => {
         for (const v of Object.values(m)) if (v?.isTexture && !v.isRenderTargetTexture) tex.add(v);
       }));
+      // Handys (Stufe „low“): Texturen auf höchstens 1024 px verkleinern. Die Modelle bringen ~17 Texturen à 2048 px mit
+      // (rund 350 MB Grafikspeicher je Auto, jede braucht beim Hochladen spürbar Zeit); auf dem Handydisplay sieht man keinen Unterschied.
+      if (!high) {
+        const done = new Set();
+        await Promise.all([...tex].map(async (t) => {
+          const img = t.image, MAX = 1024;
+          if (!img || done.has(t.source) || !(img.width > MAX || img.height > MAX) || !window.createImageBitmap) return;
+          done.add(t.source);
+          const k = MAX / Math.max(img.width, img.height);
+          try {
+            const bmp = await createImageBitmap(img, { resizeWidth: Math.round(img.width * k), resizeHeight: Math.round(img.height * k), resizeQuality: 'high' });
+            t.image = bmp;
+            t.needsUpdate = true;
+            img.close?.();
+          } catch (_) { /* dann eben in voller Größe */ }
+        }));
+      }
       for (const t of tex) { renderer.initTexture(t); await new Promise((r) => setTimeout(r, 0)); }
       // Spiegelung: eigener Durchgang in den Zwischenspeicher mit gespiegelter Umgebung (eigene Shader-Varianten)
       world.scale.y = -1; floor.visible = false; scene.environment = envMirror;

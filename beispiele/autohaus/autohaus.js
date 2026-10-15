@@ -171,12 +171,13 @@ renderInfo();
 renderPaints();
 const cap = can3D();
 if (cap.ok) {
-  // erst laden, wenn der Showroom in die Nähe kommt (das Intro bleibt flüssig)
+  // erst laden, wenn der Showroom kurz vor dem Bildschirm ist (vorher lief das Laden beim ersten Scrollen
+  // mitten im Intro an und ließ Film und Seite ruckeln); bis dahin steht das Standbild im Showroom
   const near = new IntersectionObserver(([e]) => {
     if (!e.isIntersecting) return;
     near.disconnect();
-    start3D();
-  }, { rootMargin: '120% 0px' });
+    if (window.requestIdleCallback) requestIdleCallback(() => start3D(), { timeout: 800 }); else start3D();
+  }, { rootMargin: '25% 0px' });
   afterInteraction(() => near.observe(stage)); // und erst, wenn jemand die Seite bedient
 } else {
   $('#load3d-why').textContent = cap.why;
