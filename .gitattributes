@@ -1,0 +1,12 @@
+# Binärdateien nie als Text behandeln (unter Windows würden sonst Zeilenenden in HDR-Dateien umgeschrieben)
+*.hdr  binary
+*.glb  binary
+*.bin  binary
+*.webp binary
+*.jpg  binary
+*.png  binary
+*.pdf  binary
+*.mp4  binary
+*.woff2 binary
+*.wasm binary
+*.task binary
