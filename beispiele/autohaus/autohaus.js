@@ -1,4 +1,4 @@
-import { can3D, reducedMotion } from '../../assets/js/capability.js';
+import { afterInteraction, can3D, reducedMotion } from '../../assets/js/capability.js';
 import { CARS, ORDER } from '../../assets/js/3d/cars.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -177,7 +177,7 @@ if (cap.ok) {
     near.disconnect();
     start3D();
   }, { rootMargin: '120% 0px' });
-  near.observe(stage);
+  afterInteraction(() => near.observe(stage)); // und erst, wenn jemand die Seite bedient
 } else {
   $('#load3d-why').textContent = cap.why;
   $('#load3d').hidden = false;

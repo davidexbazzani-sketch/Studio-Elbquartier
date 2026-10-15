@@ -1,4 +1,4 @@
-import { can3D, reducedMotion } from '../../assets/js/capability.js';
+import { afterInteraction, can3D, reducedMotion } from '../../assets/js/capability.js';
 import { FLAVORS } from '../../assets/js/3d/funkl-data.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -252,7 +252,7 @@ $$('[data-panel]').forEach((p) => panelIO.observe(p));
 if (cap.ok) {
   startHero();
   const near = new IntersectionObserver(([e]) => { if (!e.isIntersecting) return; near.disconnect(); startShowcase(); }, { rootMargin: '100% 0px' });
-  near.observe($('#sorten'));
+  afterInteraction(() => near.observe($('#sorten'))); // erst, wenn jemand die Seite bedient
 } else {
   $('#wipe-hint').hidden = true;
   if (motion) logoTimeline();

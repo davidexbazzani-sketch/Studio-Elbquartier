@@ -96,7 +96,9 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
   hemi.intensity = 0.6;
 
   // ---------- Gitter ----------
-  const W = 0.62, H = 0.84, NX = 34, NY = 46, N = NX * NY;
+  // Auf Handys ein gröberes Gitter: rund halb so viel Rechenarbeit, Greifen, Ziehen und Wind bleiben gleich
+  const LITE = matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+  const W = 0.62, H = 0.84, NX = LITE ? 25 : 34, NY = LITE ? 34 : 46, N = NX * NY;
   const WALL = -0.07;
   const pos = new Float32Array(N * 3), prev = new Float32Array(N * 3), rest = new Float32Array(N * 3);
   const inv = new Float32Array(N); // 1 / Masse, 0 = festgehalten
@@ -222,7 +224,7 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
       mat.bumpMap = t;
       mat.bumpScale = 1.2;
       mat.needsUpdate = true;
-      stage.kick();
+      stage.prepare(); // neue Shader-Variante (mit Struktur) erst im Hintergrund übersetzen
       res();
     };
     img.onerror = () => res();
@@ -234,6 +236,7 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
   let time = 0;
   const G = -9.81;
   const nrm = geo.attributes.normal;
+  const nrmA = nrm.array; // direkt lesen statt getX/getY/getZ (spart in der innersten Schleife spürbar Zeit)
 
   function step(h) {
     time += h;
@@ -246,8 +249,9 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
       const x = pos[o], y = pos[o + 1], z = pos[o + 2];
       const wz = gust * (0.6 + 0.4 * Math.sin(x * 9 + time * 1.7) * Math.cos(y * 7 - time * 1.3));
       const wx = gust * 0.25 * Math.sin(y * 5 + time * 0.9);
-      const dot = nrm.getX(k) * wx + nrm.getZ(k) * wz; // Wind drückt entlang der Flächennormale
-      const ax = nrm.getX(k) * dot, ay = nrm.getY(k) * dot + G, az = nrm.getZ(k) * dot;
+      const nx = nrmA[o], ny = nrmA[o + 1], nz = nrmA[o + 2];
+      const dot = nx * wx + nz * wz; // Wind drückt entlang der Flächennormale
+      const ax = nx * dot, ay = ny * dot + G, az = nz * dot;
       const vx = (x - prev[o]) * damp, vy = (y - prev[o + 1]) * damp, vz = (z - prev[o + 2]) * damp;
       prev[o] = x; prev[o + 1] = y; prev[o + 2] = z;
       pos[o] = x + vx + ax * h * h;
@@ -343,11 +347,16 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
   canvas.addEventListener('pointercancel', release); // z. B. wenn der Finger die Seite senkrecht scrollt
 
   // ---------- Ablauf ----------
-  let acc = 0, still = 0;
+  // Zeitbudget pro Bild: Auf langsamen Handys rechnet das Tuch lieber etwas langsamer, als dass die Seite ruckelt.
+  // (Sonst schaukelt es sich auf: ein langsames Bild verlangt im nächsten noch mehr Rechenschritte.)
+  let acc = 0, still = 0, stepMs = 1;
   stage.onFrame((dt) => {
-    acc += Math.min(dt, 1 / 20);
+    acc = Math.min(acc + Math.min(dt, 1 / 20), 1 / 30);
+    const maxSteps = Math.max(1, Math.min(4, Math.floor(7 / stepMs)));
     let n = 0;
-    while (acc >= 1 / 120 && n < 4) { step(1 / 120); acc -= 1 / 120; n++; }
+    const t0 = performance.now();
+    while (acc >= 1 / 120 && n < maxSteps) { step(1 / 120); acc -= 1 / 120; n++; }
+    if (n) stepMs = stepMs * 0.8 + ((performance.now() - t0) / n) * 0.2;
     geo.attributes.position.needsUpdate = true;
     geo.computeVertexNormals();
     // ohne Wind und ohne Greifen kommt das Tuch zur Ruhe: dann nicht weiter rechnen
@@ -372,12 +381,21 @@ export function createCloth({ container, reducedMotion = false, textureUrl, pres
     stage.kick();
   }
 
-  settle(reducedMotion ? 600 : 240);
-  geo.computeVertexNormals();
+  // Einschwingen in kleinen Portionen, damit die Seite dabei bedienbar bleibt (am Stück blockierte es
+  // auf Handys über eine Sekunde). Das Tuch wird erst gezeigt, wenn ready erfüllt ist.
+  const settled = (async () => {
+    const total = reducedMotion ? 600 : 240;
+    for (let i = 0; i < total;) {
+      const t0 = performance.now();
+      do { step(1 / 120); i++; } while (i < total && performance.now() - t0 < 8);
+      await new Promise((r) => setTimeout(r, 0));
+    }
+    geo.computeVertexNormals();
+  })();
 
   return {
     canvas,
-    ready,
+    ready: Promise.all([ready, settled]).then(() => {}),
     set,
     whenRendered: stage.whenRendered,
     /** Standbild (für Ersatzbilder ohne 3D). */

@@ -69,7 +69,7 @@ export function createStage({
   if (shadows) {
     // weiche Schatten vom Hauptlicht: Objekte werfen Schatten aufeinander
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap; // PCFSoft gibt es in three r186 nicht mehr (wird beim ersten Bild umgestellt, vorab übersetzte Shader passten dann nicht)
     key.castShadow = true;
     const size = window.innerWidth < 768 ? 1024 : 2048;
     key.shadow.mapSize.set(size, size);
@@ -107,7 +107,24 @@ export function createStage({
     camera.lookAt(target);
   }
 
+  // Vor dem ersten Bild die Shader im Hintergrund übersetzen; sonst blockiert das erste Bild auf Handys
+  // die Seite für eine bis mehrere Sekunden (Scrollen hakt).
+  let warm = !renderer.compileAsync, warmAgain = false;
   function frame(now) {
+    if (!warm) {
+      warm = 'pending';
+      running = false;
+      placeCamera();
+      renderer.compileAsync(scene, camera).catch(() => {}).finally(() => {
+        warm = warmAgain ? false : true; // Material hat sich währenddessen geändert: noch einmal
+        warmAgain = false;
+        // auf jeden Fall ein Bild zeichnen (wie früher das erste Bild): manche Seiten blenden die 3D-Ansicht
+        // erst nach dem ersten Bild ein (whenRendered), vorher gilt sie als unsichtbar
+        kick(true);
+      });
+      return;
+    }
+    if (warm === 'pending') { running = false; return; }
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
     if (auto && !drag && now - lastInteract > 3500) view.yawT += dt * spin;
@@ -125,8 +142,8 @@ export function createStage({
     if (visible && (moving || auto || drag)) raf = requestAnimationFrame(frame);
     else running = false;
   }
-  function kick() {
-    if (running || !visible) return;
+  function kick(force = false) {
+    if (running || (!visible && !force)) return;
     running = true;
     last = performance.now();
     raf = requestAnimationFrame(frame);
@@ -194,7 +211,13 @@ export function createStage({
     renderer, scene, camera, pivot, canvas, ready,
     lights: { hemi, key, rim, fill },
     setFrame,
-    kick,
+    kick: () => kick(),
+    /** Nach Material-Änderungen (z. B. nachgeladene Textur): Shader erst im Hintergrund übersetzen, dann zeichnen. */
+    prepare: () => {
+      if (warm === 'pending') warmAgain = true;
+      else if (renderer.compileAsync) warm = false;
+      kick();
+    },
     onFrame: (fn) => { hooks.add(fn); kick(); return () => hooks.delete(fn); },
     onBeforeRender: (fn) => { late.add(fn); return () => late.delete(fn); },
     whenRendered: () => new Promise((res) => { waiters.push(res); kick(); }),

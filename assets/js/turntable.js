@@ -5,6 +5,9 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { SHOPS } from './shops.js';
+import { mergeStatic } from './3d/merge-static.js';
+
+const yieldToMain = () => new Promise((r) => (window.scheduler?.yield ? scheduler.yield().then(r) : setTimeout(r, 0)));
 
 const TAU = Math.PI * 2;
 const STEP = TAU / SHOPS.length;
@@ -18,7 +21,13 @@ const std = (color, opts = {}) =>
 const GOLD = new THREE.MeshStandardMaterial({ color: '#e6c78c', metalness: 1, roughness: 0.2 });
 const SILVER = new THREE.MeshStandardMaterial({ color: '#e7e4df', metalness: 1, roughness: 0.16 });
 const PORCELAIN = new THREE.MeshPhysicalMaterial({ color: '#fffdf8', roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.1 });
-const GLASS = new THREE.MeshPhysicalMaterial({
+// Glas: Auf Handys ohne echte Lichtbrechung (transmission). Die braucht pro Bild einen zweiten Durchgang durch
+// die ganze Szene und eigene Shader; bei den kleinen Dach-Symbolen ist der Unterschied kaum zu sehen.
+const LITE_GLASS = matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+const glass = ({ transmission, opacity = 1, ...opts }) => new THREE.MeshPhysicalMaterial(LITE_GLASS
+  ? { ...opts, transparent: true, opacity: Math.min(opacity, 1 - transmission * 0.62), depthWrite: false }
+  : { ...opts, transmission, opacity });
+const GLASS = glass({
   color: '#ffffff', metalness: 0, roughness: 0.02, transmission: 1, thickness: 0.25, ior: 1.5,
   transparent: true, envMapIntensity: 1.2,
 });
@@ -143,7 +152,7 @@ const ICONS = {
   bar() {
     const g = new THREE.Group();
     g.add(mesh(lathe([[0, 0], [0.22, 0], [0.22, 0.02], [0.03, 0.04], [0.025, 0.5], [0.4, 0.92], [0.39, 0.93], [0.025, 0.53], [0, 0.53]], 64), GLASS));
-    const liquid = new THREE.MeshPhysicalMaterial({ color: '#f2a7b3', roughness: 0.05, transmission: 0.6, thickness: 0.4, ior: 1.34 });
+    const liquid = glass({ color: '#f2a7b3', roughness: 0.05, transmission: 0.6, thickness: 0.4, ior: 1.34 });
     g.add(mesh(new THREE.ConeGeometry(0.33, 0.33, 48, 1, false), liquid, { y: 0.69 + 0.165 - 0.165, rx: Math.PI }));
     g.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.7, 6), SILVER, { x: 0.05, y: 0.82, rz: 0.5 }));
     g.add(mesh(new THREE.SphereGeometry(0.07, 20, 16), std('#93a35f', { roughness: 0.35 }), { x: -0.02, y: 0.7, s: 1 }));
@@ -212,7 +221,7 @@ const ICONS = {
     // runde Brille auf einem kleinen Ständer
     const g = new THREE.Group();
     const frame = std(c.deep, { metalness: 0.3, roughness: 0.3 });
-    const lens = new THREE.MeshPhysicalMaterial({ color: '#dfe8ea', roughness: 0.05, transmission: 0.6, thickness: 0.05, ior: 1.5, transparent: true, opacity: 0.6 });
+    const lens = glass({ color: '#dfe8ea', roughness: 0.05, transmission: 0.6, thickness: 0.05, ior: 1.5, transparent: true, opacity: 0.6 });
     for (const s of [-1, 1]) {
       g.add(mesh(new THREE.TorusGeometry(0.17, 0.022, 12, 48), frame, { x: s * 0.2, y: 0.62 }));
       g.add(mesh(new THREE.CircleGeometry(0.16, 40), lens, { x: s * 0.2, y: 0.62 }));
@@ -353,7 +362,7 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap; // PCFSoft gibt es in three r186 nicht mehr (wird beim ersten Bild umgestellt, vorab übersetzte Shader passten dann nicht)
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
@@ -395,14 +404,20 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
   blob.position.y = -0.34;
   scene.add(blob);
 
-  const shops = SHOPS.map((s, i) => {
+  // Läden einzeln bauen und dazwischen kurz Luft lassen, damit Scrollen auf dem Handy flüssig bleibt.
+  // Ruhende Teile werden je Laden zusammengefasst (gemessen: 338 statt 599 Zeichenbefehle pro Bild).
+  const shared = new Map();
+  const shops = [];
+  for (const [i, s] of SHOPS.entries()) {
     const g = buildShop(s, i);
+    mergeStatic(g, { shareMaterials: shared });
     const a = i * STEP;
     g.position.set(Math.sin(a) * RADIUS, 0, Math.cos(a) * RADIUS);
     g.rotation.y = a;
     table.add(g);
-    return g;
-  });
+    shops.push(g);
+    await yieldToMain();
+  }
 
   // ---------- Zustand ----------
   let rot = reducedMotion ? 0 : STEP * 1.6; // kleine Einschwing-Drehung beim ersten Sichtbarwerden
@@ -587,6 +602,9 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
     last = performance.now();
     raf = requestAnimationFrame(frame);
   }
+
+  // Shader vorab im Hintergrund übersetzen; sonst blockiert das erste Bild auf Handys mehrere Sekunden
+  try { await renderer.compileAsync(scene, camera); } catch (_) { /* dann eben beim ersten Bild */ }
 
   const io = new IntersectionObserver(([e]) => {
     visible = e.isIntersecting && document.visibilityState === 'visible';

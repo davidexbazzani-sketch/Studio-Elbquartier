@@ -12,6 +12,8 @@ python3 tools/dev-server.py .
 
 Dann im Browser: http://localhost:8765 (ein einfaches `python3 -m http.server 8765` geht auch).
 
+Ohne Python (z. B. unter Windows) gibt es denselben Server für Node: `node tools/dev-server.mjs .` Er komprimiert zusätzlich wie der echte Webserver (siehe `.htaccess`), damit Messungen mit Lighthouse realistisch sind.
+
 Tipps zum Testen:
 - `?lite` an die Adresse hängen (z. B. `/beispiele/bar/?lite`) zeigt die leichte Ansicht ohne 3D, wie auf schwachen Geräten oder bei „Bewegung reduzieren“.
 - Jede 3D-Ansicht lädt erst, wenn man in ihre Nähe scrollt.
@@ -97,6 +99,8 @@ Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenk
 Am einfachsten auf dem Mac: `tools/paket.sh` ausführen. Das Skript legt in `Upload/` genau die Dateien ab, die auf den Server gehören, und prüft, dass nichts Internes dabei ist. Den **Inhalt** von `Upload/` per FTP oder netcup-Dateimanager in das Web-Verzeichnis der Domain laden.
 
 Ohne das Skript (z. B. unter Windows): alles hochladen **außer** `tools/`, `Druckdaten/`, `Vorschau/`, `Upload/`, `.git/`, `.gitignore`, `.claude/`, `README.md`, `CREDITS.md`, `assets/img/funkl-test/` und `assets/img/autohaus-test/`.
+
+Wichtig: Die Datei `.htaccess` im Hauptordner muss mit hoch (manche FTP-Programme blenden Dateien mit Punkt am Anfang aus). Sie schaltet auf dem Server die Kompression ein (JavaScript wird etwa 75 % kleiner, 3D-Modelle 15–30 %, die Brillen-Anprobe von 9,6 auf 2,9 MB) und lässt den Browser Bilder, Videos und Modelle zwischenspeichern. Nach dem Hochladen prüfen: In den Entwicklertools des Browsers (Netzwerk) sollte bei `three.core.js` „Content-Encoding: gzip“ oder „br“ stehen.
 
 PHP 8.1 oder neuer wird für `kontakt.php` benötigt. Vor dem Livegang im netcup-Kundenbereich: SSL-Zertifikat aktivieren, Auftragsverarbeitungsvertrag abschließen, Speicherdauer der Logfiles in `datenschutz.html` eintragen, Kontaktformular einmal testen.
 

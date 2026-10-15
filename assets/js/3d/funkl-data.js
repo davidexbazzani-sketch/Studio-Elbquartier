@@ -49,9 +49,11 @@ export function studioEnvironment(renderer, { colors = ['#ffe6f0', '#e6f6ff', '#
 
 // Echtes Fotostudio (Poly Haven „Studio Small 09“, CC0) als Licht und Spiegelung für die Dosen
 const hdrCache = new WeakMap();
-export function studioHDR(renderer, url = '../../assets/hdri/studio_small_09_1k.hdr') {
-  if (!hdrCache.has(renderer)) {
-    hdrCache.set(renderer, new HDRLoader().setDataType(THREE.FloatType).loadAsync(url).then((src) => {
+// Laden und Aufhellen nur einmal pro Seite (Hero und Showcase teilen sich das Ergebnis), nur das Licht je Renderer
+const srcCache = new Map();
+function liftedHDR(url) {
+  if (!srcCache.has(url)) {
+    srcCache.set(url, new HDRLoader().setDataType(THREE.FloatType).loadAsync(url).then((src) => {
       // wie ein Lichtzelt: dunkle Bereiche anheben, damit Tropfen und Metall hell spiegeln statt schwarz
       const { width: w, height: h, data } = src.image;
       let sum = 0;
@@ -61,6 +63,15 @@ export function studioHDR(renderer, url = '../../assets/hdri/studio_small_09_1k.
       for (let i = 0; i < data.length; i += 4) {
         out[i] = data[i] + lift; out[i + 1] = data[i + 1] + lift; out[i + 2] = data[i + 2] + lift * 1.02; out[i + 3] = 1;
       }
+      src.dispose();
+      return { out, w, h };
+    }));
+  }
+  return srcCache.get(url);
+}
+export function studioHDR(renderer, url = '../../assets/hdri/studio_small_09_1k.hdr') {
+  if (!hdrCache.has(renderer)) {
+    hdrCache.set(renderer, liftedHDR(url).then(({ out, w, h }) => {
       const t = new THREE.DataTexture(out, w, h, THREE.RGBAFormat, THREE.FloatType);
       t.flipY = true;
       t.mapping = THREE.EquirectangularReflectionMapping;
@@ -81,7 +92,7 @@ export function studioHDR(renderer, url = '../../assets/hdri/studio_small_09_1k.
       top.position.y = 10; top.rotation.x = Math.PI / 2; scene.add(top);
       const pmrem = new THREE.PMREMGenerator(renderer);
       const env = pmrem.fromScene(scene, 0.01).texture;
-      pmrem.dispose(); t.dispose(); src.dispose();
+      pmrem.dispose(); t.dispose();
       scene.traverse((o) => { o.geometry?.dispose(); o.material?.dispose(); });
       return env;
     }));

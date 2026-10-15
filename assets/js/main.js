@@ -1,5 +1,5 @@
 import { SHOPS, facadeSVG } from './shops.js';
-import { can3D, hasWebGL2, reducedMotion } from './capability.js';
+import { afterInteraction, can3D, hasWebGL2, reducedMotion } from './capability.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 
@@ -166,11 +166,12 @@ async function load3D() {
 
 const cap = can3D();
 if (cap.ok) {
-  // 3D erst laden, wenn der Abschnitt bald sichtbar wird
+  // 3D erst laden, wenn der Abschnitt bald sichtbar wird – und erst, wenn jemand die Seite bedient
+  // (scrollen, tippen, Maus). Sonst rechnet das Handy schon beim Seitenaufbau am 3D und die Startanimation hakt.
   const io = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load3D(); }
   }, { rootMargin: '600px 0px' });
-  io.observe(stage);
+  afterInteraction(() => io.observe(stage));
 } else {
   $('#beispiele .section-head .t-lead').textContent = 'Wischen Sie durch die Läden und öffnen Sie ein Beispiel. Alle Namen sind erfunden, die Ideen sind echt.';
   $('#stage-toggle-text').textContent = cap.why;

@@ -114,10 +114,16 @@ export async function createHero({ container, reducedMotion = false, quality, gs
 
   // Dose
   const cond = new Condensation(renderer, { size: low ? 512 : 1024, maxDrops: low ? 320 : 560 });
-  const labels = FLAVORS.map((f) => makeLabel(f));
-  warmLabels(renderer, labels);
+  // Etiketten nacheinander zeichnen und hochladen, mit Luft dazwischen (Handys: kleinere Zeichenfläche)
+  const labels = [];
+  for (const f of FLAVORS) {
+    const l = makeLabel(f, { scale: low ? 0.75 : 1 });
+    warmLabels(renderer, [l]);
+    labels.push(l);
+    await new Promise((r) => setTimeout(r, 0));
+  }
   cond.setLevel(0.75, true);
-  cond.prewarm(20); // frisch aus dem Kühlschrank: schon beschlagen, erste Tropfen laufen gleich
+  await cond.prewarmAsync(20); // frisch aus dem Kühlschrank: schon beschlagen, erste Tropfen laufen gleich
   const can = createCan({ label: labels[0], condensation: cond });
   const canPivot = new THREE.Group(); // schwebt, kippt
   const canSpin = new THREE.Group(); // dreht sich
@@ -387,6 +393,9 @@ export async function createHero({ container, reducedMotion = false, quality, gs
   }
   const ro = new ResizeObserver(() => resize());
   ro.observe(container);
+  // Shader im Hintergrund übersetzen, bevor gezeichnet wird (sonst hakt die Seite beim ersten Bild)
+  resize();
+  if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
   const io = new IntersectionObserver(([e]) => {
     if (paused) return;
     visible = e.isIntersecting && document.visibilityState === 'visible';
@@ -398,7 +407,7 @@ export async function createHero({ container, reducedMotion = false, quality, gs
     if (visible) { kick(); master?.resume(); } else master?.pause();
   });
   resize();
-  renderer.compile(scene, camera);
+  if (!renderer.compileAsync) renderer.compile(scene, camera);
 
   let paused = false;
   return {

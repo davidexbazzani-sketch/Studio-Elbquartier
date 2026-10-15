@@ -60,6 +60,9 @@ export function createAnsicht(container, { auto = true, hell = '#f1eee8' } = {})
       b.traverse((o) => { if (o.isMesh) o.castShadow = true; });
       // Bügel halb geöffnet: Brille steht leicht schräg, Front zur Kamera
       b.position.set(0, 0, 3.2);
+      // Shader der neuen Brille im Hintergrund übersetzen (mit Licht und Umgebung der Szene), dann tauschen
+      if (renderer.compileAsync) { try { await renderer.compileAsync(b, camera, scene); } catch (_) { /* dann beim ersten Bild */ } }
+      if (this.key !== key) return;
       if (brille) pivot.remove(brille);
       brille = b; pivot.add(b);
     },

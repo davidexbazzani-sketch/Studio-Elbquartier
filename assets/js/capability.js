@@ -12,6 +12,23 @@ export function hasWebGL2() {
   }
 }
 
+/**
+ * Ruft fn erst auf, wenn jemand die Seite bedient (scrollen, tippen, Maus, Taste), spätestens nach `fallback` ms.
+ * Für 3D unterhalb des Startbilds: So rechnet das Handy nicht schon beim Seitenaufbau daran.
+ */
+export function afterInteraction(fn, { fallback = 10000 } = {}) {
+  const events = ['scroll', 'wheel', 'pointerdown', 'pointermove', 'keydown', 'touchstart'];
+  let done = false;
+  const go = () => {
+    if (done) return;
+    done = true;
+    events.forEach((ev) => removeEventListener(ev, go));
+    fn();
+  };
+  events.forEach((ev) => addEventListener(ev, go, { passive: true }));
+  setTimeout(go, fallback);
+}
+
 export function can3D() {
   if (new URLSearchParams(location.search).has('lite')) return { ok: false, why: 'Leichte Ansicht.' };
   if (!hasWebGL2()) return { ok: false, why: 'Ihr Browser unterstützt kein WebGL 2.' };

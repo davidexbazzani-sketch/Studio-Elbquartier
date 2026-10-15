@@ -322,19 +322,24 @@ function kleineTeileAbtrennen(root, rolle, max, mat) {
   for (const o of meshes) {
     const p = o.geometry.attributes.position, idx = o.geometry.index.array;
     // Punkte verbinden (Union-Find), dabei gleiche Positionen zusammenfassen (Nähte)
-    const key = (i) => `${p.getX(i).toFixed(3)},${p.getY(i).toFixed(3)},${p.getZ(i).toFixed(3)}`;
-    const id = new Map(), par = [];
-    const knoten = (i) => { const k = key(i); if (!id.has(k)) { id.set(k, par.length); par.push(par.length); } return id.get(k); };
+    // Knoten je Eckpunkt einmal vorab bestimmen (vorher für jeden Index neu als Text gebaut: auf Handys fast 1 s)
+    const id = new Map(), par = [], nodeOf = new Int32Array(p.count).fill(-1);
+    const knoten = (i) => {
+      if (nodeOf[i] >= 0) return nodeOf[i];
+      const k = `${p.getX(i).toFixed(3)},${p.getY(i).toFixed(3)},${p.getZ(i).toFixed(3)}`;
+      if (!id.has(k)) { id.set(k, par.length); par.push(par.length); }
+      return (nodeOf[i] = id.get(k));
+    };
     const find = (x) => { while (par[x] !== x) { par[x] = par[par[x]]; x = par[x]; } return x; };
     const tri = [];
     for (let i = 0; i < idx.length; i += 3) {
       const a = knoten(idx[i]), b = knoten(idx[i + 1]), c = knoten(idx[i + 2]);
       par[find(a)] = find(b); par[find(b)] = find(c); tri.push(a);
     }
-    const box = new Map();
+    const box = new Map(), v = new THREE.Vector3();
     for (let i = 0; i < idx.length; i++) {
       const r = find(knoten(idx[i])); const bb = box.get(r) || box.set(r, new THREE.Box3()).get(r);
-      bb.expandByPoint(new THREE.Vector3(p.getX(idx[i]), p.getY(idx[i]), p.getZ(idx[i])));
+      bb.expandByPoint(v.set(p.getX(idx[i]), p.getY(idx[i]), p.getZ(idx[i])));
     }
     const klein = new Set([...box].filter(([, bb]) => { const v = bb.getSize(new THREE.Vector3()); return Math.max(v.x, v.y, v.z) < max; }).map(([r]) => r));
     if (!klein.size) continue;

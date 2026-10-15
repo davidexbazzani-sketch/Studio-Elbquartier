@@ -53,11 +53,13 @@ const PRINT = {
  * Etikett als zwei Canvas-Texturen (2048 × 1024, u = einmal rundherum):
  * map = Farben, print = Metall/Rauheit des Drucks.
  */
-export function makeLabel(flavor) {
+// scale < 1: kleinere Zeichenfläche (Handys: weniger Speicher und schnelleres Hochladen), gleiche Gestaltung
+export function makeLabel(flavor, { scale = 1 } = {}) {
   const W = 2048, H = 1024;
-  const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+  const mk = () => { const c = document.createElement('canvas'); c.width = Math.round(W * scale); c.height = Math.round(H * scale); return c; };
   const cCol = mk(), cPrn = mk();
   const draws = (g, mode) => {
+    g.setTransform(scale, 0, 0, scale, 0, 0); // gezeichnet wird immer in 2048 × 1024
     const col = (kind, color) => (mode === 'color' ? color : PRINT[kind]);
     const [a, b, d] = flavor.colors;
     // Grund: Farblasur als Verlauf
@@ -404,6 +406,17 @@ export class Condensation {
   /** Zeit vorspulen (z. B. „schon eine Weile aus dem Kühlschrank“), ohne zu zeichnen. */
   prewarm(seconds) {
     for (let t = 0; t < seconds; t += 1 / 30) this.step(1 / 30);
+    this.trails.length = 0;
+    this.compose();
+  }
+
+  /** Wie prewarm, aber in kleinen Zeitscheiben, damit die Seite dabei flüssig scrollt. */
+  async prewarmAsync(seconds) {
+    for (let t = 0; t < seconds;) {
+      const t0 = performance.now();
+      do { this.step(1 / 30); t += 1 / 30; } while (t < seconds && performance.now() - t0 < 8);
+      await new Promise((r) => setTimeout(r, 0));
+    }
     this.trails.length = 0;
     this.compose();
   }

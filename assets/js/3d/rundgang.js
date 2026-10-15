@@ -67,8 +67,12 @@ export class Rundgang {
       });
     })));
     const hdr = new HDRLoader(); hdr.setDataType(THREE.HalfFloatType);
+    // Raum-Lichter: auf Handys halbe Auflösung (env_*_klein.hdr, ein Viertel der Daten; erzeugt mit
+    // tools/wohnung/hdr-klein.mjs). Fehlt die kleine Datei, wird die große geladen.
     const envP = Promise.all(Object.keys(files.sonden).map((k) => new Promise((res) => {
-      hdr.load(B + `env_${k}.hdr`, (t) => { t.mapping = THREE.EquirectangularReflectionMapping; step(); res([k, t]); });
+      const ok = (t) => { t.mapping = THREE.EquirectangularReflectionMapping; step(); res([k, t]); };
+      const full = () => hdr.load(B + `env_${k}.hdr`, ok);
+      if (this.lite) hdr.load(B + `env_${k}_klein.hdr`, ok, undefined, full); else full();
     })));
     const skyP = new Promise((res) => tex.load(B + (this.lite ? 'himmel_4k.webp' : 'himmel_8k.webp'), (t) => {
       t.colorSpace = THREE.SRGBColorSpace; t.mapping = THREE.EquirectangularReflectionMapping;

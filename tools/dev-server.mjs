@@ -6,6 +6,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 
 const ROOT = path.resolve(process.argv[2] || '.');
 const PORT = Number(process.env.PORT) || 8765;
@@ -18,6 +19,8 @@ const TYPES = {
   '.ktx2': 'image/ktx2', '.wasm': 'application/wasm', '.txt': 'text/plain; charset=utf-8', '.md': 'text/plain; charset=utf-8',
   '.pdf': 'application/pdf', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json',
 };
+
+const COMPRESS = /^(text\/|application\/(json|wasm|manifest\+json)|image\/svg|model\/gltf-binary|application\/octet-stream$)/;
 
 const readBody = req => new Promise((ok, fail) => {
   const parts = []; req.on('data', c => parts.push(c)); req.on('end', () => ok(Buffer.concat(parts))); req.on('error', fail);
@@ -65,6 +68,11 @@ function get(req, res, u) {
     if (start >= size || start > last) return end(res, 416, '', { 'Content-Range': `bytes */${size}` });
     res.writeHead(206, { ...headers, 'Content-Range': `bytes ${start}-${last}/${size}`, 'Content-Length': last - start + 1 });
     return req.method === 'HEAD' ? res.end() : fs.createReadStream(file, { start, end: last }).pipe(res);
+  }
+  // wie auf dem Webserver (.htaccess): Text, Skripte, Modelle, HDR und WebAssembly gzip-komprimiert
+  if (COMPRESS.test(headers['Content-Type']) && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
+    res.writeHead(200, { ...headers, 'Content-Encoding': 'gzip', Vary: 'Accept-Encoding' });
+    return req.method === 'HEAD' ? res.end() : fs.createReadStream(file).pipe(zlib.createGzip({ level: 6 })).pipe(res);
   }
   res.writeHead(200, { ...headers, 'Content-Length': stat.size });
   req.method === 'HEAD' ? res.end() : fs.createReadStream(file).pipe(res);

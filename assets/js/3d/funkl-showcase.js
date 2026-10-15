@@ -178,8 +178,14 @@ export async function createShowcase({ container, reducedMotion = false, quality
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 40);
 
   const cond = new Condensation(renderer, { size: low ? 512 : 1024, maxDrops: low ? 320 : 600 });
-  const labels = FLAVORS.map((f) => makeLabel(f));
-  warmLabels(renderer, labels);
+  // Etiketten nacheinander zeichnen und hochladen, mit Luft dazwischen (Handys: kleinere Zeichenfläche)
+  const labels = [];
+  for (const f of FLAVORS) {
+    const l = makeLabel(f, { scale: low ? 0.75 : 1 });
+    warmLabels(renderer, [l]);
+    labels.push(l);
+    await new Promise((r) => setTimeout(r, 0));
+  }
   const can = createCan({ label: labels[0], condensation: cond });
   const holder = new THREE.Group();
   const spin = new THREE.Group();
@@ -252,7 +258,7 @@ export async function createShowcase({ container, reducedMotion = false, quality
   /* ---------- Schleife ---------- */
   let visible = false, running = false, last = 0, raf = 0;
   cond.setLevel(0.85, true);
-  cond.prewarm(reducedMotion ? 30 : 14);
+  await cond.prewarmAsync(reducedMotion ? 30 : 14);
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now; time += dt;
     rot += (rotT - rot) * Math.min(1, dt * 4);
@@ -313,11 +319,14 @@ export async function createShowcase({ container, reducedMotion = false, quality
     camera.updateProjectionMatrix();
   }
   const ro = new ResizeObserver(resize); ro.observe(container);
+  // Shader im Hintergrund übersetzen, bevor gezeichnet wird (sonst hakt die Seite beim ersten Bild)
+  resize();
+  if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
   const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting && document.visibilityState === 'visible'; if (visible) kick(); });
   io.observe(container);
   document.addEventListener('visibilitychange', () => { visible = document.visibilityState === 'visible' && container.getBoundingClientRect().bottom > 0; if (visible) kick(); });
   resize();
-  renderer.compile(scene, camera);
+  if (!renderer.compileAsync) renderer.compile(scene, camera);
 
   return {
     canvas, renderer,

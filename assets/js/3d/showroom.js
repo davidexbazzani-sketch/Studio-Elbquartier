@@ -730,7 +730,34 @@ export async function createShowroom({
     floor.visible = true;
   }
 
+  // Während Shader und Texturen im Hintergrund vorbereitet werden, nicht zeichnen (das letzte Bild bleibt stehen)
+  let hold = false;
+  async function precompile(root) {
+    if (!renderer.compileAsync) { renderer.compile(scene, camera); return; }
+    hold = true;
+    try {
+      // Texturen einzeln hochladen, mit Luft dazwischen
+      const tex = new Set();
+      root.traverse((o) => [].concat(o.material || []).forEach((m) => {
+        for (const v of Object.values(m)) if (v?.isTexture && !v.isRenderTargetTexture) tex.add(v);
+      }));
+      for (const t of tex) { renderer.initTexture(t); await new Promise((r) => setTimeout(r, 0)); }
+      // Spiegelung: eigener Durchgang in den Zwischenspeicher mit gespiegelter Umgebung (eigene Shader-Varianten)
+      world.scale.y = -1; floor.visible = false; scene.environment = envMirror;
+      renderer.setRenderTarget(reflRT);
+      const mirror = renderer.compileAsync(scene, camera);
+      renderer.setRenderTarget(composer ? composer.readBuffer : null);
+      world.scale.y = 1; floor.visible = true; scene.environment = envMain;
+      const main = renderer.compileAsync(scene, camera);
+      renderer.setRenderTarget(null);
+      await Promise.all([mirror, main]);
+    } catch (_) { /* dann eben beim ersten Bild */ } finally {
+      hold = false;
+    }
+  }
+
   function draw() {
+    if (hold) return;
     renderReflection();
     if (composer) composer.render();
     else renderer.render(scene, camera);
@@ -937,7 +964,8 @@ export async function createShowroom({
     view.zoomT = 1; view.zoom = reducedMotion || instant ? 1 : 1.12;
     if (instant || reducedMotion) { exposure = exposureT = 1; stripLevel = stripT = 1; }
     else if (wasLit) { exposureT = 1; stripT = 1; }
-    renderer.compile(scene, camera);
+    await precompile(car.root);
+    if (my !== token) return;
     kick();
     emit();
     if (visible) await new Promise((r) => { pending.push(r); kick(); });
@@ -952,7 +980,9 @@ export async function createShowroom({
   return {
     canvas, renderer, scene, camera,
     setCar,
-    preload: (id) => loadCar(id),
+    // Auf Handys nur herunterladen (landet im Browser-Speicher), entpackt wird erst beim Wechsel:
+    // so rechnet das Handy nicht nebenbei, während man scrollt.
+    preload: (id) => (high || cache.has(id) ? loadCar(id) : fetch(CARS[id].url).then((r) => r.arrayBuffer()).then(() => {}, () => {})),
     setPaint: (paintId) => { if (current) { setPaint(current, paintId); kick(); emit(); } },
     setView, reset, zoomBy, lightsOn,
     setAutoRotate: (on) => { auto = on && !reducedMotion; touchNote(); kick(); emit(); },

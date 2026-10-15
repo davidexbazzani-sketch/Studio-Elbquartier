@@ -1,0 +1,70 @@
+# Studio Elbquartier – Server-Einstellungen für Apache (netcup)
+# Ziel: schneller laden, besonders auf Handys. Wirkt nur auf dem Webserver, nicht lokal.
+
+# ---------- Immer verschlüsselt (https) ----------
+# Die Datenschutzerklärung sagt TLS zu; ohne Weiterleitung ginge das Kontaktformular über http unverschlüsselt.
+# Voraussetzung: SSL-Zertifikat ist im netcup-Kundenbereich aktiviert (sonst ist die Seite nicht erreichbar).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+<IfModule mod_headers.c>
+  # Browser merken sich für ein Jahr: nur noch https (erst nach erfolgreichem https-Test aktiv lassen)
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+</IfModule>
+
+# ---------- Interne Dateien nicht ausliefern ----------
+# Wird die Seite per Git (Plesk) bereitgestellt, liegen Werkzeuge, Druckdaten und Notizen mit auf dem Server.
+RedirectMatch 404 ^/(tools|Druckdaten|Vorschau|Upload|\.claude)(/|$)
+RedirectMatch 404 ^/(README\.md|CREDITS\.md|\.gitignore|\.gitattributes)$
+RedirectMatch 404 /\.git(/|$)
+
+# ---------- Dateitypen, die Apache sonst nicht kennt ----------
+<IfModule mod_mime.c>
+  AddType model/gltf-binary              .glb
+  AddType image/vnd.radiance             .hdr
+  AddType application/wasm               .wasm
+  AddType text/javascript                .js .mjs
+  AddType font/woff2                     .woff2
+  AddType image/webp                     .webp
+  AddType image/svg+xml                  .svg
+  AddType application/manifest+json      .webmanifest
+</IfModule>
+
+# ---------- Kompression ----------
+# Text, Skripte, 3D-Modelle (Meshopt ist für zusätzliches gzip ausgelegt), HDR-Licht und WebAssembly.
+# Bilder, Videos und Schriften sind schon komprimiert und bleiben unangetastet.
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/javascript application/javascript application/json application/manifest+json image/svg+xml model/gltf-binary image/vnd.radiance application/wasm
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/javascript application/javascript application/json application/manifest+json image/svg+xml model/gltf-binary image/vnd.radiance application/wasm
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|mjs|json|svg|glb|hdr|wasm|txt)$">
+    Header append Vary Accept-Encoding
+  </FilesMatch>
+</IfModule>
+
+# ---------- Zwischenspeichern im Browser ----------
+# HTML: immer kurz nachfragen, ob es Neues gibt (Änderungen sind sofort sichtbar).
+# CSS und JavaScript: 1 Stunde (Dateinamen ändern sich bei Updates nicht, daher kurz).
+# Bilder, Schriften, Videos, 3D-Modelle, Licht: 30 Tage (ändern sich selten, sind groß).
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|mjs|json)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico|woff2|mp4|glb|hdr|wasm|task)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  # Kontaktformular nie zwischenspeichern
+  <FilesMatch "\.php$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>

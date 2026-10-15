@@ -2,6 +2,12 @@
 
 Alle Dateien liegen lokal auf dem eigenen Server. Es werden keine externen Dienste, Schriften oder Skripte nachgeladen.
 
+## Teamfotos
+
+| Datei | Herkunft | Hinweis |
+|---|---|---|
+| `assets/img/team/anna-*.webp`, `jan-*.webp`, `davide-*.webp`, `gruppe-*.webp` | mit KI erstellt bzw. zusammengesetzt (Studio Elbquartier, Vorlagen in `Bilder Team/` außerhalb des Repos) | Auf der Seite als KI-Bild gekennzeichnet (EU-KI-Verordnung Art. 50, seit 2. August 2026): Hinweis unter den Porträts, im Schild des Gruppenbilds, in den Alternativtexten und in `lizenzen.html`. Einwilligung von Anna und Jan zur Veröffentlichung liegt vor (bestätigt am 15.10.2026; Bestätigungen aufbewahren). |
+
 ## Programmbibliotheken
 
 | Datei | Quelle | Version | Lizenz |
