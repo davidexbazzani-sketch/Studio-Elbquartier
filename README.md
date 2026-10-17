@@ -106,7 +106,7 @@ Außerhalb der Seite (bringt für lokale Suchen am meisten):
 
 ## Hochladen (netcup)
 
-**Seit 15.10.2026 live über Git:** netcup holt die Website direkt aus diesem GitHub-Repository („Bereitstellung über Git“ im Webhosting-Panel, Verzweigung `main`, automatisch nach `/studio-elbquartier.de/httpdocs`). Für ein Update: Änderungen committen und pushen, dann im netcup-Panel unter Websites & Domains › Git › „Jetzt Pull ausführen“ klicken. Interne Ordner (`tools/`, `Druckdaten/`, README, CREDITS) liegen dabei mit auf dem Server, die `.htaccess` liefert sie aber nicht aus (404). SSL: Let's Encrypt für Domain und www, verlängert sich automatisch. PHP für das Kontaktformular: mindestens 8.1 (PHP-Einstellungen der Domain).
+**Seit 15.10.2026 live über Git:** netcup holt die Website direkt aus diesem GitHub-Repository („Bereitstellung über Git“ im Webhosting-Panel, Verzweigung `main`, automatisch nach `/studio-elbquartier.de/httpdocs`). Für ein Update: Änderungen committen und pushen, fertig. Seit 17.10.2026 meldet ein GitHub-Webhook (Repository › Settings › Webhooks, Ereignis „push“) jeden Push an netcup, das den neuen Stand automatisch holt und veröffentlicht. Falls das einmal nicht klappt: im netcup-Panel unter Websites & Domains › Git › „Jetzt Pull ausführen“ klicken. Interne Ordner (`tools/`, `Druckdaten/`, README, CREDITS) liegen dabei mit auf dem Server, die `.htaccess` liefert sie aber nicht aus (404). SSL: Let's Encrypt für Domain und www, verlängert sich automatisch. PHP für das Kontaktformular: mindestens 8.1 (PHP-Einstellungen der Domain).
 
 Der folgende manuelle Weg bleibt als Alternative:
 
