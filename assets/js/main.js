@@ -42,9 +42,10 @@ function initMotion() {
   tl.from('[data-hero]', { opacity: 0, y: 24, duration: 1.2, stagger: 0.09 })
     .from('.hero__title .char', { opacity: 0, yPercent: 40, rotateX: -50, duration: 1.1, stagger: 0.025 }, 0.15);
 
-  // Hero gleitet beim Scrollen sanft zurück
+  // Hero gleitet beim Scrollen sanft zurück (auf dem Handy ohne Verblassen, sonst wirken die Buttons ausgegraut)
+  const wide = matchMedia('(min-width: 760px)').matches;
   gsap.to('.hero__inner', {
-    yPercent: -12, opacity: 0.2, ease: 'none',
+    yPercent: wide ? -12 : -4, opacity: wide ? 0.2 : 1, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
   // Die schwebenden Beispiel-Fenster gleiten beim Scrollen auseinander und verblassen
@@ -59,9 +60,10 @@ function initMotion() {
 
   // Elemente erscheinen beim Hineinscrollen
   ScrollTrigger.batch('[data-reveal]', {
-    start: 'top 88%',
+    // früh und zügig, damit beim schnellen Wischen keine leeren Flächen stehen bleiben
+    start: 'top 98%',
     once: true,
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.1, overwrite: true }),
+    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.7, stagger: 0.06, overwrite: true }),
   });
 
   // Drehscheibe zoomt beim Hereinscrollen leicht heran
