@@ -13,9 +13,10 @@ const BETREFF    = 'Neue Anfrage über studio-elbquartier.de';
 const MIN_SEKUNDEN = 3; // Formulare, die schneller abgeschickt werden, sind fast immer Spam
 // -------------------------------------------------------------------------
 
-$wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
+// Läuft ab PHP 7.4 (netcup stellt neue Domains teils noch auf 7.4 ein); daher kein str_contains und kein „never“
+$wantsJson = strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
 
-function antwort(bool $ok, string $message, int $code = 200): never
+function antwort(bool $ok, string $message, int $code = 200): void
 {
     global $wantsJson;
     http_response_code($code);
