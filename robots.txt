@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /tools/
+Disallow: /Druckdaten/
+Disallow: /kontakt.php
+
+Sitemap: https://studio-elbquartier.de/sitemap.xml

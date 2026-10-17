@@ -33,10 +33,11 @@ function initMotion() {
 
   // Hero: ruhiges Einblenden, Titel Buchstabe für Buchstabe
   const title = $('.hero__title');
-  title.setAttribute('aria-label', title.textContent);
-  // Buchstaben einzeln animieren, aber Wörter zusammenhalten (sonst bricht „Elbquartier“ auf dem Handy mitten im Wort um)
-  title.innerHTML = title.textContent.split(' ').map((word) => `<span style="display:inline-block;white-space:nowrap">${
-    [...word].map((ch) => `<span class="char" style="display:inline-block">${ch}</span>`).join('')}</span>`).join(' ');
+  // Buchstaben einzeln animieren, aber Wörter zusammenhalten (sonst bricht „Elbquartier“ auf dem Handy mitten im Wort um);
+  // Screenreader und Suchmaschinen bekommen den Namen als normalen Text
+  const text = title.textContent.trim();
+  title.innerHTML = `<span class="visually-hidden">${text}</span><span aria-hidden="true">${text.split(' ').map((word) => `<span style="display:inline-block;white-space:nowrap">${
+    [...word].map((ch) => `<span class="char" style="display:inline-block">${ch}</span>`).join('')}</span>`).join(' ')}</span>`;
   const tl = gsap.timeline({ delay: 0.15 });
   tl.from('[data-hero]', { opacity: 0, y: 24, duration: 1.2, stagger: 0.09 })
     .from('.hero__title .char', { opacity: 0, yPercent: 40, rotateX: -50, duration: 1.1, stagger: 0.025 }, 0.15);

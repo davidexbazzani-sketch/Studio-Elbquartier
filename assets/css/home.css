@@ -12,7 +12,10 @@
   isolation: isolate;
 }
 .hero__inner { display: grid; justify-items: center; text-align: center; gap: var(--space-5); }
+/* H1 = Leistungszeile + Name (für Suchmaschinen eine Überschrift, optisch wie zuvor zwei Zeilen) */
+.hero__h1 { display: grid; justify-items: center; gap: var(--space-5); margin: 0; font: inherit; }
 .hero__title {
+  display: block;
   font-size: var(--fs-display);
   line-height: var(--lh-tight);
   letter-spacing: var(--tracking-display);
@@ -340,6 +343,19 @@
   transition: transform var(--dur-slow) var(--ease-out);
 }
 .person:hover .person__portrait--photo img { transform: scale(1.035); }
+
+/* ---------- Leistungen ---------- */
+.services__list { display: grid; gap: var(--space-5); }
+@media (min-width: 860px) { .services__list { grid-template-columns: repeat(3, 1fr); } }
+.services__item { display: grid; align-content: start; gap: var(--space-3); padding: var(--space-6); }
+.services__item svg { width: 34px; height: 34px; color: var(--c-ink-2); }
+.services__link {
+  justify-self: start; margin-top: var(--space-2);
+  font-size: var(--fs-small); font-weight: 600; color: var(--c-ink);
+  border-bottom: 1px solid var(--c-line-strong); padding-bottom: 2px;
+  transition: border-color var(--dur-fast);
+}
+.services__link:hover { border-bottom-color: var(--c-ink); }
 
 /* Kennzeichnung der KI-Bilder (EU-KI-Verordnung Art. 50) */
 .team__ki { margin-top: var(--space-6); font-size: var(--fs-micro); color: var(--c-ink-3); }
