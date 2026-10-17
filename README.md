@@ -94,6 +94,16 @@ python3 tools/druck/visitenkarte-pdf.py
 
 Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenkarte-pdf.py 1` entsteht die Fassung mit 1 mm Beschnitt (Datenformat 87 × 57 mm, Dateinamen mit `-87x57`), die Flyeralarm für „Visitenkarten mit Veredelung“ verlangt. Bestellt sind dort 100 Stück mit Soft-Feel-Folie (Auftrag DE262848721, Druckdaten am 4. Oktober 2026 hochgeladen). In `Druckdaten/` liegt auch ein fertiger Auftrag für Claude in Chrome (Druckerei suchen, Softtouch-Karten konfigurieren, Daten hochladen, vor der Kasse anhalten).
 
+## Gefunden werden (SEO)
+
+Auf der Seite erledigt (17.10.2026): Title und Beschreibung mit „Webdesign, Fotografie & Software in Hamburg“, H1 mit diesen Begriffen, Abschnitt „Leistungen“, strukturierte Daten (`ProfessionalService` mit Adresse, Telefon, Angeboten und Preisen), Vorschaubild `assets/img/og.jpg`, Logo `assets/img/marke/logo.png`, `robots.txt`, `sitemap.xml`. Beispielseiten, Impressum, Datenschutz und Design System stehen bewusst auf `noindex`.
+
+Außerhalb der Seite (bringt für lokale Suchen am meisten):
+1. Google Search Console: Domain bestätigen, `https://studio-elbquartier.de/sitemap.xml` einreichen.
+2. Google-Unternehmensprofil (Google Maps) anlegen: Kategorie „Webdesigner“, Leistungen Webdesign, Fotografie, Software; Einzugsgebiet Hamburg; Fotos; zufriedene Kundschaft um Bewertungen bitten.
+3. Einträge in Branchenverzeichnissen mit genau gleicher Anschrift und Telefonnummer (z. B. Das Örtliche, Gelbe Seiten, hamburg.de-Branchenbuch).
+4. Auf Kundenseiten im Fuß „Website: Studio Elbquartier“ mit Link; Instagram/TikTok mit der Website verlinken.
+
 ## Hochladen (netcup)
 
 **Seit 15.10.2026 live über Git:** netcup holt die Website direkt aus diesem GitHub-Repository („Bereitstellung über Git“ im Webhosting-Panel, Verzweigung `main`, automatisch nach `/studio-elbquartier.de/httpdocs`). Für ein Update: Änderungen committen und pushen, dann im netcup-Panel unter Websites & Domains › Git › „Jetzt Pull ausführen“ klicken. Interne Ordner (`tools/`, `Druckdaten/`, README, CREDITS) liegen dabei mit auf dem Server, die `.htaccess` liefert sie aber nicht aus (404). SSL: Let's Encrypt für Domain und www, verlängert sich automatisch. PHP für das Kontaktformular: mindestens 8.1 (PHP-Einstellungen der Domain).
