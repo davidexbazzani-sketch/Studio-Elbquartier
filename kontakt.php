@@ -76,6 +76,7 @@ $interesse = [
     'Pro'      => 'Website Pro',
     'Max'      => 'Website Max',
     'Software' => 'Softwarelösung',
+    'Foto'     => 'Fotoshooting (Laden, Produkte, Team)',
 ][$paket] ?? 'noch offen';
 if (!in_array($gespraech, ['', 'vor Ort', 'Telefon'], true)) {
     $gespraech = '';

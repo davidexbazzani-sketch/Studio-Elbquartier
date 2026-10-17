@@ -71,6 +71,47 @@ function initMotion() {
 }
 initMotion();
 
+/* ---------- Hero-Band (Handy): läuft von selbst weiter, lässt sich jederzeit wischen ---------- */
+const heroStrip = $('.hero__strip');
+if (heroStrip) {
+  const track = $('.hero__track', heroStrip);
+  const SPEED = 34; // px pro Sekunde
+  let pos = 0, lastSet = -1, resumeAt = 0, touching = false, visible = false, raf = 0, last = 0;
+  const half = () => track.scrollWidth / 2 + 9; // Inhalt ist doppelt vorhanden (Lücke 18 px)
+  const wrap = () => { // endlos in beide Richtungen
+    const h = half();
+    if (heroStrip.scrollLeft >= h) heroStrip.scrollLeft -= h;
+    else if (heroStrip.scrollLeft < 2) heroStrip.scrollLeft += h;
+  };
+  const pauseFor = (ms) => { resumeAt = performance.now() + ms; };
+  const step = (now) => {
+    const dt = Math.min(0.05, (now - last) / 1000 || 0);
+    last = now;
+    if (!touching && now > resumeAt && !reducedMotion) {
+      pos += SPEED * dt;
+      const h = half();
+      if (pos >= h) pos -= h;
+      heroStrip.scrollLeft = pos;
+      lastSet = heroStrip.scrollLeft;
+    } else {
+      pos = heroStrip.scrollLeft;
+    }
+    raf = visible ? requestAnimationFrame(step) : 0;
+  };
+  // Start in der Mitte des doppelten Inhalts, damit man auch gleich nach links wischen kann
+  requestAnimationFrame(() => { heroStrip.scrollLeft = pos = half(); });
+  heroStrip.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+  heroStrip.addEventListener('touchend', () => { touching = false; pauseFor(2500); }, { passive: true });
+  heroStrip.addEventListener('pointerdown', () => pauseFor(2500), { passive: true });
+  heroStrip.addEventListener('scroll', () => {
+    if (Math.abs(heroStrip.scrollLeft - lastSet) > 1) { pauseFor(1800); wrap(); pos = heroStrip.scrollLeft; }
+  }, { passive: true });
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting && heroStrip.offsetParent !== null;
+    if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(step); }
+  }).observe(heroStrip);
+}
+
 /* ---------- Hero: Beispiel-Fenster folgen der Maus mit Tiefe ---------- */
 const heroCards = $('.hero__cards');
 if (heroCards && !reducedMotion && matchMedia('(pointer: fine)').matches) {
