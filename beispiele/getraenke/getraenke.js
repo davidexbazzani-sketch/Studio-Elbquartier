@@ -250,9 +250,11 @@ const panelIO = new IntersectionObserver((entries) => {
 $$('[data-panel]').forEach((p) => panelIO.observe(p));
 
 if (cap.ok) {
-  startHero();
+  // 3D-Dose erst nach dem Seitenaufbau starten: Das Dosenfoto ist sofort da, die Seite sofort bedienbar
+  const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
+  if (document.readyState === 'complete') idle(startHero); else addEventListener('load', () => idle(startHero), { once: true });
   const near = new IntersectionObserver(([e]) => { if (!e.isIntersecting) return; near.disconnect(); startShowcase(); }, { rootMargin: '100% 0px' });
-  afterInteraction(() => near.observe($('#sorten'))); // erst, wenn jemand die Seite bedient
+  afterInteraction(() => near.observe($('#sorten')), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] }); // erst beim Scrollen
 } else {
   $('#wipe-hint').hidden = true;
   if (motion) logoTimeline();

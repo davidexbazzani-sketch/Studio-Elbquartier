@@ -77,6 +77,8 @@ async function startHero3D() {
     viewer = await loadViewer();
     bindViewer(viewer);
     if (inDialog) return; // Vollbild ist offen; beim Schließen zieht der Viewer in den Hero
+    await viewer.prepare('elbe'); // Shader im Hintergrund übersetzen, das Ringfoto bleibt so lange stehen
+    if (inDialog) return;
     viewer.mount(stageCanvas);
     viewer.setPiece('elbe', { metal: heroMetal });
     await viewer.whenRendered();
@@ -249,7 +251,8 @@ function initMotion() {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out' });
 
-  gsap.fromTo('[data-hero]', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.3, stagger: 0.12, delay: 0.1 });
+  gsap.fromTo('[data-hero]:not(#stage)', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.3, stagger: 0.12, delay: 0.1 });
+  gsap.from('#stage', { y: 24, duration: 1.3, delay: 0.2 }); // nur Bewegung, kein Ausblenden (LCP)
 
   // Haltung: Wörter leuchten beim Scrollen nacheinander auf
   const st = $('#statement');

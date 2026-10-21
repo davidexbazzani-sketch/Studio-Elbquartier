@@ -1,4 +1,4 @@
-import { can3D, reducedMotion } from '../../assets/js/capability.js';
+import { can3D, reducedMotion, whenScrolledNear } from '../../assets/js/capability.js';
 import { createFlatBouquet, icon } from './bouquet-2d.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -266,11 +266,8 @@ async function load3D() {
 
 const cap = can3D();
 if (cap.ok) {
-  // 3D erst laden, wenn der Konfigurator in Sichtweite kommt
-  const io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load3D(); }
-  }, { rootMargin: '700px 0px' });
-  io.observe(stageWrap);
+  // 3D erst laden, wenn jemand scrollt und der Konfigurator in Sichtweite kommt
+  whenScrolledNear(stageWrap, load3D, { margin: '500px 0px' });
 } else {
   $('#cfg-load3d').hidden = false;
   $('#cfg-load3d').title = cap.why;

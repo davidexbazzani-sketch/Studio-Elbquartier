@@ -369,7 +369,8 @@ function initMotion() {
   }
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out' });
-  gsap.fromTo('[data-hero]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
+  gsap.fromTo('[data-hero]:not(.km-hero__media)', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
+  gsap.from('.km-hero__media', { y: 26, duration: 1.2, delay: 0.1 }); // Hauptbild nur bewegen, nicht ausblenden (LCP)
   gsap.fromTo('.km-hero__media img', { scale: 1.08 }, { scale: 1, duration: 2.2, ease: 'power2.out' });
   gsap.fromTo('.km-roast__media img', { scale: 1.14 }, {
     scale: 1, ease: 'none',

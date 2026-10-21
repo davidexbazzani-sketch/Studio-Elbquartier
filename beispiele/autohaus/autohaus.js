@@ -178,7 +178,7 @@ if (cap.ok) {
     near.disconnect();
     if (window.requestIdleCallback) requestIdleCallback(() => start3D(), { timeout: 800 }); else start3D();
   }, { rootMargin: '25% 0px' });
-  afterInteraction(() => near.observe(stage)); // und erst, wenn jemand die Seite bedient
+  afterInteraction(() => near.observe(stage), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] }); // erst beim Scrollen
 } else {
   $('#load3d-why').textContent = cap.why;
   $('#load3d').hidden = false;

@@ -201,4 +201,4 @@
 .fz-footer a { color: var(--r-ink); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Bewegung ---------- */
-.js-motion .fz [data-hero] { opacity: 0; }
+.js-motion .fz [data-hero]:not(.fz-hero__media) { opacity: 0; } /* Hauptbild bleibt sichtbar (LCP) */

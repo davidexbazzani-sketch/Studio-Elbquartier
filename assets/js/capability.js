@@ -4,12 +4,12 @@
 
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Günstige Prüfung ohne Test-Zeichenfläche: Ein extra WebGL-Kontext kostete beim Laden über 100 ms
+// (auf Handys ein Vielfaches). Scheitert der 3D-Start trotzdem, zeigen die Seiten ihre Ersatzansicht.
+let webgl2;
 export function hasWebGL2() {
-  try {
-    return !!document.createElement('canvas').getContext('webgl2');
-  } catch (_) {
-    return false;
-  }
+  webgl2 ??= typeof WebGL2RenderingContext !== 'undefined';
+  return webgl2;
 }
 
 /**
@@ -37,4 +37,17 @@ export function can3D() {
     return { ok: false, why: 'Vereinfachte Ansicht für dieses Gerät.' };
   }
   return { ok: true };
+}
+
+/**
+ * Für 3D unterhalb des ersten Bildschirms: erst starten, wenn wirklich gescrollt wird und das Element in die Nähe kommt.
+ * Wer nur den Anfang der Seite ansieht, bekommt so eine ruckelfreie, sofort bedienbare Seite.
+ */
+export function whenScrolledNear(el, fn, { margin = '400px 0px' } = {}) {
+  const io = new IntersectionObserver((list) => {
+    if (list.some((e) => e.isIntersecting)) { io.disconnect(); fn(); }
+  }, { rootMargin: margin });
+  const go = () => io.observe(el);
+  if (window.scrollY > 0) go();
+  else afterInteraction(go, { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] });
 }

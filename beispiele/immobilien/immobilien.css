@@ -304,6 +304,9 @@ html:not(.js-motion) .sm-film__shade { opacity: 1; }
 .sm-film.on-light .sm-film__ui { color: var(--sm-ink); }
 .sm-film.on-light .sm-chapters li { background: rgba(31,29,26,.2); }
 .sm-film.on-light .sm-chapters li::after { background: var(--sm-ink); }
+/* Erste Zeile erscheint schon über der hellen Zeichnung: dort dunkel, mit dem Film weich hell */
+.sm-line { transition: color .9s ease, text-shadow .9s ease; }
+.sm-film.on-light .sm-line { color: var(--sm-ink); text-shadow: none; }
 .sm-draw { z-index: 8; } .sm-film__shade { z-index: 10; } .sm-film__grain { z-index: 11; }
 .sm-lines { z-index: 12; } .sm-brand { z-index: 13; } .sm-film__ui { z-index: 14; }
 

@@ -1,4 +1,4 @@
-import { can3D, reducedMotion } from '../../assets/js/capability.js';
+import { can3D, reducedMotion, whenScrolledNear } from '../../assets/js/capability.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -103,10 +103,7 @@ async function load3D() {
 }
 const cap = can3D();
 if (cap.ok) {
-  const io = new IntersectionObserver((list) => {
-    if (list.some((e) => e.isIntersecting)) { io.disconnect(); load3D(); }
-  }, { rootMargin: '700px 0px' });
-  io.observe(stage);
+  whenScrolledNear(stage, load3D, { margin: '500px 0px' }); // erst beim Scrollen, damit die Seite sofort flüssig bedienbar ist
 } else {
   $('#fabric-load').hidden = false;
   $('#fabric-load').title = cap.why;
@@ -362,7 +359,8 @@ function initMotion() {
   }
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out' });
-  gsap.fromTo('[data-hero]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
+  gsap.fromTo('[data-hero]:not(.ll-hero__media)', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
+  gsap.from('.ll-hero__media', { y: 26, duration: 1.2, delay: 0.1 }); // Hauptbild nur bewegen, nicht ausblenden (LCP)
   gsap.fromTo('.ll-hero__media img', { scale: 1.06 }, { scale: 1, duration: 2.4, ease: 'power2.out' });
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 88%',

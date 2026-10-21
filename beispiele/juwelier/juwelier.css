@@ -312,7 +312,7 @@
 html.is-locked { overflow: hidden; }
 
 /* ---------- Bewegung ---------- */
-.js-motion .hut [data-hero] { opacity: 0; }
+.js-motion .hut [data-hero]:not(#stage) { opacity: 0; } /* Ringbild bleibt sichtbar: Es ist das größte Element im ersten Bild (LCP) */
 @media (prefers-reduced-motion: reduce) {
   .hut-stage__poster, .hut-stage__canvas { transition: none; }
 }

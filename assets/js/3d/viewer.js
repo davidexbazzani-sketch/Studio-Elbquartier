@@ -5,46 +5,64 @@
 import * as THREE from 'three';
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 import { BUILDERS, createMaterials, shadowPlane } from './jewelry.js';
+import { warmPMREM } from './pmrem-warm.js';
 
 const { clamp, lerp, smoothstep } = THREE.MathUtils;
 
 // HDRI laden und zwei Varianten erzeugen:
 // raw  = Original + weiche Softbox von oben (Kontrast und Licht für den Diamanten)
 // tent = zusätzlich aufgehellt wie in einem Lichtzelt (helle, edle Metallreflexe)
-async function loadEnvironment(url, { lift, top }) {
+// Die Aufhellung rechnet die Grafikkarte in einem Durchgang (früher Pixel für Pixel im Prozessor,
+// das blockierte auf Handys die Seite über eine Sekunde).
+async function loadEnvironment(renderer, url, { lift, top }) {
   const src = await new HDRLoader().setDataType(THREE.FloatType).loadAsync(url);
   const { width: w, height: h, data } = src.image;
-  let sum = 0;
-  for (let i = 0; i < data.length; i += 4) sum += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
-  const avg = sum / (w * h);
-  const half = THREE.DataUtils.toHalfFloat;
-  // Zeile 0 ist oben (flipY): Richtung y = sin((v - 0.5) * π)
-  const topRow = new Float32Array(h);
-  for (let r = 0; r < h; r++) {
-    const y = Math.sin((1 - (r + 0.5) / h - 0.5) * Math.PI);
-    topRow[r] = smoothstep(y, 0.3, 0.9);
-  }
+  // mittlere Helligkeit aus einer Stichprobe (jedes 7. Pixel reicht für den Mittelwert)
+  let sum = 0, n = 0;
+  for (let i = 0; i < data.length; i += 28) { sum += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]; n++; }
+  const avg = sum / n;
+  src.flipY = true; // Zeile 0 ist oben
+  src.minFilter = src.magFilter = THREE.NearestFilter; // 1:1 abgetastet, keine Filterung von Float-Texturen nötig
+  src.generateMipmaps = false;
+  src.needsUpdate = true;
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: src }, add: { value: 0 }, topGain: { value: 0 } },
+    vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+    fragmentShader: `
+      uniform sampler2D map; uniform float add; uniform float topGain; varying vec2 vUv;
+      void main() {
+        // Richtung nach oben aus der Bildhöhe: y = sin((v - 0.5) * π), weiche Softbox ab y 0.3
+        float y = sin((vUv.y - 0.5) * 3.14159265);
+        float extra = add + smoothstep(0.3, 0.9, y) * topGain;
+        gl_FragColor = vec4(texture2D(map, vUv).rgb + extra, 1.0);
+      }`,
+    depthTest: false, depthWrite: false,
+  });
+  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const make = (add, topGain) => {
-    const out = new Uint16Array(data.length);
-    const one = half(1);
-    for (let i = 0; i < data.length; i += 4) {
-      const extra = add + topRow[Math.floor(i / 4 / w)] * topGain;
-      out[i] = half(data[i] + extra);
-      out[i + 1] = half(data[i + 1] + extra);
-      out[i + 2] = half(data[i + 2] + extra);
-      out[i + 3] = one;
-    }
-    const t = new THREE.DataTexture(out, w, h, THREE.RGBAFormat, THREE.HalfFloatType);
-    t.flipY = true;
+    const rt = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, depthBuffer: false, generateMipmaps: false, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter });
+    mat.uniforms.add.value = add;
+    mat.uniforms.topGain.value = topGain;
+    const prevTarget = renderer.getRenderTarget(), prevTone = renderer.toneMapping, prevSpace = renderer.outputColorSpace;
+    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    renderer.setRenderTarget(rt);
+    renderer.render(quad, cam);
+    renderer.setRenderTarget(prevTarget);
+    renderer.toneMapping = prevTone;
+    renderer.outputColorSpace = prevSpace;
+    const t = rt.texture;
     t.colorSpace = THREE.LinearSRGBColorSpace;
     t.mapping = THREE.EquirectangularReflectionMapping;
-    t.minFilter = t.magFilter = THREE.LinearFilter;
-    t.generateMipmaps = false;
-    t.needsUpdate = true;
+    t.userData.rt = rt;
     return t;
   };
-  src.dispose();
-  return { raw: make(0, top), tent: make(avg * lift, top * 0.5), avg };
+  const raw = make(0, top);
+  const tent = make(avg * lift, top * 0.5);
+  quad.geometry.dispose(); mat.dispose(); src.dispose();
+  return { raw, tent, avg };
 }
 
 export async function createViewer({
@@ -69,11 +87,12 @@ export async function createViewer({
   canvas.tabIndex = 0;
   canvas.setAttribute('role', 'img');
 
-  const env = await loadEnvironment(hdrUrl, { lift, top });
+  const env = await loadEnvironment(renderer, hdrUrl, { lift, top });
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const envMap = pmrem.fromEquirectangular(env.tent).texture;
+  const ziel = await warmPMREM(renderer, pmrem, env.tent.image.width / 4); // Shader im Hintergrund übersetzen
+  const envMap = pmrem.fromEquirectangular(env.tent, ziel).texture;
   pmrem.dispose();
-  env.tent.dispose();
+  env.tent.userData.rt.dispose();
 
   const scene = new THREE.Scene();
   scene.environment = envMap;
@@ -335,9 +354,20 @@ export async function createViewer({
     return url;
   }
 
+  // Shader eines Stücks im Hintergrund übersetzen (KHR_parallel_shader_compile), bevor es zum ersten Mal
+  // gezeichnet wird. Sonst übersetzt der erste Frame alles auf einmal und die Seite hängt kurz.
+  async function prepare(id) {
+    const item = build(id);
+    const tmp = !item.root.parent;
+    if (tmp) pivot.add(item.root);
+    try { await renderer.compileAsync(scene, camera); } catch { /* ältere Browser: dann eben beim ersten Frame */ }
+    if (tmp) pivot.remove(item.root);
+  }
+
   return {
     canvas,
     mount,
+    prepare,
     setPiece,
     setMetal: (key) => { mats.setMetal(key); kick(); },
     setEnvRotation: (a) => { setEnvRotation(a); kick(); },

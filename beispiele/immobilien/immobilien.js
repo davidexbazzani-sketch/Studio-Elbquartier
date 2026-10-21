@@ -103,7 +103,7 @@ async function startFilm() {
     .add(kenBurns(0, 7), 2.3)
     .to(shade, { opacity: 1, duration: 1.5 }, 3.8)
     .add(chap(0, 5.6), 2.3)
-    .add(wordsIn(lines[0]), 4.4)
+    .add(wordsIn(lines[0]), 0.6) // erste Zeile schon während der Zeichnung: Text ist sofort da (schnellere Anzeige)
     .add(wordsOut(lines[0]), 7.4)
     .call(() => preload(1), null, 4)
     // Szene 2: Bogenfenster öffnet sich

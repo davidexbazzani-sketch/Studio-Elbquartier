@@ -1,3 +1,4 @@
+import { whenScrolledNear } from '../../assets/js/capability.js';
 // Klarsund – Seite: 3D-Kollektion, Live-Anprobe (Kamera + Gesichtserkennung), Fotos, Terminformular.
 import { MODELLE, GLAESER } from '../../assets/js/3d/brillen.js';
 
@@ -37,19 +38,18 @@ async function initAnsicht(el, id, opt, farbe = wahl[id].farbe) {
   await a.set(id, farbe, wahl[id].glas);
   return a;
 }
-// 3D erst laden, wenn in Sichtweite
-const io = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (!e.isIntersecting) continue;
-    io.unobserve(e.target);
-    const id = e.target.dataset.stage || 'elbe';
-    const hero = e.target.id === 'hero-stage';   // Bühne oben zeigt immer Elbe in Havanna
-    initAnsicht(e.target, id, hero ? { auto: true } : {}, hero ? 'havanna' : undefined).then((a) => {
-      if (hero) ansichten.hero = a; else ansichten[id] = a;
-    });
-  }
-}, { rootMargin: '300px' });
-$$('[data-stage], #hero-stage').forEach((el) => io.observe(el));
+// 3D gestaffelt laden: die Brille oben erst nach dem Seitenaufbau (Text und Bild sind sofort da),
+// die Produktkarten erst beim Scrollen in ihre Nähe. Früher starteten mehrere 3D-Ansichten gleichzeitig beim Laden.
+const startHeroStage = () => {
+  const el = $('#hero-stage'); if (!el) return;
+  initAnsicht(el, 'elbe', { auto: true }, 'havanna').then((a) => { ansichten.hero = a; });
+};
+const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
+if (document.readyState === 'complete') idle(startHeroStage); else addEventListener('load', () => idle(startHeroStage), { once: true });
+$$('[data-stage]').forEach((el) => whenScrolledNear(el, () => {
+  const id = el.dataset.stage || 'elbe';
+  initAnsicht(el, id, {}).then((a) => { ansichten[id] = a; });
+}, { margin: '300px 0px' }));
 
 grid.addEventListener('click', (e) => {
   const sw = e.target.closest('[data-farbe]'); if (!sw) return;
