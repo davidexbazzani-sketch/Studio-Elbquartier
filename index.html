@@ -238,19 +238,19 @@
         </header>
         <div class="services__list">
           <article class="card services__item" data-reveal>
-            <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 11h24M12 28h8M16 24v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span class="tile tile--sand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 11h24M12 28h8M16 24v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
             <h3 class="t-h3">Webdesign &amp; Websites</h3>
             <p class="t-small">Wir erstellen Ihre Website so, dass sie zeigt, was Ihren Laden ausmacht: auf dem Handy wie am Computer schnell, klar und für Google vorbereitet. Bestehende Websites und Shopify-Shops machen wir neu. Ab 500&nbsp;€ Endpreis, bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
             <a class="services__link" href="#pakete">Website-Pakete ansehen</a>
           </article>
           <article class="card services__item" data-reveal>
-            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11h5l2-3h8l2 3h5v14H5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="18" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span class="tile tile--rose"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11h5l2-3h8l2 3h5v14H5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="18" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
             <h3 class="t-h3">Fotografie für Laden, Produkte &amp; Team</h3>
             <p class="t-small">Unser Fotograf setzt Ihre Räume, Ihre Produkte und Ihr Team professionell in Szene, für Ihre Website und Ihre Social-Media-Kanäle. Oder wir holen das Beste aus den Bildern heraus, die Sie schon haben.</p>
             <a class="services__link" href="#kontakt" data-plan="Foto">Fotoshooting anfragen</a>
           </article>
           <article class="card services__item" data-reveal>
-            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 10l-6 6 6 6M21 10l6 6-6 6M18 7l-4 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="tile tile--elbe"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 10l-6 6 6 6M21 10l6 6-6 6M18 7l-4 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Softwarelösungen</h3>
             <p class="t-small">Online-Reservierung, Vorbestellen und Abholen, Gutscheine, digitale Karten oder Automatisierung: Software, die genau zu Ihrem Betrieb passt und Ihnen im Alltag Arbeit abnimmt.</p>
             <a class="services__link" href="#software">Software-Beispiele ansehen</a>
@@ -315,7 +315,7 @@
         <header class="section-head section-head--center" data-reveal>
           <p class="eyebrow" style="--eyebrow-dot: var(--c-rose-deep)">Website-Pakete</p>
           <h2 class="t-h2" id="pakete-title">Ein fairer Preis. Ohne Abo.</h2>
-          <p class="t-lead">Einmal bezahlen, Website behalten. Und zwar erst, wenn Ihnen der fertige Entwurf gefällt. Alle Preise sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer (§&nbsp;19 UStG). Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu.</p>
+          <p class="t-lead">Einmal bezahlen, Website behalten. Und zwar erst, wenn Ihnen der fertige Entwurf gefällt.</p>
         </header>
 
         <div class="plans">
@@ -335,21 +335,21 @@
             <a class="btn btn--secondary btn--block" href="#kontakt" data-plan="Starter">Starter anfragen</a>
           </article>
 
-          <article class="card card--feature plan plan--featured" data-reveal>
+          <article class="card plan plan--featured" data-reveal>
             <span class="badge plan__badge">Unsere Empfehlung</span>
             <header class="plan__head">
               <h3 class="t-h3">Pro</h3>
               <p class="t-small">Alles aus Starter, plus Bewegung.</p>
             </header>
             <p class="price"><span class="price__value">1.200&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list" style="--check-bg: var(--c-sand)">
+            <ul class="check-list">
               <li>Alles aus Starter</li>
               <li>Flüssige Scroll-Animationen</li>
               <li>Interaktive Elemente, z.&nbsp;B. Speisekarte oder Konfigurator</li>
               <li>3D-Präsentation ausgewählter Produkte</li>
               <li>Feinschliff für schnelle Ladezeiten</li>
             </ul>
-            <a class="btn btn--block plan__btn" href="#kontakt" data-plan="Pro">Pro anfragen</a>
+            <a class="btn btn--block" href="#kontakt" data-plan="Pro">Pro anfragen</a>
           </article>
 
           <article class="card plan" data-reveal>
@@ -368,6 +368,7 @@
             <a class="btn btn--secondary btn--block" href="#kontakt" data-plan="Max">Max anfragen</a>
           </article>
         </div>
+        <p class="plans__note" data-reveal>Alle Preise sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer (§&nbsp;19 UStG). Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu.</p>
 
         <!-- Umstieg: bestehende Website / Shopify, SEO -->
         <div class="umstieg" id="umstieg">
@@ -385,9 +386,9 @@
                 <li>Bezahlt wird erst, wenn Ihnen der fertige Entwurf gefällt. Passt er nicht, behalten Sie einfach Ihre bisherige Seite.</li>
               </ul>
             </article>
-            <article class="card card--feature umstieg__card" data-reveal>
+            <article class="card umstieg__card umstieg__card--seo" data-reveal>
               <h4 class="t-h3">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h4>
-              <ul class="check-list" style="--check-bg: var(--c-sand)">
+              <ul class="check-list">
                 <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
                 <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie auch in der Kartensuche auffallen.</li>
                 <li>Unser Ziel sind messbar mehr Besucher. Wir richten die Google Search Console für Sie ein und zeigen Ihnen schwarz auf weiß, wie sich Aufrufe, Suchanfragen und Platzierungen entwickeln.</li>
@@ -408,39 +409,45 @@
         </header>
         <ul class="software__list">
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M8.5 14l2.2 2.2 4.8-4.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="tile tile--elbe software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M8.5 14l2.2 2.2 4.8-4.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Online-Reservierung</h3>
             <p class="t-small">Tische, Termine oder Beratungen direkt über Ihre Website buchen lassen, mit automatischer Bestätigung und Erinnerung.</p>
           </li>
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 01-1.5 1.3H7.7a1.5 1.5 0 01-1.5-1.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 016 0v3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="tile tile--sand software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 01-1.5 1.3H7.7a1.5 1.5 0 01-1.5-1.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 016 0v3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <h3 class="t-h3">Vorbestellen und abholen</h3>
             <p class="t-small">Ihre Kundschaft bestellt online und holt bei Ihnen ab. Ohne Telefonstress und ohne Warteschlange.</p>
           </li>
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 13h17M12 9v11M12 9c-1.5-3-5-3.6-5-1.3C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.6 5-1.3C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+            <span class="tile tile--rose software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 13h17M12 9v11M12 9c-1.5-3-5-3.6-5-1.3C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.6 5-1.3C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Gutscheine und Treuekarten</h3>
             <p class="t-small">Gutscheine rund um die Uhr online verkaufen und Ihre Stammkundschaft mit einer digitalen Treuekarte belohnen.</p>
           </li>
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 19.5h1.5M19.5 14v1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="tile tile--sage software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 19.5h1.5M19.5 14v1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Digitale Karten</h3>
             <p class="t-small">Speise- oder Preislisten per QR-Code, mit Allergenen und Tagesangeboten. Änderungen machen Sie in Sekunden selbst.</p>
           </li>
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 3.5h6v2.5H9zM8.5 11l1.5 1.5 2.5-2.5M8.5 16l1.5 1.5 2.5-2.5M14.5 11.5h1.5M14.5 16.5h1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="tile tile--elbe software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 3.5h6v2.5H9zM8.5 11l1.5 1.5 2.5-2.5M8.5 16l1.5 1.5 2.5-2.5M14.5 11.5h1.5M14.5 16.5h1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Werkzeuge für Ihr Team</h3>
             <p class="t-small">Dienstpläne, Lagerlisten oder Checklisten, zugeschnitten auf Ihre Abläufe statt von der Stange.</p>
           </li>
           <li class="card software__item" data-reveal>
-            <span class="software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="17.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7h7M7.3 9.2l3.4 6M16.7 9.2l-3.4 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="tile tile--sand software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="17.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7h7M7.3 9.2l3.4 6M16.7 9.2l-3.4 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <h3 class="t-h3">Automatisierung</h3>
             <p class="t-small">Wiederkehrende Aufgaben erledigen sich von selbst, und Ihre Programme arbeiten zusammen, etwa Kasse, Onlineshop und Buchhaltung.</p>
           </li>
         </ul>
-        <div class="software__cta" data-reveal>
-          <p class="t-small">Ihre Idee ist nicht dabei? Erzählen Sie uns davon. Gemeinsam finden wir heraus, was sich lohnt.</p>
-          <a class="btn btn--secondary" href="#kontakt" data-plan="Software">Software-Idee besprechen</a>
+        <div class="cta-band" data-reveal>
+          <div class="cta-band__text">
+            <h3 class="t-h3">Ihre Idee ist nicht dabei?<br><span class="t-serif-italic">Erzählen Sie uns davon.</span></h3>
+            <p class="t-small">Gemeinsam finden wir heraus, was sich für Ihren Betrieb lohnt: unverbindlich und ohne Fachchinesisch.</p>
+          </div>
+          <div class="cta-band__actions">
+            <a class="btn" href="#kontakt" data-plan="Software">Software-Idee besprechen</a>
+            <a class="btn btn--secondary" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20habe%20eine%20Software-Idee." target="_blank" rel="noopener">Per WhatsApp</a>
+          </div>
         </div>
       </div>
     </section>
@@ -489,27 +496,31 @@
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Gespräch und Entwurf sind für Sie unverbindlich. Bezahlt wird erst, wenn Sie zufrieden sind.
           </p>
-          <figure class="team-photo">
-            <img src="assets/img/team/gruppe-blau-1200.webp" srcset="assets/img/team/gruppe-blau-800.webp 800w, assets/img/team/gruppe-blau-1200.webp 1200w, assets/img/team/gruppe-blau-1600.webp 1600w" sizes="(min-width: 960px) 520px, 92vw" width="1600" height="1063" alt="Anna, Davide und Jan vom Studio Elbquartier (Bild mit KI erstellt)" loading="lazy" decoding="async">
-            <figcaption>Anna, Davide und Jan</figcaption>
-          </figure>
           <div class="contact__direct">
             <a class="contact__chip" href="tel:+4917631685816">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h2.6l1.4 4-2 1.3a12 12 0 006.6 6.6l1.3-2 4 1.4v2.6A2 2 0 0118.6 19.5 15.5 15.5 0 014.5 5.4a2 2 0 012.1-1.9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              <span class="tile tile--sand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h2.6l1.4 4-2 1.3a12 12 0 006.6 6.6l1.3-2 4 1.4v2.6A2 2 0 0118.6 19.5 15.5 15.5 0 014.5 5.4a2 2 0 012.1-1.9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
               <span><small>Anrufen</small>0176 31685816</span>
             </a>
             <a class="contact__chip" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Website." target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4A8.5 8.5 0 1112 20.5a8.6 8.6 0 01-4.1-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a5 5 0 01-2.8-2.8l.8-1-1-2z" fill="currentColor" opacity=".8"/></svg>
+              <span class="tile tile--sage"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4A8.5 8.5 0 1112 20.5a8.6 8.6 0 01-4.1-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a5 5 0 01-2.8-2.8l.8-1-1-2z" fill="currentColor" opacity=".8"/></svg></span>
               <span><small>WhatsApp</small>Nachricht schreiben</span>
             </a>
             <a class="contact__chip" href="mailto:hallo@studio-elbquartier.de">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="tile tile--elbe"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               <span><small>E-Mail</small>hallo@studio-elbquartier.de</span>
             </a>
           </div>
+          <figure class="team-card">
+            <div class="team-card__img"><img src="assets/img/team/gruppe-blau-1200.webp" srcset="assets/img/team/gruppe-blau-800.webp 800w, assets/img/team/gruppe-blau-1200.webp 1200w, assets/img/team/gruppe-blau-1600.webp 1600w" sizes="(min-width: 960px) 520px, 92vw" width="1600" height="1063" alt="Anna, Davide und Jan vom Studio Elbquartier (Bild mit KI erstellt)" loading="lazy" decoding="async"></div>
+            <figcaption><strong>Anna, Davide und Jan</strong>Ihr festes Team aus Hamburg. Gern auch bei Ihnen vor Ort im Laden.</figcaption>
+          </figure>
         </header>
 
         <form class="card contact__form" id="contact-form" action="kontakt.php" method="post" novalidate data-reveal>
+          <div class="contact__form-head">
+            <h3 class="t-h3">Ihre Anfrage</h3>
+            <p class="t-small">Unverbindlich. Bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
+          </div>
           <div class="contact__grid">
             <label class="field">
               <span class="field__label">Ihr Name</span>
@@ -527,25 +538,25 @@
               <span class="field__label">Telefon <span class="t-muted">(optional)</span></span>
               <input class="field__input" type="tel" name="telefon" autocomplete="tel" maxlength="40" placeholder="Für einen kurzen Rückruf">
             </label>
-            <label class="field">
-              <span class="field__label">Ihr Interesse</span>
-              <select class="field__input" name="paket">
-                <option value="">Noch offen</option>
-                <option value="Starter">Website Starter</option>
-                <option value="Pro">Website Pro</option>
-                <option value="Max">Website Max</option>
-                <option value="Software">Softwarelösung</option>
-                <option value="Foto">Fotoshooting für Laden, Produkte &amp; Team</option>
-              </select>
-            </label>
-            <label class="field">
-              <span class="field__label">Erstes Gespräch</span>
-              <select class="field__input" name="gespraech">
-                <option value="">Wie es am besten passt</option>
-                <option value="vor Ort">Gern bei mir vor Ort</option>
-                <option value="Telefon">Lieber am Telefon</option>
-              </select>
-            </label>
+            <fieldset class="chips contact__full">
+              <legend class="field__label">Ihr Interesse</legend>
+              <div class="chips__list">
+                <label class="chip"><input type="radio" name="paket" value="" checked><span>Noch offen</span></label>
+                <label class="chip"><input type="radio" name="paket" value="Starter"><span>Website Starter</span></label>
+                <label class="chip"><input type="radio" name="paket" value="Pro"><span>Website Pro</span></label>
+                <label class="chip"><input type="radio" name="paket" value="Max"><span>Website Max</span></label>
+                <label class="chip"><input type="radio" name="paket" value="Foto"><span>Fotoshooting</span></label>
+                <label class="chip"><input type="radio" name="paket" value="Software"><span>Software</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="chips contact__full">
+              <legend class="field__label">Erstes Gespräch</legend>
+              <div class="chips__list">
+                <label class="chip"><input type="radio" name="gespraech" value="" checked><span>Wie es passt</span></label>
+                <label class="chip"><input type="radio" name="gespraech" value="vor Ort"><span>Bei mir vor Ort</span></label>
+                <label class="chip"><input type="radio" name="gespraech" value="Telefon"><span>Am Telefon</span></label>
+              </div>
+            </fieldset>
             <label class="field contact__full">
               <span class="field__label">Nachricht</span>
               <textarea class="field__input" name="nachricht" required maxlength="4000" placeholder="Erzählen Sie uns kurz von Ihrem Laden oder Ihrem Vorhaben."></textarea>
@@ -559,7 +570,8 @@
             </label>
           </div>
           <div class="contact__submit">
-            <button class="btn" type="submit">Nachricht senden</button>
+            <p class="contact__hint t-small">Antwort in der Regel innerhalb eines Werktags.</p>
+            <button class="btn contact__send" type="submit">Nachricht senden <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <p class="contact__status t-small" id="contact-status" role="status" aria-live="polite"></p>
           </div>
         </form>

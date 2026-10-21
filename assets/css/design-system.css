@@ -452,7 +452,7 @@ textarea.field__input { min-height: 140px; resize: vertical; line-height: 1.5; }
 .rule { height: 1px; background: var(--c-line); border: 0; margin: 0; }
 
 /* Reveal-Ausgangszustand (nur wenn JS + Bewegung aktiv) */
-.js-motion [data-reveal] { opacity: 0; transform: translateY(28px); }
+.js-motion [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(28px); }
 
 /* ---------- 7. Reduzierte Bewegung ---------- */
 @media (prefers-reduced-motion: reduce) {

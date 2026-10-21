@@ -63,7 +63,11 @@ function initMotion() {
     // früh und zügig, damit beim schnellen Wischen keine leeren Flächen stehen bleiben
     start: 'top 98%',
     once: true,
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.7, stagger: 0.06, overwrite: true }),
+    // danach Inline-Werte entfernen, damit Hover-Effekte und CSS-Versatz (z. B. Paket-Empfehlung) wieder greifen
+    onEnter: (els) => gsap.to(els, {
+      opacity: 1, y: 0, duration: 0.7, stagger: 0.06, overwrite: true,
+      onComplete: () => els.forEach((el) => { el.classList.add('is-in'); gsap.set(el, { clearProps: 'transform,opacity' }); }),
+    }),
   });
 
   // Drehscheibe zoomt beim Hereinscrollen leicht heran
@@ -250,7 +254,8 @@ setActive(0);
 
 /* ---------- Paket-Buttons füllen das Formular vor ---------- */
 document.querySelectorAll('[data-plan]').forEach((a) => a.addEventListener('click', () => {
-  $('#contact-form select[name="paket"]').value = a.dataset.plan;
+  const chip = $(`#contact-form input[name="paket"][value="${a.dataset.plan}"]`);
+  if (chip) chip.checked = true;
 }));
 
 /* ---------- Kontaktformular ---------- */
