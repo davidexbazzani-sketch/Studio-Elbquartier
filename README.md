@@ -99,7 +99,7 @@ Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenk
 Auf der Seite erledigt (17.10.2026): Title und Beschreibung mit „Webdesign, Fotografie & Software in Hamburg“, H1 mit diesen Begriffen, Abschnitt „Leistungen“, strukturierte Daten (`ProfessionalService` mit Adresse, Telefon, Angeboten und Preisen), Vorschaubild `assets/img/og.jpg`, Logo `assets/img/marke/logo.png`, `robots.txt`, `sitemap.xml`. Beispielseiten, Impressum, Datenschutz und Design System stehen bewusst auf `noindex`.
 
 Außerhalb der Seite (bringt für lokale Suchen am meisten):
-1. Google Search Console: Domain bestätigen, `https://studio-elbquartier.de/sitemap.xml` einreichen.
+1. ~~Google Search Console~~ erledigt am 21.10.2026: Property `https://studio-elbquartier.de/` (URL-Präfix) per HTML-Datei bestätigt, Sitemap eingereicht, Indexierung der Startseite beantragt. **Die Datei `google16e71ee0cab29735.html` nicht löschen**, sonst geht die Bestätigung verloren.
 2. Google-Unternehmensprofil (Google Maps) anlegen: Kategorie „Webdesigner“, Leistungen Webdesign, Fotografie, Software; Einzugsgebiet Hamburg; Fotos; zufriedene Kundschaft um Bewertungen bitten.
 3. Einträge in Branchenverzeichnissen mit genau gleicher Anschrift und Telefonnummer (z. B. Das Örtliche, Gelbe Seiten, hamburg.de-Branchenbuch).
 4. Auf Kundenseiten im Fuß „Website: Studio Elbquartier“ mit Link; Instagram/TikTok mit der Website verlinken.
