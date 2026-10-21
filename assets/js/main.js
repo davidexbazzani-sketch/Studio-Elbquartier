@@ -66,8 +66,8 @@ function initMotion() {
   });
 
   // Drehscheibe zoomt beim Hereinscrollen leicht heran
-  gsap.fromTo('.stage', { scale: 0.94, opacity: 0.4 }, {
-    scale: 1, opacity: 1, ease: 'none',
+  gsap.fromTo('.stage', { scale: 0.94 }, { // nur Zoom, kein Verblassen (wirkte auf dem Handy wie ein Ladefehler)
+    scale: 1, ease: 'none',
     scrollTrigger: { trigger: '.stage', start: 'top bottom', end: 'top 45%', scrub: true },
   });
 }

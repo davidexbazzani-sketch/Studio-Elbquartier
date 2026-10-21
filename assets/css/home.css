@@ -545,3 +545,13 @@ select.field__input {
 @media (prefers-reduced-motion: reduce) {
   .tile, .services__item::after, .software__item::after, .services__link::after, .contact__send svg { transition: none; }
 }
+
+/* Handy: Software-Karten kompakt (Icon links, Text rechts), spart rund einen Bildschirm Scrollweg */
+@media (max-width: 679px) {
+  .software__list { gap: var(--space-3); }
+  .software__item { grid-template-columns: 44px 1fr; column-gap: var(--space-4); row-gap: var(--space-1); padding: var(--space-5); }
+  .software__item .tile { grid-column: 1; grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 12px; margin: 2px 0 0; }
+  .software__item .tile svg { width: 22px; height: 22px; }
+  .software__item .t-h3 { grid-column: 2; font-size: 1.2rem; line-height: 1.25; }
+  .software__item .t-small { grid-column: 2; }
+}

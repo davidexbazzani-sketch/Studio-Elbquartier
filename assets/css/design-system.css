@@ -38,7 +38,7 @@
   /* Text – warmes Fast-Schwarz in drei Stufen */
   --c-ink: #1f1c18;
   --c-ink-2: #5d574f;
-  --c-ink-3: #8e877d;
+  --c-ink-3: #716a60; /* 5,0:1 auf dem Hintergrund (Barrierefreiheit), vorher #8e877d mit 3,3:1 */
   --c-line: rgba(31, 28, 24, 0.09);
   --c-line-strong: rgba(31, 28, 24, 0.16);
 
