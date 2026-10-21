@@ -2,6 +2,12 @@
 
 Alle Dateien liegen lokal auf dem eigenen Server. Es werden keine externen Dienste, Schriften oder Skripte nachgeladen.
 
+## Videos im Startbereich
+
+| Datei | Herkunft | Hinweis |
+|---|---|---|
+| `assets/video/hero/hero-1..5-l.mp4` (Querformat 1600x900), `hero-1..5-p.mp4` (Hochformat 608x1080), `hero-1-*.webp` (Standbild) | KI-generiert mit Higgsfield am 21.10.2026: Startbilder GPT Image 2.5, Bewegung Kling 3.0 (pro, 5 s, ohne Ton); Kosten und Prompts in `Kunden/Studio Elbquartier/Higgsfield.md` außerhalb des Repos | Nutzungsrechte laut Higgsfield-Bedingungen (Plan Plus, kommerziell erlaubt). Keine echten Läden, Marken oder Personen. Auf der Seite dezent als „Szenen: KI-Visualisierung“ gekennzeichnet, zusätzlich in `lizenzen.html`. Kodiert mit ffmpeg (nur Werkzeug). |
+
 ## Teamfotos
 
 | Datei | Herkunft | Hinweis |

@@ -1,5 +1,6 @@
 import { SHOPS, facadeSVG } from './shops.js';
 import { afterInteraction, can3D, hasWebGL2, reducedMotion } from './capability.js';
+import './hero-video.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 
@@ -48,16 +49,10 @@ function initMotion() {
     yPercent: wide ? -12 : -4, opacity: wide ? 0.2 : 1, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
-  // Die schwebenden Beispiel-Fenster gleiten beim Scrollen auseinander und verblassen
-  gsap.to('.hero__cards', {
-    scale: 1.12, yPercent: -10, opacity: 0, ease: 'none',
+  gsap.to('.hero__media', {
+    yPercent: 14, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
-  gsap.to('.hero__aura', {
-    yPercent: 18, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
-
   // Elemente erscheinen beim Hineinscrollen
   ScrollTrigger.batch('[data-reveal]', {
     // früh und zügig, damit beim schnellen Wischen keine leeren Flächen stehen bleiben
@@ -77,65 +72,6 @@ function initMotion() {
   });
 }
 initMotion();
-
-/* ---------- Hero-Band (Handy): läuft von selbst weiter, lässt sich jederzeit wischen ---------- */
-const heroStrip = $('.hero__strip');
-if (heroStrip) {
-  const track = $('.hero__track', heroStrip);
-  const SPEED = 34; // px pro Sekunde
-  let pos = 0, lastSet = -1, resumeAt = 0, touching = false, visible = false, raf = 0, last = 0;
-  const half = () => track.scrollWidth / 2 + 9; // Inhalt ist doppelt vorhanden (Lücke 18 px)
-  const wrap = () => { // endlos in beide Richtungen
-    const h = half();
-    if (heroStrip.scrollLeft >= h) heroStrip.scrollLeft -= h;
-    else if (heroStrip.scrollLeft < 2) heroStrip.scrollLeft += h;
-  };
-  const pauseFor = (ms) => { resumeAt = performance.now() + ms; };
-  const step = (now) => {
-    const dt = Math.min(0.05, (now - last) / 1000 || 0);
-    last = now;
-    if (!touching && now > resumeAt && !reducedMotion) {
-      pos += SPEED * dt;
-      const h = half();
-      if (pos >= h) pos -= h;
-      heroStrip.scrollLeft = pos;
-      lastSet = heroStrip.scrollLeft;
-    } else {
-      pos = heroStrip.scrollLeft;
-    }
-    raf = visible ? requestAnimationFrame(step) : 0;
-  };
-  // Start in der Mitte des doppelten Inhalts, damit man auch gleich nach links wischen kann
-  requestAnimationFrame(() => { heroStrip.scrollLeft = pos = half(); });
-  heroStrip.addEventListener('touchstart', () => { touching = true; }, { passive: true });
-  heroStrip.addEventListener('touchend', () => { touching = false; pauseFor(2500); }, { passive: true });
-  heroStrip.addEventListener('pointerdown', () => pauseFor(2500), { passive: true });
-  heroStrip.addEventListener('scroll', () => {
-    if (Math.abs(heroStrip.scrollLeft - lastSet) > 1) { pauseFor(1800); wrap(); pos = heroStrip.scrollLeft; }
-  }, { passive: true });
-  new IntersectionObserver(([e]) => {
-    visible = e.isIntersecting && heroStrip.offsetParent !== null;
-    if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(step); }
-  }).observe(heroStrip);
-}
-
-/* ---------- Hero: Beispiel-Fenster folgen der Maus mit Tiefe ---------- */
-const heroCards = $('.hero__cards');
-if (heroCards && !reducedMotion && matchMedia('(pointer: fine)').matches) {
-  let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
-  const step = () => {
-    x += (tx - x) * 0.08; y += (ty - y) * 0.08;
-    heroCards.style.setProperty('--mx', x.toFixed(2));
-    heroCards.style.setProperty('--my', y.toFixed(2));
-    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.05 ? requestAnimationFrame(step) : 0;
-  };
-  addEventListener('pointermove', (e) => {
-    if (window.scrollY > innerHeight) return; // nur solange das Startbild zu sehen ist
-    tx = (e.clientX / innerWidth - 0.5) * -36;
-    ty = (e.clientY / innerHeight - 0.5) * -28;
-    if (!raf) raf = requestAnimationFrame(step);
-  }, { passive: true });
-}
 
 /* ---------- Drehscheibe ---------- */
 const stage = $('#stage');
