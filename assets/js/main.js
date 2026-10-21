@@ -178,8 +178,11 @@ if (cap.ok) {
   // (scrollen, tippen, Maus). Sonst rechnet das Handy schon beim Seitenaufbau am 3D und die Startanimation hakt.
   const io = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load3D(); }
-  }, { rootMargin: '600px 0px' });
-  afterInteraction(() => io.observe(stage));
+  }, { rootMargin: '300px 0px' });
+  // Erst beim Scrollen starten (nicht nach Zeit oder Mausbewegung): Der 3D-Aufbau blockiert kurz den Browser
+  // und würde sonst das Video im Startbereich stocken lassen.
+  if (scrollY > 0) io.observe(stage);
+  else afterInteraction(() => io.observe(stage), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] });
 } else {
   $('#beispiele .section-head .t-lead').textContent = 'Wischen Sie durch die Läden und öffnen Sie ein Beispiel. Alle Namen sind erfunden, die Ideen sind echt.';
   $('#stage-toggle-text').textContent = cap.why;

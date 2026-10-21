@@ -22,7 +22,7 @@ if (media && clips.length === 2 && sting && !reducedMotion && !sparsam) start();
 
 function start() {
   const portrait = matchMedia('(max-aspect-ratio: 1/1)').matches;
-  const src = (i) => `assets/video/hero/hero-${i + 1}-${portrait ? 'p' : 'l'}.mp4`;
+  const src = (i) => `assets/video/hero60/hero-${i + 1}-${portrait ? 'p' : 'l'}.mp4`;
 
   let cur = clips[0], nxt = clips[1];
   let scene = 0; // 0–4 Videos, 5 = Logo

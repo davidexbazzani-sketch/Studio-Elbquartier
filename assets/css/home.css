@@ -78,6 +78,10 @@
   .hero__sting { padding-left: 0; place-content: start center; padding-top: calc(var(--nav-h) + 9svh); background: radial-gradient(90% 60% at 50% 28%, #fbf7f0 0%, #f2eadc 60%, #eadfcb 100%); }
 }
 
+/* Kein Weichzeichner (backdrop-filter) über dem Video: Er müsste für jedes Videobild neu berechnet werden
+   und lässt das Video vor allem auf Handys ruckeln. Die Navigation ist dafür fast deckend. */
+.nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(250, 247, 242, 0.95); }
+
 /* Pause-Knopf und dezenter KI-Hinweis unten rechts */
 .hero__controls {
   position: absolute; right: var(--gutter); bottom: var(--space-5); z-index: 2;
@@ -85,13 +89,13 @@
 }
 .hero__ki {
   padding: 4px 10px; border-radius: var(--radius-pill);
-  background: rgba(255, 253, 249, 0.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 253, 249, 0.86);
   font-size: 0.6875rem; letter-spacing: 0.02em; color: var(--c-ink-2);
 }
 .hero__pause {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
   border: 0; cursor: pointer; color: var(--c-ink);
-  background: rgba(255, 253, 249, 0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 253, 249, 0.92);
   box-shadow: var(--shadow-1), inset 0 0 0 1px var(--c-line);
   transition: transform var(--dur-fast), box-shadow var(--dur-fast);
 }
