@@ -9,6 +9,9 @@
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # Nur eine Adresse für Google: www.studio-elbquartier.de → studio-elbquartier.de
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 </IfModule>
 <IfModule mod_headers.c>
   # Browser merken sich für ein Jahr: nur noch https (erst nach erfolgreichem https-Test aktiv lassen)
