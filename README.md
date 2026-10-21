@@ -98,6 +98,8 @@ Das Skript nutzt Google Chrome im Hintergrund. Mit `python3 tools/druck/visitenk
 
 Auf der Seite erledigt (17.10.2026): Title und Beschreibung mit „Webdesign, Fotografie & Software in Hamburg“, H1 mit diesen Begriffen, Abschnitt „Leistungen“, strukturierte Daten (`ProfessionalService` mit Adresse, Telefon, Angeboten und Preisen), Vorschaubild `assets/img/og.jpg`, Logo `assets/img/marke/logo.png`, `robots.txt`, `sitemap.xml`. Beispielseiten, Impressum, Datenschutz und Design System stehen bewusst auf `noindex`.
 
+Ergänzt am 22.10.2026: drei **Themenseiten** für gezielte Suchen, `/webdesign-hamburg/`, `/fotografie-hamburg/` und `/software-hamburg/` (eigene Titel, Beschreibungen, strukturierte Daten `Service` und Brotkrumen, in der Sitemap, von der Startseite verlinkt). Sie werden mit `node tools/seiten/seiten.mjs` erzeugt und übernehmen Pakete, Ablauf, Software-Liste und Umstieg aus `index.html`: Nach Änderungen an diesen Abschnitten den Generator neu laufen lassen, nicht die erzeugten Dateien von Hand ändern. Dazu Favicon-Set (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `site.webmanifest`). Links mit `?interesse=Foto` usw. wählen im Kontaktformular das Interesse vor.
+
 Außerhalb der Seite (bringt für lokale Suchen am meisten):
 1. ~~Google Search Console~~ erledigt am 21.10.2026: Property `https://studio-elbquartier.de/` (URL-Präfix) per HTML-Datei bestätigt, Sitemap eingereicht, Indexierung der Startseite beantragt. **Die Datei `google16e71ee0cab29735.html` nicht löschen**, sonst geht die Bestätigung verloren.
 2. Google-Unternehmensprofil (Google Maps) anlegen: Kategorie „Webdesigner“, Leistungen Webdesign, Fotografie, Software; Einzugsgebiet Hamburg; Fotos; zufriedene Kundschaft um Bewertungen bitten.
