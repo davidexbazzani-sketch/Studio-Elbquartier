@@ -197,6 +197,13 @@ document.querySelectorAll('[data-plan]').forEach((a) => a.addEventListener('clic
   if (chip) chip.checked = true;
 }));
 
+// Von den Themenseiten kommend (?interesse=Foto usw.): passendes Interesse im Formular vorauswählen
+{
+  const wunsch = new URLSearchParams(location.search).get('interesse');
+  const chip = wunsch && $(`#contact-form input[name="paket"][value="${CSS.escape(wunsch)}"]`);
+  if (chip) chip.checked = true;
+}
+
 /* ---------- Kontaktformular ---------- */
 const form = $('#contact-form');
 const status = $('#contact-status');

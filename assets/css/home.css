@@ -250,7 +250,7 @@
 .umstieg__grid { display: grid; gap: var(--space-5); }
 @media (min-width: 860px) { .umstieg__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .umstieg__card { display: grid; align-content: start; gap: var(--space-5); padding: var(--space-7) var(--space-6); }
-.umstieg__card h4 { margin: 0; }
+.umstieg__card h4, .umstieg__card h3 { margin: 0; }
 
 /* ---------- Pakete ---------- */
 .plans { display: grid; gap: var(--space-5); align-items: stretch; }
@@ -555,3 +555,7 @@ select.field__input {
   .software__item .t-h3 { grid-column: 2; font-size: 1.2rem; line-height: 1.25; }
   .software__item .t-small { grid-column: 2; }
 }
+
+/* Zweiter Link in den Leistungs-Karten (zur Themenseite), ruhiger */
+.services__link--quiet { margin-top: 0; font-weight: 500; color: var(--c-ink-2); border-bottom-color: transparent; }
+.services__link--quiet:hover { color: var(--c-ink); }

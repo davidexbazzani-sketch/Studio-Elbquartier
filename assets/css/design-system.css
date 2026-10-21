@@ -347,7 +347,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 /* Preis */
 .price { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); }
 .price__value { font-size: clamp(2.75rem, 2rem + 2.5vw, 3.75rem); font-weight: 600; letter-spacing: var(--tracking-display); line-height: 1; }
-.price__note { font-size: var(--fs-micro); color: inherit; opacity: 0.6; white-space: nowrap; }
+.price__note { font-size: var(--fs-micro); color: inherit; opacity: 0.72; white-space: nowrap; } /* 0.72: Kontrast über 4,5:1 */
 
 /* Liste mit Häkchen */
 .check-list { display: grid; gap: var(--space-3); }

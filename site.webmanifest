@@ -1,0 +1,13 @@
+{
+  "name": "Studio Elbquartier",
+  "short_name": "Elbquartier",
+  "description": "Webdesign, Fotografie und Softwarelösungen für Läden in Hamburg",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#faf7f2",
+  "theme_color": "#faf7f2",
+  "icons": [
+    { "src": "/assets/img/marke/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/img/marke/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
