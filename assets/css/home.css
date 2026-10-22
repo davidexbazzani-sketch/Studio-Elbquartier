@@ -365,28 +365,30 @@ body { background: var(--c-bg); font-family: var(--font-sans); color: var(--c-in
 /* ---------- Laufband: ein ruhiges Band in Dunkelblau mit feinen Goldlinien (läuft beim Scrollen etwas schneller, main.js) ---------- */
 .ribbons { position: relative; overflow: hidden; background: var(--accent); color: var(--accent-ink); }
 .ribbons::before, .ribbons::after { content: ""; position: absolute; left: 0; right: 0; height: 1px; background: rgba(200, 169, 122, 0.55); pointer-events: none; }
-.ribbons::before { top: 7px; }
-.ribbons::after { bottom: 7px; }
+.ribbons::before { top: 4px; }
+.ribbons::after { bottom: 4px; }
 .ribbon { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
 .ribbon__track {
-  display: flex; width: max-content; white-space: nowrap; padding: clamp(22px, 1rem + 1vw, 30px) 0;
-  font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(1.4rem, 1rem + 1.3vw, 2.125rem); line-height: 1.1; letter-spacing: 0.01em;
+  display: flex; width: max-content; white-space: nowrap; padding: clamp(10px, 0.5rem + 0.4vw, 13px) 0;
+  font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(1.05rem, 0.85rem + 0.6vw, 1.375rem); line-height: 1.1; letter-spacing: 0.01em;
   animation: marquee 90s linear infinite;
 }
 .ribbon__group { display: flex; align-items: center; }
-.ribbon__item { display: inline-flex; align-items: center; gap: clamp(22px, 1rem + 1.4vw, 40px); padding-right: clamp(22px, 1rem + 1.4vw, 40px); }
-.ribbon__item svg { width: 7px; height: 7px; flex: none; color: #C8A97A; }
+.ribbon__item { display: inline-flex; align-items: center; gap: clamp(16px, 0.8rem + 0.8vw, 28px); padding-right: clamp(16px, 0.8rem + 0.8vw, 28px); }
+.ribbon__item svg { width: 5px; height: 5px; flex: none; color: #C8A97A; }
 .js-ribbons .ribbon__track { animation: none; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- 01 Beispiele: Drehscheibe direkt nach der Einleitung ---------- */
 .examples { overflow: hidden; padding-top: clamp(2.5rem, 1.5rem + 3vw, 4rem); }
-.examples__stage-head {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px;
-  padding: 20px 0; border-top: 1px solid var(--c-ink); border-bottom: 1px solid var(--c-ink);
-}
-.examples__stage-head .kicker { margin: 0; font-weight: 400; color: var(--c-ink); }
-.stage-lead { margin: 0; font-size: 1rem; color: var(--c-ink-2); }
+.examples__head { display: grid; justify-items: center; gap: 16px; max-width: 42rem; margin: 0 auto; text-align: center; }
+.examples__kicker { display: inline-flex; align-items: center; gap: 16px; margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-ink-2); }
+.examples__orn { position: relative; width: clamp(28px, 1rem + 2vw, 48px); height: 1px; background: var(--gold); }
+.examples__orn::after { content: ""; position: absolute; right: -3px; top: 50%; width: 5px; height: 5px; background: var(--gold); transform: translateY(-50%) rotate(45deg); }
+.examples__orn--r::after { right: auto; left: -3px; }
+.examples__title { margin: 0; font-family: var(--font-serif); font-weight: 340; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.5rem); line-height: 1; letter-spacing: -0.03em; }
+.examples__title em { display: block; font-style: italic; font-weight: 300; color: var(--gold); }
+.stage-lead { margin: 0; max-width: 32rem; font-size: 1.0625rem; line-height: 1.55; color: var(--c-ink-2); text-wrap: balance; }
 
 /* ---------- 02 Leistungen: Zeilen ---------- */
 .rows { border-top: 1px solid var(--c-ink); }
