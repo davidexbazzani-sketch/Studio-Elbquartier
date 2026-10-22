@@ -168,14 +168,14 @@ ${body}
 `;
 }
 
-const PAKET_ANGEBOTE = [['Website Starter', 500], ['Website Pro', 1200], ['Website Max', 3000]]
+const PAKET_ANGEBOTE = [['Website Starter', 750], ['Website Pro', 1200], ['Website Max', 3000]]
   .map(([name, price]) => ({ '@type': 'Offer', name, price: String(price), priceCurrency: 'EUR' }));
 
 const seiten = [
   {
     slug: 'webdesign-hamburg',
     title: 'Webdesign Hamburg: Websites für Läden &amp; Gastronomie | Studio Elbquartier',
-    description: 'Website erstellen lassen in Hamburg: individuelles Webdesign für Läden, Restaurants, Cafés, Bars und Boutiquen. Pakete ab 500 € Endpreis, bezahlt wird erst, wenn Ihnen der Entwurf gefällt.',
+    description: 'Website erstellen lassen in Hamburg: individuelles Webdesign für Läden, Restaurants, Cafés, Bars und Boutiquen. Pakete ab 750 € Endpreis, bezahlt wird erst, wenn Ihnen der Entwurf gefällt.',
     crumb: 'Webdesign Hamburg',
     h1: 'Webdesign in Hamburg', h1b: 'für Läden, Restaurants und Boutiquen.',
     lead: 'Wir erstellen Ihre Website so, dass sie zeigt, was Ihren Laden ausmacht: auf dem Handy wie am Computer schnell, klar und für Google vorbereitet. Bestehende Websites und Shopify-Shops machen wir neu.',
