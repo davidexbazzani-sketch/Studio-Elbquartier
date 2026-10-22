@@ -22,7 +22,8 @@ Tipps zum Testen:
 
 | Pfad | Inhalt |
 |---|---|
-| `index.html` | Startseite (Hero, 3D-Drehscheibe mit den zehn Läden, Ablauf, Website-Pakete, Softwarelösungen, Team, Kontakt) |
+| `index.html` | Startseite im Stil „Hamburg-Editorial“, helle Fassung (seit 22.10.2026, Vorlage `Vorlagen/studio-elbquartier-startseite.html`): Startvideo, Einleitung, Laufband, zehn Beispiel-Kacheln (auf dem Handy als Wischreihe) und darunter die 3D-Drehscheibe, Leistungen, Ablauf, Fotografie, Website-Pakete, Umstieg, Softwarelösungen, Team, Kontakt |
+| `assets/css/home.css` | Stil der Startseite und der drei Themenseiten: Schriften Fraunces (Überschriften), Geist (Text), IBM Plex Mono (kleine Kennzeilen), Farben Creme/Sand/helles Petrol mit Orange als Akzent. Keine dunklen Flächen. CSS und JS werden mit `?v=Datum` verlinkt; nach Änderungen die Nummer in `index.html` und `tools/seiten/seiten.mjs` hochzählen |
 | `impressum.html`, `datenschutz.html` | Entwürfe, die markierten Stellen vor dem Livegang ausfüllen |
 | `design-system.html` | Übersicht aller Farben, Schriften, Abstände und Bausteine |
 | `assets/css/design-system.css` | Design System (Tokens und Komponenten), von allen Seiten genutzt |

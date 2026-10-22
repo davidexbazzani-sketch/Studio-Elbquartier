@@ -26,11 +26,11 @@ const fit = (html) => html
   .replace(/href="#kontakt"/g, 'href="/#kontakt"')
   .replace(/href="#(pakete|software|ablauf|team|beispiele)"/g, 'href="/#$1"');
 
-const plans = fit(block('<div class="plans">', 'div'));
+const plans = fit(block('<div class="plans"', 'div'));
 const plansNote = fit(index.match(/<p class="plans__note"[^>]*>[\s\S]*?<\/p>/)[0]);
 const steps = fit(block('<ol class="steps__list">', 'ol'));
 const umstieg = fit(block('<div class="umstieg__grid">', 'div')).replace(/<(\/?)h4\b/g, '<$1h3'); // auf Themenseiten folgt die Karte direkt auf eine H2
-const software = fit(block('<ul class="software__list">', 'ul'));
+const software = fit(block('<ul class="software__list"', 'ul'));
 
 const LOGO = `<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
           <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
@@ -91,10 +91,10 @@ function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="geo.region" content="DE-HH">
   <meta name="geo.placename" content="Hamburg">
-  <link rel="preload" href="/assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/instrument-serif-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022b">
-  <link rel="stylesheet" href="/assets/css/home.css?v=20261022b">
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022c">
+  <link rel="stylesheet" href="/assets/css/home.css?v=20261022c">
   <link rel="stylesheet" href="/assets/css/seite.css">
   <script type="application/ld+json">
 ${JSON.stringify(ld, null, 2)}
@@ -243,9 +243,9 @@ const seiten = [
           <h2 class="t-h2" id="motive-title">Bilder, die Lust machen,<br><span class="t-serif-italic">vorbeizukommen.</span></h2>
         </header>
         <ul class="software__list">
-          <li class="card software__item"><span class="tile tile--sand software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><h3 class="t-h3">Ihre Räume</h3><p class="t-small">Ihr Laden, wie Ihre Kundschaft ihn erlebt: Schaufenster, Theke, Atmosphäre.</p></li>
-          <li class="card software__item"><span class="tile tile--rose software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 01-1.5 1.3H7.7a1.5 1.5 0 01-1.5-1.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 016 0v3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><h3 class="t-h3">Ihre Produkte</h3><p class="t-small">Für Website, Shop und Social Media, einheitlich und hochwertig.</p></li>
-          <li class="card software__item"><span class="tile tile--elbe software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 15.2c.8-.5 1.6-.7 2.5-.7 2 0 3.5 1.2 4 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><h3 class="t-h3">Ihr Team</h3><p class="t-small">Die Menschen hinter Ihrem Laden, damit Ihre Kundschaft weiß, wer sie erwartet.</p></li>
+          <li class="card software__item"><span class="icon-tile icon-tile--sand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><h3 class="t-h3">Ihre Räume</h3><p class="t-small">Ihr Laden, wie Ihre Kundschaft ihn erlebt: Schaufenster, Theke, Atmosphäre.</p></li>
+          <li class="card software__item"><span class="icon-tile icon-tile--rose"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 01-1.5 1.3H7.7a1.5 1.5 0 01-1.5-1.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 016 0v3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><h3 class="t-h3">Ihre Produkte</h3><p class="t-small">Für Website, Shop und Social Media, einheitlich und hochwertig.</p></li>
+          <li class="card software__item"><span class="icon-tile icon-tile--elbe"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 15.2c.8-.5 1.6-.7 2.5-.7 2 0 3.5 1.2 4 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><h3 class="t-h3">Ihr Team</h3><p class="t-small">Die Menschen hinter Ihrem Laden, damit Ihre Kundschaft weiß, wer sie erwartet.</p></li>
         </ul>
       </div>
     </section>
@@ -258,12 +258,12 @@ const seiten = [
         </header>
         <div class="umstieg__grid">
           <article class="card umstieg__card">
-            <span class="tile tile--sand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 015.5 7h2.3l1.4-2h5.6l1.4 2h2.3A1.5 1.5 0 0120 8.5v9a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 014 17.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <span class="icon-tile icon-tile--sand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 015.5 7h2.3l1.4-2h5.6l1.4 2h2.3A1.5 1.5 0 0120 8.5v9a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 014 17.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
             <h3 class="t-h3">Professionelles Fotoshooting</h3>
             <p class="t-small">Bei Ihnen vor Ort in Hamburg. Unser Fotograf setzt Ihren Laden, Ihre Produkte und Ihr Team ins beste Licht.</p>
           </article>
           <article class="card umstieg__card">
-            <span class="tile tile--elbe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5A1.5 1.5 0 015 6h4.2l1.8 2H19a1.5 1.5 0 011.5 1.5v8A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 16l3-3 2 2 3-3 2 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="icon-tile icon-tile--elbe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5A1.5 1.5 0 015 6h4.2l1.8 2H19a1.5 1.5 0 011.5 1.5v8A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 16l3-3 2 2 3-3 2 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <h3 class="t-h3">Ihre eigenen Bilder</h3>
             <p class="t-small">Wir arbeiten mit dem Material, das Sie uns geben oder schon haben: sorgfältig ausgewählt und aufbereitet.</p>
           </article>

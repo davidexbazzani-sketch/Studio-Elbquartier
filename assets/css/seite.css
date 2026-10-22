@@ -36,4 +36,11 @@
 @media (hover: hover) { .examples__item:hover img { transform: translateY(-4px); box-shadow: var(--shadow-2), inset 0 0 0 1px var(--c-line); } }
 .examples__note { margin-top: var(--space-5); font-size: var(--fs-micro); color: var(--c-ink-3); }
 
-.umstieg__card .tile { margin-bottom: var(--space-1); }
+.umstieg__card .icon-tile { margin-bottom: var(--space-1); }
+.umstieg__card .t-h3 { margin-bottom: 6px; }
+/* Kleine Symbole (Fotografie-Seite) im Editorial-Stil: Kreis mit Linie auf zarter Farbe */
+.icon-tile { display: grid; place-items: center; flex: none; width: 52px; height: 52px; margin-bottom: var(--space-2); border-radius: 50%; border: 1.5px solid var(--c-ink); background: var(--icon-bg, transparent); color: var(--c-ink); }
+.icon-tile svg { width: 24px; height: 24px; }
+.icon-tile--sand { --icon-bg: #E6D9C2; }
+.icon-tile--rose { --icon-bg: #EAD5CC; }
+.icon-tile--elbe { --icon-bg: #D3E1DF; }

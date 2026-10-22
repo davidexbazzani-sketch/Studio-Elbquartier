@@ -22,10 +22,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="geo.region" content="DE-HH">
   <meta name="geo.placename" content="Hamburg">
-  <link rel="preload" href="/assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/instrument-serif-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022b">
-  <link rel="stylesheet" href="/assets/css/home.css?v=20261022b">
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022c">
+  <link rel="stylesheet" href="/assets/css/home.css?v=20261022c">
   <link rel="stylesheet" href="/assets/css/seite.css">
   <script type="application/ld+json">
 {
@@ -195,53 +195,41 @@
           <p class="t-lead">Einmal bezahlen, Website behalten. Und zwar erst, wenn Ihnen der fertige Entwurf gefällt.</p>
         </header>
         <div class="plans">
-          <article class="card plan">
-            <header class="plan__head">
-              <h3 class="t-h3">Starter</h3>
-              <p class="t-small">Die Standard-Website, schön und solide.</p>
-            </header>
-            <p class="price"><span class="price__value">500&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list">
+          <article class="plan">
+            <header class="plan__head"><p class="plan__name">Starter</p><p class="plan__desc">Die Standard-Website, schön und solide.</p></header>
+            <p class="plan__price">500<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Individuelles Design für Handy, Tablet und Desktop</li>
               <li>Bis zu 5 Seiten, z.&nbsp;B. Start, Angebot, Über uns, Kontakt</li>
               <li>Kontaktformular, Anfahrt und Öffnungszeiten</li>
               <li>Impressum- und Datenschutz-Seite eingebunden (die Rechtstexte liefern Sie oder ein Rechtstexte-Dienst)</li>
               <li>Grundlegende Optimierung für Google</li>
             </ul>
-            <a class="btn btn--secondary btn--block" href="/?interesse=Starter#kontakt">Starter anfragen</a>
+            <a class="btn btn--line btn--block" href="/?interesse=Starter#kontakt">Starter anfragen</a>
           </article>
-
-          <article class="card plan plan--featured">
-            <span class="badge plan__badge">Unsere Empfehlung</span>
-            <header class="plan__head">
-              <h3 class="t-h3">Pro</h3>
-              <p class="t-small">Alles aus Starter, plus Bewegung.</p>
-            </header>
-            <p class="price"><span class="price__value">1.200&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list">
+          <article class="plan plan--featured">
+            <header class="plan__head plan__head--badge"><div><p class="plan__name">Pro</p><p class="plan__desc">Alles aus Starter, plus Bewegung.</p></div><span class="plan__badge">Unsere Empfehlung</span></header>
+            <p class="plan__price">1.200<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Alles aus Starter</li>
               <li>Flüssige Scroll-Animationen</li>
               <li>Interaktive Elemente, z.&nbsp;B. Speisekarte oder Konfigurator</li>
               <li>3D-Präsentation ausgewählter Produkte</li>
               <li>Feinschliff für schnelle Ladezeiten</li>
             </ul>
-            <a class="btn btn--block" href="/?interesse=Pro#kontakt">Pro anfragen</a>
+            <a class="btn btn--accent btn--block" href="/?interesse=Pro#kontakt">Pro anfragen</a>
           </article>
-
-          <article class="card plan">
-            <header class="plan__head">
-              <h3 class="t-h3">Max</h3>
-              <p class="t-small">Alles aus Pro, plus Fotos und Social Media.</p>
-            </header>
-            <p class="price"><span class="price__value">3.000&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list" style="--check-bg: var(--c-rose)">
+          <article class="plan">
+            <header class="plan__head"><p class="plan__name">Max</p><p class="plan__desc">Alles aus Pro, plus Fotos und Social Media.</p></header>
+            <p class="plan__price">3.000<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Alles aus Pro</li>
               <li>Professionelles Fotoshooting in Ihrem Laden</li>
               <li>Bildbearbeitung und Bildauswahl für Website und Social Media</li>
               <li>Einrichtung bzw. Auffrischung Ihrer Social-Media-Profile</li>
               <li>Vorlagen für eigene Beiträge</li>
             </ul>
-            <a class="btn btn--secondary btn--block" href="/?interesse=Max#kontakt">Max anfragen</a>
+            <a class="btn btn--line btn--block" href="/?interesse=Max#kontakt">Max anfragen</a>
           </article>
         </div>
         <p class="plans__note">Alle Preise sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer (§&nbsp;19 UStG). Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu.</p>
@@ -255,26 +243,10 @@
           <h2 class="t-h2" id="ablauf-title">Erst überzeugen.<br><span class="t-serif-italic">Dann bezahlen.</span></h2>
         </header>
         <ol class="steps__list">
-          <li class="steps__item">
-            <span class="steps__num t-serif">1</span>
-            <h3 class="t-h3">Wir lernen uns kennen</h3>
-            <p class="t-small">Gern kommen wir bei Ihnen vor Ort vorbei. Lieber am Telefon? Auch gut. Hauptsache, es passt in Ihren Alltag.</p>
-          </li>
-          <li class="steps__item">
-            <span class="steps__num t-serif">2</span>
-            <h3 class="t-h3">Wir schauen genau hin</h3>
-            <p class="t-small">Gemeinsam besprechen wir, was zu Ihnen passt, wo Ihr bisheriger Auftritt noch Luft nach oben hat und was Sie wirklich brauchen.</p>
-          </li>
-          <li class="steps__item">
-            <span class="steps__num t-serif">3</span>
-            <h3 class="t-h3">Ihr fertiger Entwurf</h3>
-            <p class="t-small">Statt Skizzen bekommen Sie Ihre fertig gestaltete Website zum Anschauen und Ausprobieren. Wir feilen daran, bis alles stimmt.</p>
-          </li>
-          <li class="steps__item">
-            <span class="steps__num t-serif">4</span>
-            <h3 class="t-h3">Bezahlt wird zum Schluss</h3>
-            <p class="t-small">Erst wenn Sie mit dem Entwurf zufrieden sind, wird bezahlt. Dann geht Ihre Website online: schnell und sicher.</p>
-          </li>
+          <li class="steps__item"><span class="steps__num">1</span><h3 class="steps__title">Wir lernen uns kennen</h3><p>Gern kommen wir bei Ihnen vor Ort vorbei. Lieber am Telefon? Auch gut. Hauptsache, es passt in Ihren Alltag.</p></li>
+          <li class="steps__item"><span class="steps__num">2</span><h3 class="steps__title">Wir schauen genau hin</h3><p>Gemeinsam besprechen wir, was zu Ihnen passt, wo Ihr Auftritt noch Luft nach oben hat und was Sie wirklich brauchen.</p></li>
+          <li class="steps__item"><span class="steps__num">3</span><h3 class="steps__title">Ihr fertiger Entwurf</h3><p>Statt Skizzen bekommen Sie Ihre fertig gestaltete Website zum Anschauen und Ausprobieren. Wir feilen daran, bis alles stimmt.</p></li>
+          <li class="steps__item"><span class="steps__num steps__num--accent">€</span><h3 class="steps__title">Erst jetzt wird bezahlt</h3><p>Erst wenn Sie mit dem Entwurf zufrieden sind. Dann geht Ihre Website online: schnell und sicher.</p></li>
         </ol>
       </div>
     </section>
@@ -287,24 +259,24 @@
           <p class="t-lead">Kein Problem. Für Sie ändert sich nur, wie gut Ihr Auftritt aussieht und gefunden wird.</p>
         </header>
         <div class="umstieg__grid">
-            <article class="card umstieg__card">
-              <h3 class="t-h3">Ihre bisherige Seite bleibt, bis die neue überzeugt</h3>
-              <ul class="check-list">
-                <li>Ihre aktuelle Website oder Ihr Shop läuft unverändert weiter, während wir die neue bauen. Umgestellt wird erst, wenn Sie zustimmen.</li>
-                <li>Shopify bleibt Ihr Shop-System: Produkte, Bestellungen, Kundendaten und Zahlungsarten bleiben, wo sie sind. Wir gestalten den Auftritt neu.</li>
-                <li>Texte, Bilder und Domain übernehmen wir. Alte Adressen leiten wir sauber auf die neuen um, damit Ihre Google-Platzierungen und Links nicht verloren gehen.</li>
-                <li>Bezahlt wird erst, wenn Ihnen der fertige Entwurf gefällt. Passt er nicht, behalten Sie einfach Ihre bisherige Seite.</li>
-              </ul>
-            </article>
-            <article class="card umstieg__card umstieg__card--seo">
-              <h3 class="t-h3">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h3>
-              <ul class="check-list">
-                <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
-                <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie auch in der Kartensuche auffallen.</li>
-                <li>Unser Ziel sind messbar mehr Besucher. Wir richten die Google Search Console für Sie ein und zeigen Ihnen schwarz auf weiß, wie sich Aufrufe, Suchanfragen und Platzierungen entwickeln.</li>
-              </ul>
-            </article>
-          </div>
+          <article class="umstieg__card">
+            <h3 class="umstieg__title">Ihre bisherige Seite bleibt, bis die neue überzeugt</h3>
+            <ul class="line-list">
+              <li>Ihre aktuelle Website oder Ihr Shop läuft unverändert weiter. Umgestellt wird erst, wenn Sie zustimmen.</li>
+              <li>Shopify bleibt Ihr Shop-System: Produkte, Bestellungen, Kundendaten und Zahlungsarten bleiben, wo sie sind.</li>
+              <li>Texte, Bilder und Domain übernehmen wir. Alte Adressen leiten wir sauber um, damit Ihre Google-Platzierungen erhalten bleiben.</li>
+              <li>Passt der Entwurf nicht, behalten Sie einfach Ihre bisherige Seite.</li>
+            </ul>
+          </article>
+          <article class="umstieg__card">
+            <h3 class="umstieg__title">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h3>
+            <ul class="line-list">
+              <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
+              <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie in der Kartensuche auffallen.</li>
+              <li>Wir richten die Google Search Console (Googles kostenloses Auswertungs-Werkzeug) für Sie ein und zeigen Ihnen, wie sich Aufrufe und Platzierungen entwickeln.</li>
+            </ul>
+          </article>
+        </div>
       </div>
     </section>
     <section class="section">

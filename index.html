@@ -84,10 +84,10 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="preload" href="assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/instrument-serif-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022b">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261022b">
+  <link rel="preload" href="assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022c">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261022c">
   <script>
     // Bewegung nur, wenn das Gerät keine reduzierte Bewegung wünscht
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
@@ -124,7 +124,7 @@
         <a href="#kontakt">Kontakt</a>
       </nav>
       <div class="nav__actions">
-        <a class="btn btn--small" href="#kontakt">Termin anfragen</a>
+        <a class="btn btn--small btn--accent" href="#kontakt">Termin anfragen</a>
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-sheet" aria-label="Menü öffnen"><span></span></button>
       </div>
     </div>
@@ -140,473 +140,494 @@
 
   <main id="inhalt">
 
-    <!-- 1 · Hero -->
-    <section class="hero" id="top">
-      <!-- Hintergrund: fünf KI-Szenen, weich überblendet, danach Logo-Animation; Endlosschleife (assets/js/hero-video.js) -->
-      <div class="hero__media" aria-hidden="true">
-        <picture class="hero__poster">
-          <source media="(max-aspect-ratio: 1/1)" srcset="assets/video/hero/hero-1-p.webp">
-          <img src="assets/video/hero/hero-1-l.webp" width="1280" height="720" alt="" fetchpriority="high" decoding="async">
-        </picture>
-        <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
-        <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
-        <div class="hero__sting"></div>
-      </div>
-      <div class="hero__veil" aria-hidden="true"></div>
-      <div class="container hero__inner">
-        <h1 class="hero__h1"><span class="hero__title" data-hero>Studio Elbquartier</span><span class="hero__sub" data-hero>Webdesign, Fotografie &amp; Softwarelösungen</span></h1>
-        <!-- Logo: zeichnet sich in der 6. Szene direkt unter der Leistungszeile (assets/js/hero-video.js) -->
-        <svg class="hero__mark" viewBox="0 0 32 32" aria-hidden="true">
-            <circle cx="16" cy="16" r="15" pathLength="1" fill="none" stroke="currentColor" stroke-width="0.7"/>
-            <path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" pathLength="1" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"/>
-            <path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" pathLength="1" fill="none" stroke="#a88a5f" stroke-width="0.7" stroke-linecap="round"/>
-          </svg>
-      </div>
-      <div class="hero__controls">
-        <button class="hero__pause" type="button" aria-pressed="false" aria-label="Hintergrundvideo anhalten" hidden>
-          <svg class="hero__pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <svg class="hero__play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5l8 5-8 5z" fill="currentColor"/></svg>
-        </button>
-      </div>
-    </section>
+    <!-- 1 · Startbereich: Videos (unverändert) -->
+<section class="hero" id="top">
+          <!-- Hintergrund: fünf KI-Szenen, weich überblendet, danach Logo-Animation; Endlosschleife (assets/js/hero-video.js) -->
+          <div class="hero__media" aria-hidden="true">
+            <picture class="hero__poster">
+              <source media="(max-aspect-ratio: 1/1)" srcset="assets/video/hero/hero-1-p.webp">
+              <img src="assets/video/hero/hero-1-l.webp" width="1280" height="720" alt="" fetchpriority="high" decoding="async">
+            </picture>
+            <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
+            <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
+            <div class="hero__sting"></div>
+          </div>
+          <div class="hero__veil" aria-hidden="true"></div>
+          <div class="container hero__inner">
+            <h1 class="hero__h1"><span class="hero__title" data-hero>Studio Elbquartier</span><span class="hero__sub" data-hero>Webdesign, Fotografie &amp; Softwarelösungen</span></h1>
+            <!-- Logo: zeichnet sich in der 6. Szene direkt unter der Leistungszeile (assets/js/hero-video.js) -->
+            <svg class="hero__mark" viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="16" cy="16" r="15" pathLength="1" fill="none" stroke="currentColor" stroke-width="0.7"/>
+                <path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" pathLength="1" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"/>
+                <path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" pathLength="1" fill="none" stroke="#a88a5f" stroke-width="0.7" stroke-linecap="round"/>
+              </svg>
+          </div>
+          <div class="hero__controls">
+            <button class="hero__pause" type="button" aria-pressed="false" aria-label="Hintergrundvideo anhalten" hidden>
+              <svg class="hero__pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <svg class="hero__play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5l8 5-8 5z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </section>
 
-    <!-- Kurz vorgestellt: steht bewusst unter dem Video, damit der Startbildschirm nur Video und Namen zeigt -->
+    <!-- Kurz vorgestellt -->
     <section class="intro" aria-labelledby="intro-title">
-      <div class="container intro__inner">
-        <div class="intro__head">
-          <p class="eyebrow" data-reveal>Persönlich vor Ort in Hamburg</p>
-          <h2 class="intro__slogan t-serif-italic" id="intro-title" data-reveal>Ihr Laden. Online so schön wie vor&nbsp;Ort.</h2>
-        </div>
-        <div class="intro__body">
-          <p class="t-lead" data-reveal>Wir zeigen online, was Ihren Laden ausmacht: die Atmosphäre, die Produkte und die Menschen&nbsp;dahinter. Persönlich&nbsp;abgestimmt.</p>
-          <div class="intro__cta" data-reveal>
-            <a class="btn" href="#beispiele">Beispiele ansehen</a>
-            <a class="btn btn--secondary" href="#kontakt">Kontakt aufnehmen</a>
+      <div class="container">
+        <p class="kicker" data-reveal>53°33′ N · 9°59′ O — Webdesign, Fotografie &amp; Software aus Hamburg</p>
+        <h2 class="intro__title" id="intro-title" data-reveal>Ihr Laden. Online so schön wie <em>vor&nbsp;Ort.</em></h2>
+        <div class="intro__row" data-reveal>
+          <p class="intro__lead">Wir zeigen online, was Ihren Laden ausmacht: die Atmosphäre, die Produkte und die Menschen dahinter. Persönlich abgestimmt.</p>
+          <div class="intro__actions">
+            <div class="btn-row">
+              <a class="btn btn--accent" href="#beispiele">Beispiele ansehen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+              <a class="btn btn--line" href="#kontakt">Kontakt aufnehmen</a>
+            </div>
+            <p class="note"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Sie zahlen erst, wenn Ihnen der fertige Entwurf gefällt.</p>
           </div>
-          <p class="intro__note" data-reveal>
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Sie zahlen erst, wenn Ihnen der fertige Entwurf gefällt.
-          </p>
         </div>
       </div>
     </section>
 
-    <!-- 2 · Drehscheibe -->
-    <section class="section showcase" id="beispiele" aria-labelledby="beispiele-title">
-      <div class="container">
-        <header class="section-head section-head--center" data-reveal>
-          <p class="eyebrow">Beispiele</p>
-          <h2 class="t-h2" id="beispiele-title">So könnte Ihre Website aussehen.</h2>
-          <p class="t-lead">Drehen Sie die Scheibe und wählen Sie einen Laden. Alle Namen sind erfunden, die Ideen sind echt.</p>
-        </header>
-      </div>
+    <!-- Laufband -->
+    <div class="marquee" role="img" aria-label="Für Blumenläden, Cafés, Juweliere, Restaurants, Boutiquen, Bars, Feinkost, Buchläden und Friseure">
+      <div class="marquee__track" aria-hidden="true"><span>Blumenläden · Cafés · Juweliere · Restaurants · Boutiquen · Bars · Feinkost · Buchläden · Friseure · </span><span>Blumenläden · Cafés · Juweliere · Restaurants · Boutiquen · Bars · Feinkost · Buchläden · Friseure · </span></div>
+    </div>
 
+    <!-- 01 · Beispiele: Kacheln für alle Läden, darunter die Drehscheibe -->
+    <section class="section examples" id="beispiele" aria-labelledby="beispiele-title">
+      <div class="container">
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">01 — Beispiele</p>
+            <h2 class="display" id="beispiele-title">So könnte <em>Ihre</em> Website aussehen.</h2>
+          </div>
+          <p class="split-head__aside">Zehn erfundene Läden, zehn echte Ideen. Öffnen Sie ein Beispiel und klicken Sie sich durch.</p>
+        </header>
+        <ul class="tiles">
+          <li class="tile tile--petrol tile--feature">
+            <a class="tile__link" href="beispiele/juwelier/">
+              <span class="tile__meta"><span>Juwelier · Neuer Wall</span><span>01 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Holst &amp; Tochter</span><span class="tile__text">Schmuck in 3D – drehen, zoomen, funkeln lassen.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--sage">
+            <a class="tile__link" href="beispiele/blumenladen/">
+              <span class="tile__meta"><span>Blumenladen · Ottensen</span><span>02 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Blütenkontor</span><span class="tile__text">Strauß selbst zusammenstellen, Preis live sehen.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--rose">
+            <a class="tile__link" href="beispiele/restaurant/">
+              <span class="tile__meta"><span>Restaurant · Övelgönne</span><span>03 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Fährhaus Zwölf</span><span class="tile__text">Karte ansehen, Team kennenlernen, Tisch reservieren.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--sand">
+            <a class="tile__link" href="beispiele/cafe/">
+              <span class="tile__meta"><span>Café · Altona</span><span>04 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Kaffeehaus Möwe</span><span class="tile__text">Vier Lieblingsgetränke in kurzen Filmen, zum Vorbestellen.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--orange">
+            <a class="tile__link" href="beispiele/bar/">
+              <span class="tile__meta"><span>Bar · Sternschanze</span><span>05 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Nachtfalter</span><span class="tile__text">Jeder Drink in seinem schönsten Moment, als Film.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--sage">
+            <a class="tile__link" href="beispiele/boutique/">
+              <span class="tile__meta"><span>Boutique · Eppendorf</span><span>06 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Linnen &amp; Lou</span><span class="tile__text">Leinen zum Anfassen in 3D, Lookbook und Anprobe.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--petrol">
+            <a class="tile__link" href="beispiele/autohaus/">
+              <span class="tile__meta"><span>Autohaus · HafenCity</span><span>07 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Halden Automobile</span><span class="tile__text">Showroom in 3D: jedes Auto umrunden, heranzoomen, Farbe wählen.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--rose">
+            <a class="tile__link" href="beispiele/getraenke/">
+              <span class="tile__meta"><span>Getränke-Shop · Online</span><span>08 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">FUNKL</span><span class="tile__text">Energy-Drink mit Motion Graphics und beschlagenen Dosen in 3D.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--sand">
+            <a class="tile__link" href="beispiele/immobilien/">
+              <span class="tile__meta"><span>Immobilienmakler · Elbvororte</span><span>09 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Solmund</span><span class="tile__text">Film, fünf Objekte und eine Wohnung mit Elbblick zum Begehen in 3D.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+          <li class="tile tile--orange tile--wide">
+            <a class="tile__link" href="beispiele/brillen/">
+              <span class="tile__meta"><span>Optiker · Winterhude</span><span>10 / 10</span></span>
+              <span class="tile__body"><span class="tile__name">Klarsund</span><span class="tile__text">Brillen in 3D und Live-Anprobe mit der Kamera – Foto inklusive.</span></span>
+              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </a>
+          </li>
+        </ul>
+        <div class="examples__stage-head">
+          <span class="kicker">Alle zehn Läden auf der Scheibe</span>
+          <p class="stage-lead" id="stage-lead">Drehen Sie die Scheibe und klicken Sie auf einen Laden.</p>
+        </div>
+      </div>
       <div class="stage" id="stage" data-mode="fallback">
-        <!-- 3D-Ansicht (wird bei Bedarf geladen) -->
-        <div class="stage__canvas" id="stage-canvas" aria-hidden="true">
-          <div class="stage__hint" id="stage-hint"><span class="stage__pulse"></span>Klick mich</div>
-        </div>
+              <!-- 3D-Ansicht (wird bei Bedarf geladen) -->
+              <div class="stage__canvas" id="stage-canvas" aria-hidden="true">
+                <div class="stage__hint" id="stage-hint"><span class="stage__pulse"></span>Klick mich</div>
+              </div>
+      
+              <!-- Ersatzansicht: wischbare Karten -->
+              <div class="stage__fallback" id="stage-fallback">
+                <ul class="shop-strip" id="shop-strip" aria-label="Muster-Websites"></ul>
+                <noscript>
+                  <ul class="shop-strip shop-strip--static">
+                    <li><a href="beispiele/juwelier/">Juwelier · Holst &amp; Tochter</a></li>
+                    <li><a href="beispiele/blumenladen/">Blumenladen · Blütenkontor</a></li>
+                    <li><a href="beispiele/restaurant/">Restaurant · Fährhaus Zwölf</a></li>
+                    <li><a href="beispiele/cafe/">Café · Kaffeehaus Möwe</a></li>
+                    <li><a href="beispiele/bar/">Bar · Nachtfalter</a></li>
+                    <li><a href="beispiele/boutique/">Boutique · Linnen &amp; Lou</a></li>
+                    <li><a href="beispiele/autohaus/">Autohaus · Halden Automobile</a></li>
+                    <li><a href="beispiele/getraenke/">Getränke-Shop · FUNKL</a></li>
+                    <li><a href="beispiele/immobilien/">Immobilienmakler · Solmund</a></li>
+                    <li><a href="beispiele/brillen/">Optiker · Klarsund</a></li>
+                  </ul>
+                </noscript>
+              </div>
+      
+              <div class="container stage__controls">
+                <button class="icon-btn" type="button" id="stage-prev" aria-label="Vorheriger Laden">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="stage__info" aria-live="polite">
+                  <p class="stage__type t-micro" id="stage-type">Juwelier · Neuer Wall</p>
+                  <p class="stage__name" id="stage-name">Holst &amp; Tochter</p>
+                  <p class="stage__teaser t-small" id="stage-teaser">Schmuck in 3D – drehen, zoomen, funkeln lassen.</p>
+                  <a class="btn btn--small" id="stage-open" href="beispiele/juwelier/">Beispiel-Website öffnen</a>
+                </div>
+                <button class="icon-btn" type="button" id="stage-next" aria-label="Nächster Laden">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div class="stage__dots" id="stage-dots" role="tablist" aria-label="Laden wählen"></div>
+              <p class="stage__toggle t-micro" id="stage-toggle" hidden>
+                <span id="stage-toggle-text">Vereinfachte Ansicht für dieses Gerät.</span>
+                <button type="button" class="btn btn--ghost btn--small" id="stage-load3d">3D-Ansicht laden</button>
+              </p>
+            </div>
+    </section>
 
-        <!-- Ersatzansicht: wischbare Karten -->
-        <div class="stage__fallback" id="stage-fallback">
-          <ul class="shop-strip" id="shop-strip" aria-label="Muster-Websites"></ul>
-          <noscript>
-            <ul class="shop-strip shop-strip--static">
-              <li><a href="beispiele/juwelier/">Juwelier · Holst &amp; Tochter</a></li>
-              <li><a href="beispiele/blumenladen/">Blumenladen · Blütenkontor</a></li>
-              <li><a href="beispiele/restaurant/">Restaurant · Fährhaus Zwölf</a></li>
-              <li><a href="beispiele/cafe/">Café · Kaffeehaus Möwe</a></li>
-              <li><a href="beispiele/bar/">Bar · Nachtfalter</a></li>
-              <li><a href="beispiele/boutique/">Boutique · Linnen &amp; Lou</a></li>
-              <li><a href="beispiele/autohaus/">Autohaus · Halden Automobile</a></li>
-              <li><a href="beispiele/getraenke/">Getränke-Shop · FUNKL</a></li>
-              <li><a href="beispiele/immobilien/">Immobilienmakler · Solmund</a></li>
-              <li><a href="beispiele/brillen/">Optiker · Klarsund</a></li>
-            </ul>
-          </noscript>
-        </div>
-
-        <div class="container stage__controls">
-          <button class="icon-btn" type="button" id="stage-prev" aria-label="Vorheriger Laden">
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="stage__info" aria-live="polite">
-            <p class="stage__type t-micro" id="stage-type">Juwelier · Neuer Wall</p>
-            <p class="stage__name" id="stage-name">Holst &amp; Tochter</p>
-            <p class="stage__teaser t-small" id="stage-teaser">Schmuck in 3D – drehen, zoomen, funkeln lassen.</p>
-            <a class="btn btn--small" id="stage-open" href="beispiele/juwelier/">Beispiel-Website öffnen</a>
+    <!-- 02 · Leistungen -->
+    <section class="section section--sand" id="leistungen" aria-labelledby="leistungen-title">
+      <div class="container">
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">02 — Leistungen</p>
+            <h2 class="display" id="leistungen-title">Drei Dinge. <em>Aus einer Hand.</em></h2>
           </div>
-          <button class="icon-btn" type="button" id="stage-next" aria-label="Nächster Laden">
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-        <div class="stage__dots" id="stage-dots" role="tablist" aria-label="Laden wählen"></div>
-        <p class="stage__toggle t-micro" id="stage-toggle" hidden>
-          <span id="stage-toggle-text">Vereinfachte Ansicht für dieses Gerät.</span>
-          <button type="button" class="btn btn--ghost btn--small" id="stage-load3d">3D-Ansicht laden</button>
-        </p>
-      </div>
-    </section>
-
-    <!-- So arbeiten wir -->
-    <!-- Leistungen: Webdesign, Fotografie, Software (auch für Suchmaschinen klar benannt) -->
-    <section class="section services" id="leistungen" aria-labelledby="leistungen-title">
-      <div class="container">
-        <header class="section-head" data-reveal>
-          <p class="eyebrow" style="--eyebrow-dot: var(--c-rose-deep)">Leistungen</p>
-          <h2 class="t-h2" id="leistungen-title">Webdesign, Fotografie und Software<br><span class="t-serif-italic">aus Hamburg.</span></h2>
-          <p class="t-lead">Alles aus einer Hand für Läden, Restaurants, Cafés, Bars und Boutiquen in Hamburg: persönlich bei Ihnen vor Ort, ohne Abo und ohne Fachchinesisch.</p>
+          <p class="split-head__aside">Für Läden, Restaurants, Cafés, Bars und Boutiquen in Hamburg: persönlich bei Ihnen vor Ort, ohne Abo und ohne Fachchinesisch.</p>
         </header>
-        <div class="services__list">
-          <article class="card services__item" data-reveal>
-            <span class="tile tile--sand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 11h24M12 28h8M16 24v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-            <h3 class="t-h3">Webdesign &amp; Websites</h3>
-            <p class="t-small">Wir erstellen Ihre Website so, dass sie zeigt, was Ihren Laden ausmacht: auf dem Handy wie am Computer schnell, klar und für Google vorbereitet. Bestehende Websites und Shopify-Shops machen wir neu. Ab 500&nbsp;€ Endpreis, bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
-            <a class="services__link" href="#pakete">Website-Pakete ansehen</a>
-            <a class="services__link services__link--quiet" href="/webdesign-hamburg/">Mehr über Webdesign in Hamburg</a>
+        <div class="rows">
+          <article class="row" data-reveal>
+            <div class="row__head"><span class="row__num">01</span><h3 class="row__title">Webdesign &amp; Websites</h3></div>
+            <div class="row__body">
+              <p>Ihre Website zeigt, was Ihren Laden ausmacht: auf dem Handy wie am Computer schnell, klar und für Google vorbereitet. Bestehende Websites und Shopify-Shops machen wir neu.</p>
+              <p class="row__links"><a class="link-strong" href="#pakete">Website-Pakete ansehen</a><a class="link-quiet" href="/webdesign-hamburg/">Mehr über Webdesign in Hamburg →</a></p>
+            </div>
+            <p class="row__price"><span>ab</span>500&nbsp;€</p>
           </article>
-          <article class="card services__item" data-reveal>
-            <span class="tile tile--rose"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11h5l2-3h8l2 3h5v14H5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="18" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            <h3 class="t-h3">Fotografie für Laden, Produkte &amp; Team</h3>
-            <p class="t-small">Unser Fotograf setzt Ihre Räume, Ihre Produkte und Ihr Team professionell in Szene, für Ihre Website und Ihre Social-Media-Kanäle. Oder wir holen das Beste aus den Bildern heraus, die Sie schon haben.</p>
-            <a class="services__link" href="#kontakt" data-plan="Foto">Fotoshooting anfragen</a>
-            <a class="services__link services__link--quiet" href="/fotografie-hamburg/">Mehr über Fotografie</a>
+          <article class="row" data-reveal>
+            <div class="row__head"><span class="row__num">02</span><h3 class="row__title">Fotografie</h3></div>
+            <div class="row__body">
+              <p>Unser Fotograf setzt Ihre Räume, Ihre Produkte und Ihr Team in Szene, für die Website und Ihre Social-Media-Kanäle. Oder wir holen das Beste aus den Bildern heraus, die Sie schon haben.</p>
+              <p class="row__links"><a class="link-strong" href="#kontakt" data-plan="Foto">Fotoshooting anfragen</a><a class="link-quiet" href="/fotografie-hamburg/">Mehr über Fotografie →</a></p>
+            </div>
+            <p class="row__price row__price--text"><span>enthalten in</span>Paket Max</p>
           </article>
-          <article class="card services__item" data-reveal>
-            <span class="tile tile--elbe"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 10l-6 6 6 6M21 10l6 6-6 6M18 7l-4 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <h3 class="t-h3">Softwarelösungen</h3>
-            <p class="t-small">Online-Reservierung, Vorbestellen und Abholen, Gutscheine, digitale Karten oder Automatisierung: Software, die genau zu Ihrem Betrieb passt und Ihnen im Alltag Arbeit abnimmt.</p>
-            <a class="services__link" href="#software">Software-Beispiele ansehen</a>
-            <a class="services__link services__link--quiet" href="/software-hamburg/">Mehr über Softwarelösungen</a>
+          <article class="row" data-reveal>
+            <div class="row__head"><span class="row__num">03</span><h3 class="row__title">Software&shy;lösungen</h3></div>
+            <div class="row__body">
+              <p>Online-Reservierung, Vorbestellen und Abholen, Gutscheine, digitale Karten oder Automatisierung: Software, die genau zu Ihrem Betrieb passt.</p>
+              <p class="row__links"><a class="link-strong" href="#software">Software-Beispiele ansehen</a><a class="link-quiet" href="/software-hamburg/">Mehr über Software →</a></p>
+            </div>
+            <p class="row__price row__price--text"><span>Preis</span>nach Absprache</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section section--alt steps" id="ablauf" aria-labelledby="ablauf-title">
+    <!-- 03 · Ablauf -->
+    <section class="section section--petrol steps" id="ablauf" aria-labelledby="ablauf-title">
       <div class="container">
-        <header class="section-head" data-reveal>
-          <p class="eyebrow" style="--eyebrow-dot: var(--c-sage-deep)">So arbeiten wir</p>
-          <h2 class="t-h2" id="ablauf-title">Erst überzeugen.<br><span class="t-serif-italic">Dann bezahlen.</span></h2>
-          <p class="t-lead">Persönlich, unkompliziert und ohne Fachchinesisch. So entsteht Ihre neue Website:</p>
+        <p class="kicker" data-reveal>03 — So arbeiten wir</p>
+        <header class="split-head split-head--tight" data-reveal>
+          <h2 class="display display--xl" id="ablauf-title">Erst überzeugen.<br><em class="accent">Dann bezahlen.</em></h2>
+          <p class="split-head__aside">Persönlich, unkompliziert und ohne Fachchinesisch. Vier Stationen bis zu Ihrer neuen Website.</p>
         </header>
         <ol class="steps__list">
-          <li class="steps__item" data-reveal>
-            <span class="steps__num t-serif">1</span>
-            <h3 class="t-h3">Wir lernen uns kennen</h3>
-            <p class="t-small">Gern kommen wir bei Ihnen vor Ort vorbei. Lieber am Telefon? Auch gut. Hauptsache, es passt in Ihren Alltag.</p>
-          </li>
-          <li class="steps__item" data-reveal>
-            <span class="steps__num t-serif">2</span>
-            <h3 class="t-h3">Wir schauen genau hin</h3>
-            <p class="t-small">Gemeinsam besprechen wir, was zu Ihnen passt, wo Ihr bisheriger Auftritt noch Luft nach oben hat und was Sie wirklich brauchen.</p>
-          </li>
-          <li class="steps__item" data-reveal>
-            <span class="steps__num t-serif">3</span>
-            <h3 class="t-h3">Ihr fertiger Entwurf</h3>
-            <p class="t-small">Statt Skizzen bekommen Sie Ihre fertig gestaltete Website zum Anschauen und Ausprobieren. Wir feilen daran, bis alles stimmt.</p>
-          </li>
-          <li class="steps__item" data-reveal>
-            <span class="steps__num t-serif">4</span>
-            <h3 class="t-h3">Bezahlt wird zum Schluss</h3>
-            <p class="t-small">Erst wenn Sie mit dem Entwurf zufrieden sind, wird bezahlt. Dann geht Ihre Website online: schnell und sicher.</p>
-          </li>
+          <li class="steps__item" data-reveal><span class="steps__num">1</span><h3 class="steps__title">Wir lernen uns kennen</h3><p>Gern kommen wir bei Ihnen vor Ort vorbei. Lieber am Telefon? Auch gut. Hauptsache, es passt in Ihren Alltag.</p></li>
+          <li class="steps__item" data-reveal><span class="steps__num">2</span><h3 class="steps__title">Wir schauen genau hin</h3><p>Gemeinsam besprechen wir, was zu Ihnen passt, wo Ihr Auftritt noch Luft nach oben hat und was Sie wirklich brauchen.</p></li>
+          <li class="steps__item" data-reveal><span class="steps__num">3</span><h3 class="steps__title">Ihr fertiger Entwurf</h3><p>Statt Skizzen bekommen Sie Ihre fertig gestaltete Website zum Anschauen und Ausprobieren. Wir feilen daran, bis alles stimmt.</p></li>
+          <li class="steps__item" data-reveal><span class="steps__num steps__num--accent">€</span><h3 class="steps__title">Erst jetzt wird bezahlt</h3><p>Erst wenn Sie mit dem Entwurf zufrieden sind. Dann geht Ihre Website online: schnell und sicher.</p></li>
         </ol>
+      </div>
+    </section>
 
-        <div class="card steps__photos" data-reveal>
-          <div class="steps__photos-text">
-            <h3 class="t-h3">Bilder, die Lust machen, <span class="t-serif-italic">vorbeizukommen.</span></h3>
-            <p class="t-small">Auf Wunsch fotografieren wir Ihre Räume, Ihre Produkte und Ihr Team professionell. Oder wir arbeiten mit dem Material, das Sie uns geben oder schon haben, und holen das Beste daraus heraus.</p>
-            <a class="btn btn--secondary btn--small steps__photos-btn" href="#kontakt" data-plan="Foto">Fotoshooting anfragen</a>
+    <!-- 04 · Fotografie -->
+    <section class="section photo" id="fotografie" aria-labelledby="foto-title">
+      <div class="container photo__inner">
+        <div class="photo__media" data-reveal>
+          <img class="photo__main" src="assets/img/foto-boutique.webp" width="720" height="900" alt="Schaufenster einer Modeboutique mit zwei Schaufensterpuppen (KI-Visualisierung)" loading="lazy" decoding="async">
+          <img class="photo__detail" src="assets/img/foto-restaurant.webp" width="480" height="562" alt="Restaurant mit Bistrotischen vor dem Eingang (KI-Visualisierung)" loading="lazy" decoding="async">
+          <span class="photo__label">Abb. 02 — KI-Visualisierung</span>
+        </div>
+        <div class="photo__text" data-reveal>
+          <p class="kicker">04 — Fotografie</p>
+          <h2 class="display display--md" id="foto-title">Bilder, die Lust machen, <em>vorbeizukommen.</em></h2>
+          <p class="photo__lead">Auf Wunsch fotografieren wir Ihre Räume, Ihre Produkte und Ihr Team. Oder wir arbeiten mit dem Material, das Sie schon haben, und holen das Beste daraus heraus.</p>
+          <div class="ab-list">
+            <div class="ab-list__row"><span>A</span><div><p class="ab-list__title">Professionelles Fotoshooting</p><p>Bei Ihnen vor Ort, im Paket Max schon enthalten</p></div></div>
+            <div class="ab-list__row"><span>B</span><div><p class="ab-list__title">Ihre eigenen Bilder</p><p>Sorgfältig ausgewählt und aufbereitet</p></div></div>
           </div>
-          <ul class="steps__photos-options">
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 015.5 7h2.3l1.4-2h5.6l1.4 2h2.3A1.5 1.5 0 0120 8.5v9a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 014 17.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-              <span><strong>Professionelles Fotoshooting</strong>bei Ihnen vor Ort, im Paket Max schon enthalten</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5A1.5 1.5 0 015 6h4.2l1.8 2H19a1.5 1.5 0 011.5 1.5v8A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 15l2.5-2.5 2 2 1.5-1.5L16 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><strong>Ihre eigenen Bilder</strong>sorgfältig ausgewählt und aufbereitet</span>
-            </li>
-          </ul>
+          <a class="btn btn--ink" href="#kontakt" data-plan="Foto">Fotoshooting anfragen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
         </div>
       </div>
     </section>
 
-    <!-- 3 · Pakete -->
-    <section class="section" id="pakete" aria-labelledby="pakete-title">
+    <!-- 05 · Pakete -->
+    <section class="section section--sand" id="pakete" aria-labelledby="pakete-title">
       <div class="container">
-        <header class="section-head section-head--center" data-reveal>
-          <p class="eyebrow" style="--eyebrow-dot: var(--c-rose-deep)">Website-Pakete</p>
-          <h2 class="t-h2" id="pakete-title">Ein fairer Preis. Ohne Abo.</h2>
-          <p class="t-lead">Einmal bezahlen, Website behalten. Und zwar erst, wenn Ihnen der fertige Entwurf gefällt.</p>
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">05 — Website-Pakete</p>
+            <h2 class="display" id="pakete-title">Einmal zahlen. <em>Für immer behalten.</em></h2>
+          </div>
+          <p class="split-head__aside">Ein fairer Preis, ohne Abo. Und zwar erst, wenn Ihnen der fertige Entwurf gefällt.</p>
         </header>
-
-        <div class="plans">
-          <article class="card plan" data-reveal>
-            <header class="plan__head">
-              <h3 class="t-h3">Starter</h3>
-              <p class="t-small">Die Standard-Website, schön und solide.</p>
-            </header>
-            <p class="price"><span class="price__value">500&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list">
+        <div class="plans" data-reveal>
+          <article class="plan">
+            <header class="plan__head"><p class="plan__name">Starter</p><p class="plan__desc">Die Standard-Website, schön und solide.</p></header>
+            <p class="plan__price">500<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Individuelles Design für Handy, Tablet und Desktop</li>
               <li>Bis zu 5 Seiten, z.&nbsp;B. Start, Angebot, Über uns, Kontakt</li>
               <li>Kontaktformular, Anfahrt und Öffnungszeiten</li>
               <li>Impressum- und Datenschutz-Seite eingebunden (die Rechtstexte liefern Sie oder ein Rechtstexte-Dienst)</li>
               <li>Grundlegende Optimierung für Google</li>
             </ul>
-            <a class="btn btn--secondary btn--block" href="#kontakt" data-plan="Starter">Starter anfragen</a>
+            <a class="btn btn--line btn--block" href="#kontakt" data-plan="Starter">Starter anfragen</a>
           </article>
-
-          <article class="card plan plan--featured" data-reveal>
-            <span class="badge plan__badge">Unsere Empfehlung</span>
-            <header class="plan__head">
-              <h3 class="t-h3">Pro</h3>
-              <p class="t-small">Alles aus Starter, plus Bewegung.</p>
-            </header>
-            <p class="price"><span class="price__value">1.200&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list">
+          <article class="plan plan--featured">
+            <header class="plan__head plan__head--badge"><div><p class="plan__name">Pro</p><p class="plan__desc">Alles aus Starter, plus Bewegung.</p></div><span class="plan__badge">Unsere Empfehlung</span></header>
+            <p class="plan__price">1.200<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Alles aus Starter</li>
               <li>Flüssige Scroll-Animationen</li>
               <li>Interaktive Elemente, z.&nbsp;B. Speisekarte oder Konfigurator</li>
               <li>3D-Präsentation ausgewählter Produkte</li>
               <li>Feinschliff für schnelle Ladezeiten</li>
             </ul>
-            <a class="btn btn--block" href="#kontakt" data-plan="Pro">Pro anfragen</a>
+            <a class="btn btn--accent btn--block" href="#kontakt" data-plan="Pro">Pro anfragen</a>
           </article>
-
-          <article class="card plan" data-reveal>
-            <header class="plan__head">
-              <h3 class="t-h3">Max</h3>
-              <p class="t-small">Alles aus Pro, plus Fotos und Social Media.</p>
-            </header>
-            <p class="price"><span class="price__value">3.000&nbsp;€</span><span class="price__note">Endpreis, § 19 UStG</span></p>
-            <ul class="check-list" style="--check-bg: var(--c-rose)">
+          <article class="plan">
+            <header class="plan__head"><p class="plan__name">Max</p><p class="plan__desc">Alles aus Pro, plus Fotos und Social Media.</p></header>
+            <p class="plan__price">3.000<span>&nbsp;€</span></p>
+            <ul class="plan__list">
               <li>Alles aus Pro</li>
               <li>Professionelles Fotoshooting in Ihrem Laden</li>
               <li>Bildbearbeitung und Bildauswahl für Website und Social Media</li>
               <li>Einrichtung bzw. Auffrischung Ihrer Social-Media-Profile</li>
               <li>Vorlagen für eigene Beiträge</li>
             </ul>
-            <a class="btn btn--secondary btn--block" href="#kontakt" data-plan="Max">Max anfragen</a>
+            <a class="btn btn--line btn--block" href="#kontakt" data-plan="Max">Max anfragen</a>
           </article>
         </div>
-        <p class="plans__note" data-reveal>Alle Preise sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer (§&nbsp;19 UStG). Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu.</p>
+        <p class="plans__note">Alle Preise sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer (§&nbsp;19 UStG). Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu.</p>
+      </div>
+    </section>
 
-        <!-- Umstieg: bestehende Website / Shopify, SEO -->
-        <div class="umstieg" id="umstieg">
-          <header class="umstieg__head" data-reveal>
-            <p class="eyebrow" style="--eyebrow-dot: var(--c-sage-deep)">Umstieg</p>
-            <h3 class="t-h2 umstieg__title">Sie haben schon eine Website<br><span class="t-serif-italic">oder einen Shopify-Shop?</span></h3>
-            <p class="t-lead">Kein Problem. Für Sie ändert sich nur, wie gut Ihr Auftritt aussieht und gefunden wird.</p>
-          </header>
-          <div class="umstieg__grid">
-            <article class="card umstieg__card" data-reveal>
-              <h4 class="t-h3">Ihre bisherige Seite bleibt, bis die neue überzeugt</h4>
-              <ul class="check-list">
-                <li>Ihre aktuelle Website oder Ihr Shop läuft unverändert weiter, während wir die neue bauen. Umgestellt wird erst, wenn Sie zustimmen.</li>
-                <li>Shopify bleibt Ihr Shop-System: Produkte, Bestellungen, Kundendaten und Zahlungsarten bleiben, wo sie sind. Wir gestalten den Auftritt neu.</li>
-                <li>Texte, Bilder und Domain übernehmen wir. Alte Adressen leiten wir sauber auf die neuen um, damit Ihre Google-Platzierungen und Links nicht verloren gehen.</li>
-                <li>Bezahlt wird erst, wenn Ihnen der fertige Entwurf gefällt. Passt er nicht, behalten Sie einfach Ihre bisherige Seite.</li>
-              </ul>
-            </article>
-            <article class="card umstieg__card umstieg__card--seo" data-reveal>
-              <h4 class="t-h3">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h4>
-              <ul class="check-list">
-                <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
-                <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie auch in der Kartensuche auffallen.</li>
-                <li>Unser Ziel sind messbar mehr Besucher. Wir richten die Google Search Console für Sie ein und zeigen Ihnen schwarz auf weiß, wie sich Aufrufe, Suchanfragen und Platzierungen entwickeln.</li>
-              </ul>
-            </article>
-          </div>
+    <!-- 06 · Umstieg -->
+    <section class="section section--accent umstieg" id="umstieg" aria-labelledby="umstieg-title">
+      <div class="container">
+        <p class="kicker kicker--ink" data-reveal>06 — Umstieg</p>
+        <h2 class="display display--lg" id="umstieg-title" data-reveal>Schon eine Website oder einen Shopify-Shop? <em>Kein Problem.</em></h2>
+        <p class="umstieg__lead" data-reveal>Für Sie ändert sich nur, wie gut Ihr Auftritt aussieht und gefunden wird.</p>
+        <div class="umstieg__grid">
+          <article class="umstieg__card" data-reveal>
+            <h3 class="umstieg__title">Ihre bisherige Seite bleibt, bis die neue überzeugt</h3>
+            <ul class="line-list">
+              <li>Ihre aktuelle Website oder Ihr Shop läuft unverändert weiter. Umgestellt wird erst, wenn Sie zustimmen.</li>
+              <li>Shopify bleibt Ihr Shop-System: Produkte, Bestellungen, Kundendaten und Zahlungsarten bleiben, wo sie sind.</li>
+              <li>Texte, Bilder und Domain übernehmen wir. Alte Adressen leiten wir sauber um, damit Ihre Google-Platzierungen erhalten bleiben.</li>
+              <li>Passt der Entwurf nicht, behalten Sie einfach Ihre bisherige Seite.</li>
+            </ul>
+          </article>
+          <article class="umstieg__card" data-reveal>
+            <h3 class="umstieg__title">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h3>
+            <ul class="line-list">
+              <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
+              <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie in der Kartensuche auffallen.</li>
+              <li>Wir richten die Google Search Console (Googles kostenloses Auswertungs-Werkzeug) für Sie ein und zeigen Ihnen, wie sich Aufrufe und Platzierungen entwickeln.</li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- 4 · Softwarelösungen -->
-    <section class="section section--alt software" id="software" aria-labelledby="software-title">
+    <!-- 07 · Software -->
+    <section class="section software" id="software" aria-labelledby="software-title">
       <div class="container">
-        <header class="section-head" data-reveal>
-          <p class="eyebrow" style="--eyebrow-dot: var(--c-elbe-deep)">Softwarelösungen</p>
-          <h2 class="t-h2" id="software-title">Software, die Ihnen<br><span class="t-serif-italic">Arbeit abnimmt.</span></h2>
-          <p class="t-lead">Unser Schwerpunkt sind Websites. Doch im Alltag steckt oft noch mehr Potenzial. Darum entwickeln wir auch Programme, die genau zu Ihrem Betrieb passen. Zum Beispiel:</p>
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">07 — Softwarelösungen</p>
+            <h2 class="display" id="software-title">Software, die Ihnen <em>Arbeit abnimmt.</em></h2>
+          </div>
+          <p class="split-head__aside">Unser Schwerpunkt sind Websites. Doch im Alltag steckt oft noch mehr Potenzial. Zum Beispiel:</p>
         </header>
-        <ul class="software__list">
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--elbe software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M8.5 14l2.2 2.2 4.8-4.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <h3 class="t-h3">Online-Reservierung</h3>
-            <p class="t-small">Tische, Termine oder Beratungen direkt über Ihre Website buchen lassen, mit automatischer Bestätigung und Erinnerung.</p>
-          </li>
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--sand software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 01-1.5 1.3H7.7a1.5 1.5 0 01-1.5-1.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 016 0v3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-            <h3 class="t-h3">Vorbestellen und abholen</h3>
-            <p class="t-small">Ihre Kundschaft bestellt online und holt bei Ihnen ab. Ohne Telefonstress und ohne Warteschlange.</p>
-          </li>
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--rose software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 13h17M12 9v11M12 9c-1.5-3-5-3.6-5-1.3C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.6 5-1.3C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
-            <h3 class="t-h3">Gutscheine und Treuekarten</h3>
-            <p class="t-small">Gutscheine rund um die Uhr online verkaufen und Ihre Stammkundschaft mit einer digitalen Treuekarte belohnen.</p>
-          </li>
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--sage software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 19.5h1.5M19.5 14v1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <h3 class="t-h3">Digitale Karten</h3>
-            <p class="t-small">Speise- oder Preislisten per QR-Code, mit Allergenen und Tagesangeboten. Änderungen machen Sie in Sekunden selbst.</p>
-          </li>
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--elbe software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 3.5h6v2.5H9zM8.5 11l1.5 1.5 2.5-2.5M8.5 16l1.5 1.5 2.5-2.5M14.5 11.5h1.5M14.5 16.5h1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <h3 class="t-h3">Werkzeuge für Ihr Team</h3>
-            <p class="t-small">Dienstpläne, Lagerlisten oder Checklisten, zugeschnitten auf Ihre Abläufe statt von der Stange.</p>
-          </li>
-          <li class="card software__item" data-reveal>
-            <span class="tile tile--sand software__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="17.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7h7M7.3 9.2l3.4 6M16.7 9.2l-3.4 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-            <h3 class="t-h3">Automatisierung</h3>
-            <p class="t-small">Wiederkehrende Aufgaben erledigen sich von selbst, und Ihre Programme arbeiten zusammen, etwa Kasse, Onlineshop und Buchhaltung.</p>
-          </li>
+        <ul class="software__list" data-reveal>
+          <li class="software__item"><span class="software__code">S/01</span><h3 class="software__title">Online-Reservierung</h3><p>Tische, Termine oder Beratungen direkt über Ihre Website buchen lassen, mit automatischer Bestätigung und Erinnerung.</p></li>
+          <li class="software__item"><span class="software__code">S/02</span><h3 class="software__title">Vorbestellen und abholen</h3><p>Ihre Kundschaft bestellt online und holt bei Ihnen ab. Ohne Telefonstress und ohne Warteschlange.</p></li>
+          <li class="software__item"><span class="software__code">S/03</span><h3 class="software__title">Gutscheine und Treuekarten</h3><p>Gutscheine rund um die Uhr online verkaufen und Ihre Stammkundschaft mit einer digitalen Treuekarte belohnen.</p></li>
+          <li class="software__item"><span class="software__code">S/04</span><h3 class="software__title">Digitale Karten</h3><p>Speise- oder Preislisten per QR-Code, mit Allergenen und Tagesangeboten. Änderungen machen Sie in Sekunden selbst.</p></li>
+          <li class="software__item"><span class="software__code">S/05</span><h3 class="software__title">Werkzeuge für Ihr Team</h3><p>Dienstpläne, Lagerlisten oder Checklisten, zugeschnitten auf Ihre Abläufe statt von der Stange.</p></li>
+          <li class="software__item"><span class="software__code">S/06</span><h3 class="software__title">Automatisierung</h3><p>Wiederkehrende Aufgaben erledigen sich von selbst, und Ihre Programme arbeiten zusammen, etwa Kasse, Onlineshop und Buchhaltung.</p></li>
         </ul>
         <div class="cta-band" data-reveal>
           <div class="cta-band__text">
-            <h3 class="t-h3">Ihre Idee ist nicht dabei?<br><span class="t-serif-italic">Erzählen Sie uns davon.</span></h3>
-            <p class="t-small">Gemeinsam finden wir heraus, was sich für Ihren Betrieb lohnt: unverbindlich und ohne Fachchinesisch.</p>
+            <p class="cta-band__title">Ihre Idee ist nicht dabei? <em>Erzählen Sie uns davon.</em></p>
+            <p>Gemeinsam finden wir heraus, was sich für Ihren Betrieb lohnt: unverbindlich und ohne Fachchinesisch.</p>
           </div>
-          <div class="cta-band__actions">
-            <a class="btn" href="#kontakt" data-plan="Software">Software-Idee besprechen</a>
-            <a class="btn btn--secondary" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20habe%20eine%20Software-Idee." target="_blank" rel="noopener">Per WhatsApp</a>
+          <div class="btn-row">
+            <a class="btn btn--accent" href="#kontakt" data-plan="Software">Software-Idee besprechen</a>
+            <a class="btn btn--line" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20habe%20eine%20Software-Idee." target="_blank" rel="noopener">Per WhatsApp</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5 · Team -->
-    <section class="section" id="team" aria-labelledby="team-title">
+    <!-- 08 · Team -->
+    <section class="section section--sand" id="team" aria-labelledby="team-title">
       <div class="container">
-        <header class="section-head" data-reveal>
-          <p class="eyebrow" style="--eyebrow-dot: var(--c-elbe-deep)">Team</p>
-          <h2 class="t-h2" id="team-title">Das sind wir.<br><span class="t-serif-italic">Ihr Team aus Hamburg.</span></h2>
-          <p class="t-lead">Marketing, Fotografie und Software aus einer Hand. Und wir kommen gern persönlich zu Ihnen in den Laden.</p>
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">08 — Team</p>
+            <h2 class="display" id="team-title">Das sind wir. <em>Ihr Team aus Hamburg.</em></h2>
+          </div>
+          <p class="split-head__aside">Marketing, Fotografie und Software aus einer Hand. Und wir kommen gern persönlich zu Ihnen in den Laden.</p>
         </header>
-
         <div class="team">
-          <article class="person" data-reveal>
-            <div class="person__portrait person__portrait--rose person__portrait--photo"><img src="assets/img/team/anna-v2-560.webp" srcset="assets/img/team/anna-v2-560.webp 560w, assets/img/team/anna-v2-1120.webp 1120w, assets/img/team/anna-v2-1440.webp 1440w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Anna (mit KI erstellt)" loading="lazy" decoding="async"></div>
-            <h3 class="t-h3">Anna</h3>
-            <p class="person__role">Marketing</p>
-            <p class="t-small">Kommt in Ihren Laden, hört zu und weiß, was Ihre Kundschaft online sucht.</p>
-          </article>
-          <article class="person" data-reveal>
-            <div class="person__portrait person__portrait--sage person__portrait--photo"><img src="assets/img/team/jan-blau-560.webp" srcset="assets/img/team/jan-blau-560.webp 560w, assets/img/team/jan-blau-1120.webp 1120w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Jan (mit KI erstellt)" loading="lazy" decoding="async"></div>
-            <h3 class="t-h3">Jan</h3>
-            <p class="person__role">Fotograf</p>
-            <p class="t-small">Setzt Ihren Laden, Ihre Produkte und Ihr Team ins beste Licht.</p>
-          </article>
-          <article class="person" data-reveal>
-            <div class="person__portrait person__portrait--elbe person__portrait--photo"><img src="assets/img/team/davide-blau-560.webp" srcset="assets/img/team/davide-blau-560.webp 560w, assets/img/team/davide-blau-1120.webp 1120w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Davide (mit KI erstellt)" loading="lazy" decoding="async"></div>
-            <h3 class="t-h3">Davide</h3>
-            <p class="person__role">IT &amp; Software</p>
-            <p class="t-small">Baut Ihre Website und Ihre Software: schnell, sicher und so, dass alles einfach funktioniert.</p>
-          </article>
+          <figure class="person" data-reveal>
+            <div class="person__photo"><img src="assets/img/team/anna-v2-560.webp" srcset="assets/img/team/anna-v2-560.webp 560w, assets/img/team/anna-v2-1120.webp 1120w, assets/img/team/anna-v2-1440.webp 1440w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Anna (mit KI erstellt)" loading="lazy" decoding="async"></div>
+            <figcaption><span class="person__line"><span class="person__name">Anna</span><span class="person__role">Marketing</span></span><span class="person__text">Kommt in Ihren Laden, hört zu und weiß, was Ihre Kundschaft online sucht.</span></figcaption>
+          </figure>
+          <figure class="person person--stagger" data-reveal>
+            <div class="person__photo"><img src="assets/img/team/jan-blau-560.webp" srcset="assets/img/team/jan-blau-560.webp 560w, assets/img/team/jan-blau-1120.webp 1120w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Jan (mit KI erstellt)" loading="lazy" decoding="async"></div>
+            <figcaption><span class="person__line"><span class="person__name">Jan</span><span class="person__role">Fotograf</span></span><span class="person__text">Setzt Ihren Laden, Ihre Produkte und Ihr Team ins beste Licht.</span></figcaption>
+          </figure>
+          <figure class="person" data-reveal>
+            <div class="person__photo"><img src="assets/img/team/davide-blau-560.webp" srcset="assets/img/team/davide-blau-560.webp 560w, assets/img/team/davide-blau-1120.webp 1120w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 46vw, 92vw" width="560" height="700" alt="Porträt von Davide (mit KI erstellt)" loading="lazy" decoding="async"></div>
+            <figcaption><span class="person__line"><span class="person__name">Davide</span><span class="person__role">IT &amp; Software</span></span><span class="person__text">Baut Ihre Website und Ihre Software: schnell, sicher und so, dass alles einfach funktioniert.</span></figcaption>
+          </figure>
         </div>
         <p class="team__ki">Hinweis: Die Porträts und das Gruppenbild sind mit KI erstellt bzw. zusammengesetzt.</p>
       </div>
     </section>
 
-    <!-- 6 · Kontakt -->
-    <section class="section section--alt" id="kontakt" aria-labelledby="kontakt-title">
+    <!-- 09 · Kontakt -->
+    <section class="section section--petrol" id="kontakt" aria-labelledby="kontakt-title">
       <div class="container contact">
-        <header class="section-head contact__head" data-reveal>
-          <p class="eyebrow">Kontakt</p>
-          <h2 class="t-h2" id="kontakt-title">Lassen Sie uns<br><span class="t-serif-italic">ins Gespräch kommen.</span></h2>
-          <p class="t-lead">Bei Ihnen vor Ort, bei einem Kaffee oder einfach am Telefon. Schreiben Sie uns, rufen Sie an oder schicken Sie eine WhatsApp. Wir melden uns in der Regel innerhalb eines Werktags.</p>
-          <p class="contact__promise">
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Gespräch und Entwurf sind für Sie unverbindlich. Bezahlt wird erst, wenn Sie zufrieden sind.
-          </p>
-          <div class="contact__direct">
-            <a class="contact__chip" href="tel:+4917631685816">
-              <span class="tile tile--sand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h2.6l1.4 4-2 1.3a12 12 0 006.6 6.6l1.3-2 4 1.4v2.6A2 2 0 0118.6 19.5 15.5 15.5 0 014.5 5.4a2 2 0 012.1-1.9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
-              <span><small>Anrufen</small>0176 31685816</span>
-            </a>
-            <a class="contact__chip" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Website." target="_blank" rel="noopener">
-              <span class="tile tile--sage"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4A8.5 8.5 0 1112 20.5a8.6 8.6 0 01-4.1-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a5 5 0 01-2.8-2.8l.8-1-1-2z" fill="currentColor" opacity=".8"/></svg></span>
-              <span><small>WhatsApp</small>Nachricht schreiben</span>
-            </a>
-            <a class="contact__chip" href="mailto:hallo@studio-elbquartier.de">
-              <span class="tile tile--elbe"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span><small>E-Mail</small>hallo@studio-elbquartier.de</span>
-            </a>
+        <div class="contact__intro" data-reveal>
+          <p class="kicker">09 — Kontakt</p>
+          <p class="contact__moin" aria-hidden="true">Moin.</p>
+          <h2 class="contact__title" id="kontakt-title">Lassen Sie uns ins Gespräch kommen.</h2>
+          <p class="contact__lead">Bei Ihnen vor Ort, bei einem Kaffee oder am Telefon. Wir melden uns in der Regel innerhalb eines Werktags. Gespräch und Entwurf sind unverbindlich.</p>
+          <div class="contact__list">
+            <a class="contact__row" href="tel:+4917631685816"><span><span class="contact__label">Anrufen</span><span class="contact__value">0176 31685816</span></span><svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+            <a class="contact__row" href="https://wa.me/4917631685816?text=Hallo%20Studio%20Elbquartier%2C%20ich%20habe%20eine%20Software-Idee." target="_blank" rel="noopener"><span><span class="contact__label">WhatsApp</span><span class="contact__value">Nachricht schreiben</span></span><svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+            <a class="contact__row" href="mailto:hallo@studio-elbquartier.de"><span><span class="contact__label">E-Mail</span><span class="contact__value">hallo@studio-elbquartier.de</span></span><svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
           </div>
           <figure class="team-card">
-            <div class="team-card__img"><img src="assets/img/team/gruppe-blau-1200.webp" srcset="assets/img/team/gruppe-blau-800.webp 800w, assets/img/team/gruppe-blau-1200.webp 1200w, assets/img/team/gruppe-blau-1600.webp 1600w" sizes="(min-width: 960px) 520px, 92vw" width="1600" height="1063" alt="Anna, Davide und Jan vom Studio Elbquartier (Bild mit KI erstellt)" loading="lazy" decoding="async"></div>
-            <figcaption><strong>Anna, Davide und Jan</strong>Wir freuen uns auf Ihre Nachricht und kommen gern bei Ihnen im Laden vorbei.</figcaption>
+          <div class="team-card__img"><img src="assets/img/team/gruppe-blau-1200.webp" srcset="assets/img/team/gruppe-blau-800.webp 800w, assets/img/team/gruppe-blau-1200.webp 1200w, assets/img/team/gruppe-blau-1600.webp 1600w" sizes="(min-width: 960px) 520px, 92vw" width="1600" height="1063" alt="Anna, Davide und Jan vom Studio Elbquartier (Bild mit KI erstellt)" loading="lazy" decoding="async"></div>
+          <figcaption><strong>Anna, Davide und Jan</strong>Wir freuen uns auf Ihre Nachricht und kommen gern bei Ihnen im Laden vorbei.</figcaption>
           </figure>
-        </header>
+        </div>
 
         <form class="card contact__form" id="contact-form" action="kontakt.php" method="post" novalidate data-reveal>
-          <div class="contact__form-head">
-            <h3 class="t-h3">Ihre Anfrage</h3>
-            <p class="t-small">Unverbindlich. Bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
-          </div>
-          <div class="contact__grid">
-            <label class="field">
-              <span class="field__label">Ihr Name</span>
-              <input class="field__input" name="name" autocomplete="name" required maxlength="120" placeholder="Vor- und Nachname">
-            </label>
-            <label class="field">
-              <span class="field__label">Laden oder Unternehmen <span class="t-muted">(optional)</span></span>
-              <input class="field__input" name="laden" autocomplete="organization" maxlength="120" placeholder="z. B. Café am Hafen">
-            </label>
-            <label class="field">
-              <span class="field__label">E-Mail</span>
-              <input class="field__input" type="email" name="email" autocomplete="email" required maxlength="160" placeholder="name@beispiel.de">
-            </label>
-            <label class="field">
-              <span class="field__label">Telefon <span class="t-muted">(optional)</span></span>
-              <input class="field__input" type="tel" name="telefon" autocomplete="tel" maxlength="40" placeholder="Für einen kurzen Rückruf">
-            </label>
-            <fieldset class="chips contact__full">
-              <legend class="field__label">Ihr Interesse</legend>
-              <div class="chips__list">
-                <label class="chip"><input type="radio" name="paket" value="" checked><span>Noch offen</span></label>
-                <label class="chip"><input type="radio" name="paket" value="Starter"><span>Website Starter</span></label>
-                <label class="chip"><input type="radio" name="paket" value="Pro"><span>Website Pro</span></label>
-                <label class="chip"><input type="radio" name="paket" value="Max"><span>Website Max</span></label>
-                <label class="chip"><input type="radio" name="paket" value="Foto"><span>Fotoshooting</span></label>
-                <label class="chip"><input type="radio" name="paket" value="Software"><span>Software</span></label>
-              </div>
-            </fieldset>
-            <fieldset class="chips contact__full">
-              <legend class="field__label">Erstes Gespräch</legend>
-              <div class="chips__list">
-                <label class="chip"><input type="radio" name="gespraech" value="" checked><span>Wie es passt</span></label>
-                <label class="chip"><input type="radio" name="gespraech" value="vor Ort"><span>Bei mir vor Ort</span></label>
-                <label class="chip"><input type="radio" name="gespraech" value="Telefon"><span>Am Telefon</span></label>
-              </div>
-            </fieldset>
-            <label class="field contact__full">
-              <span class="field__label">Nachricht</span>
-              <textarea class="field__input" name="nachricht" required maxlength="4000" placeholder="Erzählen Sie uns kurz von Ihrem Laden oder Ihrem Vorhaben."></textarea>
-            </label>
-            <!-- Spam-Schutz: für Menschen unsichtbar -->
-            <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
-            <input type="hidden" name="ts" id="contact-ts">
-            <label class="checkbox contact__full">
-              <input type="checkbox" name="einwilligung" value="ja" required>
-              <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen. Meine Angaben werden nur zur Bearbeitung meiner Anfrage verwendet.</span>
-            </label>
-          </div>
-          <div class="contact__submit">
-            <p class="contact__hint t-small">Antwort in der Regel innerhalb eines Werktags.</p>
-            <button class="btn contact__send" type="submit">Nachricht senden <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <p class="contact__status t-small" id="contact-status" role="status" aria-live="polite"></p>
-          </div>
-        </form>
+            <div class="contact__form-head">
+              <h3 class="t-h3">Ihre Anfrage</h3>
+              <p class="t-small">Unverbindlich. Bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
+            </div>
+            <div class="contact__grid">
+              <label class="field">
+                <span class="field__label">Ihr Name</span>
+                <input class="field__input" name="name" autocomplete="name" required maxlength="120" placeholder="Vor- und Nachname">
+              </label>
+              <label class="field">
+                <span class="field__label">Laden oder Unternehmen <span class="t-muted">(optional)</span></span>
+                <input class="field__input" name="laden" autocomplete="organization" maxlength="120" placeholder="z. B. Café am Hafen">
+              </label>
+              <label class="field">
+                <span class="field__label">E-Mail</span>
+                <input class="field__input" type="email" name="email" autocomplete="email" required maxlength="160" placeholder="name@beispiel.de">
+              </label>
+              <label class="field">
+                <span class="field__label">Telefon <span class="t-muted">(optional)</span></span>
+                <input class="field__input" type="tel" name="telefon" autocomplete="tel" maxlength="40" placeholder="Für einen kurzen Rückruf">
+              </label>
+              <fieldset class="chips contact__full">
+                <legend class="field__label">Ihr Interesse</legend>
+                <div class="chips__list">
+                  <label class="chip"><input type="radio" name="paket" value="" checked><span>Noch offen</span></label>
+                  <label class="chip"><input type="radio" name="paket" value="Starter"><span>Website Starter</span></label>
+                  <label class="chip"><input type="radio" name="paket" value="Pro"><span>Website Pro</span></label>
+                  <label class="chip"><input type="radio" name="paket" value="Max"><span>Website Max</span></label>
+                  <label class="chip"><input type="radio" name="paket" value="Foto"><span>Fotoshooting</span></label>
+                  <label class="chip"><input type="radio" name="paket" value="Software"><span>Software</span></label>
+                </div>
+              </fieldset>
+              <fieldset class="chips contact__full">
+                <legend class="field__label">Erstes Gespräch</legend>
+                <div class="chips__list">
+                  <label class="chip"><input type="radio" name="gespraech" value="" checked><span>Wie es passt</span></label>
+                  <label class="chip"><input type="radio" name="gespraech" value="vor Ort"><span>Bei mir vor Ort</span></label>
+                  <label class="chip"><input type="radio" name="gespraech" value="Telefon"><span>Am Telefon</span></label>
+                </div>
+              </fieldset>
+              <label class="field contact__full">
+                <span class="field__label">Nachricht</span>
+                <textarea class="field__input" name="nachricht" required maxlength="4000" placeholder="Erzählen Sie uns kurz von Ihrem Laden oder Ihrem Vorhaben."></textarea>
+              </label>
+              <!-- Spam-Schutz: für Menschen unsichtbar -->
+              <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+              <input type="hidden" name="ts" id="contact-ts">
+              <label class="checkbox contact__full">
+                <input type="checkbox" name="einwilligung" value="ja" required>
+                <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen. Meine Angaben werden nur zur Bearbeitung meiner Anfrage verwendet.</span>
+              </label>
+            </div>
+            <div class="contact__submit">
+              <p class="contact__hint t-small">Antwort in der Regel innerhalb eines Werktags.</p>
+              <button class="btn contact__send" type="submit">Nachricht senden <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <p class="contact__status t-small" id="contact-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer__inner">
-      <p>© <span id="year">2026</span> Studio Elbquartier · Hamburg · <a href="mailto:hallo@studio-elbquartier.de">hallo@studio-elbquartier.de</a></p>
+      <div class="footer__brand"><span class="footer__name">Studio Elbquartier</span><span class="footer__meta">© <span id="year">2026</span> · Hamburg · 53°33′ N 9°59′ O · <a href="mailto:hallo@studio-elbquartier.de">hallo@studio-elbquartier.de</a></span></div>
       <nav aria-label="Leistungen und Rechtliches">
         <a href="/webdesign-hamburg/">Webdesign Hamburg</a>
         <a href="/fotografie-hamburg/">Fotografie</a>
@@ -620,6 +641,6 @@
 
   <script src="assets/vendor/gsap/gsap.min.js" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="assets/js/main.js?v=20261022b"></script>
+  <script type="module" src="assets/js/main.js?v=20261022c"></script>
 </body>
 </html>

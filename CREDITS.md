@@ -7,6 +7,7 @@ Alle Dateien liegen lokal auf dem eigenen Server. Es werden keine externen Diens
 | Datei | Herkunft | Hinweis |
 |---|---|---|
 | `assets/video/hero/hero-1..5-l.mp4` (Querformat 1600x900), `hero-1..5-p.mp4` (Hochformat 608x1080), `hero-1-*.webp` (Standbild) | KI-generiert mit Higgsfield am 21.10.2026: Startbilder GPT Image 2.5, Bewegung Kling 3.0 (pro, 5 s, ohne Ton); Kosten und Prompts in `Kunden/Studio Elbquartier/Higgsfield.md` außerhalb des Repos | Nutzungsrechte laut Higgsfield-Bedingungen (Plan Plus, kommerziell erlaubt). Keine echten Läden, Marken oder Personen. Gekennzeichnet in `lizenzen.html` (Bildnachweise, im Footer verlinkt); der sichtbare Hinweis im Video wurde am 21.10.2026 auf Wunsch entfernt (fiktive Szenen ohne echte Orte oder Personen). Kodiert mit ffmpeg (nur Werkzeug). |
+| `assets/img/foto-boutique.webp`, `assets/img/foto-restaurant.webp` (Abschnitt Fotografie) | Standbilder aus den KI-Clips hero-5 (Modeladen) und hero-2 (Restaurant), Ausschnitt mit ffmpeg am 22.10.2026 | wie die Startvideos; auf der Seite als „KI-Visualisierung“ gekennzeichnet |
 
 ## Teamfotos
 
@@ -42,6 +43,8 @@ Nur zum Berechnen der Bilder, nicht auf dem Server (Ordner `tools/vendor/`, Änd
 | `assets/fonts/bodoni-moda-*.woff2` | Bodoni Moda (variabel) von Owen Earl (indestructible type*) | Fontsource | SIL Open Font License 1.1 |
 | `assets/fonts/bricolage-grotesque-wght.woff2` | Bricolage Grotesque (variabel) von Mathieu Triay | Fontsource | SIL Open Font License 1.1 |
 | `assets/fonts/gloock-400.woff2` | Gloock von Duarte Pinto | Fontsource | SIL Open Font License 1.1 |
+| `assets/fonts/geist-latin-wght.woff2` | Geist (variabel) von Vercel | Fontsource 5.3.0 | SIL Open Font License 1.1 (`OFL-geist.txt`) |
+| `assets/fonts/ibm-plex-mono-400.woff2` | IBM Plex Mono von IBM (Mike Abbink, Bold Monday) | Fontsource 5.3.0 | SIL Open Font License 1.1 (`OFL-ibmplexmono.txt`) |
 
 ## HDRIs (Umgebungslicht)
 

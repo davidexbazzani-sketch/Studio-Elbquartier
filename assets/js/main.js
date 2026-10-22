@@ -184,7 +184,7 @@ if (cap.ok) {
   if (scrollY > 0) io.observe(stage);
   else afterInteraction(() => io.observe(stage), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] });
 } else {
-  $('#beispiele .section-head .t-lead').textContent = 'Wischen Sie durch die Läden und öffnen Sie ein Beispiel. Alle Namen sind erfunden, die Ideen sind echt.';
+  const lead = $('#stage-lead'); if (lead) lead.textContent = 'Wischen Sie durch die Läden und tippen Sie auf einen, um das Beispiel zu öffnen.';
   $('#stage-toggle-text').textContent = cap.why;
   toggleRow.hidden = !hasWebGL2();
   $('#stage-load3d').addEventListener('click', load3D);
