@@ -59,6 +59,7 @@ function start() {
       // letzte Szene → Logo-Animation, darunter Szene 1 bereitstellen
       scene = SCENES;
       sting.classList.add('is-on');
+      hero.classList.add('is-sting'); // Logo unter der Leistungszeile zeichnen
       playSting(STING_MS);
     }
   }
@@ -77,6 +78,7 @@ function start() {
     tryPlay(nxt);
     nxt.classList.add('is-on');
     sting.classList.remove('is-on');
+    hero.classList.remove('is-sting');
     setTimeout(() => {
       [cur, nxt] = [nxt, cur];
       scene = 0;
