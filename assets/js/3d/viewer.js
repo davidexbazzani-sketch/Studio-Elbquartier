@@ -77,6 +77,7 @@ export async function createViewer({
   autoRotate = true,
 } = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer });
+  renderer.debug.checkShaderErrors = false; // keine synchrone Fehlerprüfung der Shader (blockierte den Start mehrere Sekunden)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelRatioCap));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
