@@ -116,7 +116,10 @@
     <!-- Sorten -->
     <section class="fk-flavors" id="sorten" aria-labelledby="sorten-title">
       <h2 class="visually-hidden" id="sorten-title">Die drei Sorten</h2>
+      <!-- Farbflut: je Sorte ein Verlauf, weich überblendet -->
+      <div class="fk-flavors__bgs" aria-hidden="true"><i class="is-on"></i><i></i><i></i></div>
       <div class="fk-flavors__stage" id="stage">
+        <div class="fk-bubbles" id="stage-bubbles" aria-hidden="true"></div>
         <img class="fk-flavors__poster" id="stage-poster" src="../../assets/img/funkl/dose-mango.webp" width="900" height="1200" alt="" aria-hidden="true">
         <div class="fk-flavors__canvas" id="stage-canvas" aria-label="FUNKL-Dose in 3D, beschlagen. Zum Drehen waagerecht ziehen."></div>
         <p class="fk-flavors__hint" id="wipe-hint">
@@ -129,6 +132,7 @@
 
     <!-- Angeber-Band -->
     <section class="fk-cold" aria-labelledby="cold-title">
+      <div class="fk-drops" id="cold-drops" aria-hidden="true"></div>
       <p class="fk-eyebrow">4 °C trifft 24 °C</p>
       <h2 class="fk-h2" id="cold-title">Jede Perle ist <em>echt berechnet.</em></h2>
       <p class="fk-lead">Wenn die kalte Dose auf warme Luft trifft, beschlägt sie: erst ein feiner Nebel, dann Tropfen, die langsam wachsen, ineinanderlaufen und schließlich als Spur nach unten rinnen. Genau das passiert oben in Echtzeit, im Browser, auf jedem Gerät.</p>

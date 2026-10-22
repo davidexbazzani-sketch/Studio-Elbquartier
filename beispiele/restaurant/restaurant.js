@@ -1,3 +1,4 @@
+import { bgFilm } from '../../assets/js/bg-film.js';
 import { reducedMotion } from '../../assets/js/capability.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -132,9 +133,8 @@ function initMotion() {
   }
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out' });
-  gsap.fromTo('[data-hero]:not(.fz-hero__media)', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
-  gsap.from('.fz-hero__media', { y: 26, duration: 1.2, delay: 0.1 }); // Hauptbild nur bewegen, nicht ausblenden (LCP)
-  gsap.fromTo('.fz-hero__media img', { scale: 1.12 }, { scale: 1, duration: 2.2, ease: 'power2.out' });
+  gsap.fromTo('[data-hero]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.1 });
+  gsap.fromTo('.fz-hero__film', { scale: 1.08 }, { scale: 1, duration: 2.4, ease: 'power2.out', clearProps: 'transform' }); // Film zoomt sanft zurück (Bild bleibt sichtbar)
   gsap.fromTo('.fz-place__media img', { scale: 1.15 }, {
     scale: 1, ease: 'none',
     scrollTrigger: { trigger: '.fz-place', start: 'top bottom', end: 'center center', scrub: true },
@@ -146,3 +146,6 @@ function initMotion() {
   });
 }
 initMotion();
+
+/* ---------- Hintergrundfilm im Startbereich ---------- */
+bgFilm(document.querySelector('[data-film]'));

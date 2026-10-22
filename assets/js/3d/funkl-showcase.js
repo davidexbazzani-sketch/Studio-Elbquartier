@@ -159,7 +159,7 @@ async function realIngredients(id, base) {
 }
 
 /* ---------- Szene ---------- */
-export async function createShowcase({ container, reducedMotion = false, quality, models = '../../assets/models/funkl/' }) {
+export async function createShowcase({ container, reducedMotion = false, quality, models = '../../assets/models/funkl/', onLost }) {
   const low = quality === 'low' || window.innerWidth < 768;
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, low ? 1.6 : 2));
@@ -169,6 +169,7 @@ export async function createShowcase({ container, reducedMotion = false, quality
   const canvas = renderer.domElement;
   canvas.style.cssText = 'display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab;';
   container.appendChild(canvas);
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); visible = false; onLost?.(); });
 
   const scene = new THREE.Scene();
   scene.environment = await studioHDR(renderer);
@@ -300,12 +301,28 @@ export async function createShowcase({ container, reducedMotion = false, quality
       });
     });
 
-    cond.step(dt);
-    cond.render(dt);
+    cond.tick(dt);
     renderer.render(scene, camera);
+    adapt(dt);
     if (visible) raf = requestAnimationFrame(frame); else running = false;
   }
   function kick() { if (running || !visible) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
+  const onDpr = null;
+
+  // Auflösung an das Gerät anpassen: Läuft es nach dem Anlauf nicht flüssig (unter ~48 Bildern pro Sekunde),
+  // werden schrittweise weniger Pixel gezeichnet. So bleibt es auch auf älteren Handys flüssig.
+  const perf = { n: 0, sum: 0, dpr: renderer.getPixelRatio(), done: false };
+  function adapt(dt) {
+    if (perf.done) return;
+    if (++perf.n <= 30) return; // Anlauf (Shader, Texturen) nicht mitzählen
+    perf.sum += dt;
+    if (perf.n < 120) return;
+    const avg = perf.sum / 90;
+    perf.n = 0; perf.sum = 0;
+    if (avg > 0.021 && perf.dpr > 1) { perf.dpr = Math.max(1, perf.dpr - 0.25); renderer.setPixelRatio(perf.dpr); onDpr?.(perf.dpr); resize(); }
+    else perf.done = true;
+  }
+
 
   function resize() {
     const w = container.clientWidth, h = container.clientHeight;

@@ -93,9 +93,7 @@ async function startHero3D() {
 }
 
 stageCanvas.addEventListener('pointerdown', () => stage.classList.add('is-touched'));
-if (matchMedia('(pointer: fine)').matches) {
-  $('#hint').lastChild.textContent = ' Ziehen zum Drehen · Doppelklick für den Stein';
-}
+// Hinweis bleibt für Maus und Finger gleich: „Betrachte mich von allen Seiten“ (index.html)
 
 // Werkzeuge (Hero und Vollbild teilen sich die Logik)
 function tools(root) {

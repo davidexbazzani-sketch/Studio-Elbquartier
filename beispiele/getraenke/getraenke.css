@@ -331,3 +331,67 @@ html.is-locked { overflow: hidden; }
   .fk-panel__price { font-size: 1.3rem; }
   .fk-panel__warn { font-size: 10.5px; }
 }
+
+/* ==========================================================================
+   Bewegung und Handy-Flüssigkeit (22.10.2026)
+   Alles läuft über transform und opacity, damit die Grafikkarte es allein erledigt.
+   Kein Weichzeichner (backdrop-filter) über der 3D-Fläche: Er müsste für jedes Bild neu gerechnet werden.
+   ========================================================================== */
+
+/* Farbflut: drei Verläufe übereinander, die aktive Sorte blendet weich ein */
+.fk-flavors { background: #6a2cff; }
+.fk-flavors__bgs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.fk-flavors__bgs i { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1); }
+.fk-flavors__bgs i:nth-child(1) { background: linear-gradient(160deg, #6a2cff, #c03cff 55%, #ff4fa3); }
+.fk-flavors__bgs i:nth-child(2) { background: linear-gradient(160deg, #10b981, #a8ff3e 55%, #00b3ff); }
+.fk-flavors__bgs i:nth-child(3) { background: linear-gradient(160deg, #ffc400, #ff8a00 55%, #ff4f3a); }
+.fk-flavors__bgs i.is-on { opacity: 1; }
+
+/* Kohlensäure: Perlen steigen hinter der Dose auf */
+.fk-bubbles { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; --rise: 56svh; }
+@media (min-width: 900px) { .fk-bubbles { --rise: 100svh; } }
+.fk-bubbles span {
+  position: absolute; bottom: -30px; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.95) 0 14%, rgba(255, 255, 255, 0.18) 16% 58%, rgba(255, 255, 255, 0.6) 62% 68%, transparent 71%);
+  opacity: 0; will-change: transform, opacity; /* Bewegung: getraenke.js (Web Animations, Grafikkarte) */
+}
+
+/* Hinweis „Zum Drehen ziehen“: Pfeil wippt */
+.fk-flavors__hint svg { animation: fk-wiggle 1.8s ease-in-out infinite; }
+@keyframes fk-wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* Kondenstropfen laufen über das Angeber-Band */
+.fk-cold { position: relative; overflow: hidden; isolation: isolate; }
+.fk-cold > :not(.fk-drops) { position: relative; z-index: 1; }
+.fk-drops { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.fk-drops span {
+  position: absolute; top: -60px; left: var(--x); width: var(--s); height: calc(var(--s) * 1.25);
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  background: radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.95) 0 12%, rgba(255, 255, 255, 0) 30%),
+              radial-gradient(circle at 50% 62%, color-mix(in srgb, var(--f1) 22%, transparent), color-mix(in srgb, var(--f1) 8%, transparent) 70%);
+  box-shadow: inset 0 -3px 6px color-mix(in srgb, var(--f1) 28%, transparent), 0 6px 10px -6px rgba(27, 15, 51, 0.25);
+  opacity: 0; will-change: transform, opacity;
+}
+
+/* Handy: keine Weichzeichner über der 3D-Dose und dem Intro, stattdessen satte, halbtransparente Flächen */
+@media (max-width: 899px), (hover: none) {
+  .fk-nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255, 244, 230, 0.97); }
+  .fk-panel__card { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(27, 15, 51, 0.58); }
+  .fk-btn--ghost, .fk-hero__motion, .fk-flavors__cool { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .fk-btn--ghost { background: rgba(27, 15, 51, 0.28); }
+}
+
+/* Start-Knopf: ein Lichtschimmer läuft regelmäßig darüber (nur transform) */
+.fk-hero__actions .fk-btn--light { position: relative; overflow: hidden; isolation: isolate; }
+.fk-hero__actions .fk-btn--light::after {
+  content: ''; position: absolute; inset: -20% auto -20% -40%; width: 40%; z-index: -1;
+  background: linear-gradient(100deg, transparent, rgba(255, 220, 120, 0.55), transparent);
+  transform: translateX(-120%) skewX(-18deg); animation: fk-shine 3.6s ease-in-out 4s infinite;
+}
+@keyframes fk-shine { 0%, 62% { transform: translateX(-120%) skewX(-18deg); } 82%, 100% { transform: translateX(420%) skewX(-18deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fk-bubbles, .fk-drops { display: none; }
+  .fk-flavors__hint svg, .fk-hero__actions .fk-btn--light::after { animation: none; }
+  .fk-flavors__bgs i { transition: none; }
+}

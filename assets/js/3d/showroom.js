@@ -820,19 +820,26 @@ export async function createShowroom({
     }
   }
 
+  let reflTick = 0;
   function draw() {
     if (hold) return;
-    renderReflection();
+    // Handys: Spiegelbild im Boden nur jedes zweite Bild neu (halbiert dort die Zeichenarbeit, der Unterschied ist nicht zu sehen)
+    if (high || (reflTick++ & 1) === 0) renderReflection();
     if (composer) composer.render();
     else renderer.render(scene, camera);
   }
 
   function frame(now) {
+    // Während die Seite gescrollt wird (ohne den Showroom zu bedienen), nicht zeichnen: Die Grafikkarte gehört dem Scrollen.
+    if (pageScrolling && !drag && !touch) { running = false; return; }
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
     const idle = now - lastInteract > 4000;
-    if (auto && idle && !drag && !view.detail) spinT += dt * 0.14;
-    const k = reducedMotion ? 1 : 1 - Math.exp(-dt * 6);
+    if (auto && idle && !drag && !touch && !view.detail) spinT += dt * 0.14;
+    // Schwung nach dem Loslassen: dreht weiter und läuft sanft aus
+    if (!drag && Math.abs(velAz) > 0.005) { view.azT += velAz * dt; velAz *= Math.exp(-dt * 3.2); } else if (!drag) velAz = 0;
+    // beim Ziehen folgt die Kamera fast direkt dem Finger, sonst weich
+    const k = reducedMotion ? 1 : 1 - Math.exp(-dt * (drag || touch?.mode === 'pinch' ? 22 : 6));
     view.az = lerp(view.az, view.azT, k);
     view.el = lerp(view.el, view.elT, k);
     view.zoom = lerp(view.zoom, view.zoomT, reducedMotion ? 1 : 1 - Math.exp(-dt * 5));
@@ -847,14 +854,38 @@ export async function createShowroom({
 
     placeCamera();
     draw();
+    adapt(dt);
     if (pending.length) { const cbs = pending; pending = []; cbs.forEach((cb) => cb()); }
 
     const moving = Math.abs(view.azT - view.az) > 1e-4 || Math.abs(view.elT - view.el) > 1e-4 || Math.abs(view.zoomT - view.zoom) > 1e-4
       || view.target.distanceToSquared(view.targetT) > 1e-7 || Math.abs(spinT - spin) > 1e-4
-      || Math.abs(exposureT - exposure) > 1e-3 || Math.abs(stripT - stripLevel) > 1e-3;
-    if (visible && (moving || (auto && !view.detail) || drag)) raf = requestAnimationFrame(frame);
+      || Math.abs(exposureT - exposure) > 1e-3 || Math.abs(stripT - stripLevel) > 1e-3 || Math.abs(velAz) > 0.005;
+    if (visible && (moving || (auto && !view.detail) || drag || touch)) raf = requestAnimationFrame(frame);
     else running = false;
   }
+  // Seite scrollt: kurz nicht zeichnen (siehe frame), danach weiter
+  let pageScrolling = false, scrollRest = 0;
+  addEventListener('scroll', () => {
+    if (drag || touch) return;
+    pageScrolling = true;
+    clearTimeout(scrollRest);
+    scrollRest = setTimeout(() => { pageScrolling = false; kick(); }, 140);
+  }, { passive: true });
+
+  // Auflösung an das Gerät anpassen: läuft es nach dem Anlauf nicht flüssig (unter ~48 Bildern pro Sekunde),
+  // werden schrittweise weniger Pixel gezeichnet
+  const perf = { n: 0, sum: 0, dpr: renderer.getPixelRatio(), done: false };
+  function adapt(dt) {
+    if (perf.done || hold) return;
+    if (++perf.n <= 30) return;
+    perf.sum += dt;
+    if (perf.n < 120) return;
+    const avg = perf.sum / 90;
+    perf.n = 0; perf.sum = 0;
+    if (avg > 0.021 && perf.dpr > 1) { perf.dpr = Math.max(1, perf.dpr - 0.2); renderer.setPixelRatio(perf.dpr); resize(); }
+    else perf.done = true;
+  }
+
   function kick() {
     if (running || !visible) return;
     running = true;
@@ -887,64 +918,130 @@ export async function createShowroom({
   const onVis = () => { visible = document.visibilityState === 'visible'; if (visible) kick(); };
   document.addEventListener('visibilitychange', onVis);
 
-  /* ---------- Eingabe ---------- */
-  const pointers = new Map();
-  let drag = null, pinch = null;
+  /* ---------- Eingabe ----------
+     Maus: ziehen dreht und neigt. Finger: seitlich wischen dreht (mit Schwung), senkrecht scrollt die Seite;
+     zwei Finger zoomen (auseinander/zusammen) und neigen/drehen (gemeinsam schieben); doppelt tippen fährt heran.
+     Im Vollbild dreht und neigt ein Finger direkt. */
+  let drag = null, touch = null, velAz = 0, lastTap = 0, lastTapPos = { x: 0, y: 0 }, lastTouchAt = 0;
   let fullMode = false;
   const touchNote = () => { lastInteract = performance.now(); };
   const EL_MIN = -0.03, EL_MAX = 1.05;
+  const elMin = () => (view.detail ? -0.25 : EL_MIN);
+  const rotScale = () => 4.6 / Math.max(360, canvas.clientWidth);
 
+  function startDrag(x, y, tilt) {
+    velAz = 0;
+    drag = { x, y, az: view.azT, el: view.elT, lastX: x, lastT: performance.now(), v: 0, tilt };
+  }
+  function rotateTo(x, y) {
+    const s = rotScale();
+    view.azT = drag.az - (x - drag.x) * s;
+    if (drag.tilt) view.elT = clamp(drag.el + (y - drag.y) * s * 0.6, elMin(), EL_MAX);
+    const now = performance.now(), dts = Math.max(0.008, (now - drag.lastT) / 1000);
+    drag.v = drag.v * 0.55 + (-(x - drag.lastX) * s / dts) * 0.45; // geglättete Drehgeschwindigkeit
+    drag.lastX = x; drag.lastT = now;
+    touchNote(); kick();
+  }
+  function release() {
+    if (drag && performance.now() - drag.lastT < 90 && !reducedMotion) velAz = clamp(drag.v, -7, 7);
+    drag = null;
+    kick();
+  }
+
+  // Maus und Stift
   canvas.addEventListener('pointerdown', (e) => {
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (e.pointerType === 'touch') return; // Finger: eigene Steuerung unten
     touchNote();
-    if (pointers.size === 2) {
-      const [a, b] = [...pointers.values()];
-      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), z: view.zoomT };
-      drag = null;
-      return;
-    }
-    const immediate = e.pointerType === 'mouse' || fullMode;
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, az: view.azT, el: view.elT, mode: immediate ? 'rotate' : null };
-    if (drag.mode) { canvas.setPointerCapture(e.pointerId); canvas.style.cursor = 'grabbing'; }
+    startDrag(e.clientX, e.clientY, true);
+    drag.id = e.pointerId;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = 'grabbing';
     kick();
   });
-  canvas.addEventListener('pointermove', (e) => {
-    if (!pointers.has(e.pointerId)) return;
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pinch && pointers.size === 2) {
-      const [a, b] = [...pointers.values()];
-      const d = Math.hypot(a.x - b.x, a.y - b.y);
-      view.zoomT = clamp(pinch.z * (pinch.d / Math.max(d, 1)), ZMIN, ZMAX);
+  canvas.addEventListener('pointermove', (e) => { if (drag && drag.id === e.pointerId) rotateTo(e.clientX, e.clientY); });
+  const up = (e) => { if (drag && drag.id === e.pointerId) { release(); canvas.style.cursor = 'grab'; } };
+  canvas.addEventListener('pointerup', up);
+  canvas.addEventListener('pointercancel', up);
+
+  // Finger
+  const pt = (t) => ({ x: t.clientX, y: t.clientY });
+  function startPinch(e) {
+    const [p, q] = [pt(e.touches[0]), pt(e.touches[1])];
+    touch = { mode: 'pinch', d: Math.max(1, Math.hypot(p.x - q.x, p.y - q.y)), z: view.zoomT, mx: (p.x + q.x) / 2, my: (p.y + q.y) / 2, az: view.azT, el: view.elT };
+    drag = null; velAz = 0;
+  }
+  canvas.addEventListener('touchstart', (e) => {
+    touchNote();
+    lastTouchAt = performance.now();
+    if (e.touches.length >= 2) { startPinch(e); e.preventDefault(); kick(); return; }
+    const p = pt(e.touches[0]);
+    // doppelt tippen: heranfahren bzw. zurück
+    const now = performance.now();
+    if (now - lastTap < 320 && Math.hypot(p.x - lastTapPos.x, p.y - lastTapPos.y) < 36) {
+      lastTap = 0; touch = null; drag = null;
+      e.preventDefault();
+      focusAt(p.x, p.y);
+      return;
+    }
+    lastTap = now; lastTapPos = p;
+    touch = { mode: fullMode ? 'rotate' : null, sx: p.x, sy: p.y };
+    startDrag(p.x, p.y, fullMode);
+    if (fullMode) e.preventDefault();
+    kick();
+  }, { passive: false });
+  canvas.addEventListener('touchmove', (e) => {
+    if (!touch) return;
+    if (e.touches.length >= 2) {
+      if (touch.mode !== 'pinch') startPinch(e);
+      if (e.cancelable) e.preventDefault();
+      const [p, q] = [pt(e.touches[0]), pt(e.touches[1])];
+      const d = Math.hypot(p.x - q.x, p.y - q.y), s = rotScale();
+      view.zoomT = clamp(touch.z * (touch.d / Math.max(d, 1)), view.detail ? 0.1 : ZMIN, ZMAX);
+      view.azT = touch.az - ((p.x + q.x) / 2 - touch.mx) * s;
+      view.elT = clamp(touch.el + ((p.y + q.y) / 2 - touch.my) * s * 0.6, elMin(), EL_MAX);
       touchNote(); kick(); emit();
       return;
     }
-    if (!drag || drag.id !== e.pointerId) return;
-    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!drag.mode && Math.hypot(dx, dy) > 6) {
-      drag.mode = Math.abs(dx) > Math.abs(dy) ? 'rotate' : 'scroll';
-      if (drag.mode === 'rotate') canvas.setPointerCapture(e.pointerId);
+    if (!drag) return;
+    const p = pt(e.touches[0]);
+    if (!touch.mode) {
+      const dx = p.x - touch.sx, dy = p.y - touch.sy;
+      if (Math.hypot(dx, dy) < 8) return;
+      touch.mode = Math.abs(dx) > Math.abs(dy) * 0.85 ? 'rotate' : 'scroll';
+      if (touch.mode === 'scroll') { drag = null; return; } // die Seite scrollt
+      startDrag(p.x, p.y, false); // ohne Sprung ab hier drehen
     }
-    if (drag.mode !== 'rotate') return;
-    const s = 4.6 / Math.max(360, canvas.clientWidth);
-    view.azT = drag.az - dx * s;
-    const elMin = view.detail ? -0.25 : EL_MIN;
-    view.elT = clamp(drag.el + dy * s * 0.6, elMin, EL_MAX);
-    touchNote(); kick();
-  });
-  const up = (e) => {
-    pointers.delete(e.pointerId);
-    if (pointers.size < 2) pinch = null;
-    if (drag && drag.id === e.pointerId) { drag = null; canvas.style.cursor = 'grab'; }
+    if (touch.mode !== 'rotate') return;
+    if (e.cancelable) e.preventDefault();
+    rotateTo(p.x, p.y);
+  }, { passive: false });
+  const touchEnd = (e) => {
+    lastTouchAt = performance.now();
+    if (!touch) return;
+    if (touch.mode === 'pinch' && e.touches.length === 1) {
+      // ein Finger bleibt liegen: nahtlos weiterdrehen
+      const p = pt(e.touches[0]);
+      touch = { mode: 'rotate', sx: p.x, sy: p.y };
+      startDrag(p.x, p.y, fullMode);
+      return;
+    }
+    if (e.touches.length === 0) {
+      if (touch.mode === 'rotate' && drag) release(); else drag = null;
+      touch = null;
+      kick();
+    }
   };
-  canvas.addEventListener('pointerup', up);
-  canvas.addEventListener('pointercancel', up);
+  canvas.addEventListener('touchend', touchEnd);
+  canvas.addEventListener('touchcancel', touchEnd);
+  // iPhone: eigene Zwei-Finger-Geste von Safari (Seite zoomen) auf der 3D-Fläche abschalten
+  canvas.addEventListener('gesturestart', (e) => e.preventDefault());
   canvas.addEventListener('wheel', (e) => {
     if (!fullMode && !e.ctrlKey && !e.metaKey) return; // in der Seite scrollt das Mausrad die Seite
     e.preventDefault();
     view.zoomT = clamp(view.zoomT * Math.exp(e.deltaY * (e.ctrlKey ? 0.01 : 0.0015)), ZMIN, ZMAX);
     touchNote(); kick(); emit();
   }, { passive: false });
-  canvas.addEventListener('dblclick', (e) => focusAt(e.clientX, e.clientY));
+  canvas.addEventListener('dblclick', (e) => { if (performance.now() - lastTouchAt > 800) focusAt(e.clientX, e.clientY); });
   canvas.addEventListener('keydown', (e) => {
     const step = { ArrowLeft: [0.25, 0], ArrowRight: [-0.25, 0], ArrowUp: [0, 0.08], ArrowDown: [0, -0.08] }[e.key];
     if (step) { view.azT += step[0]; view.elT = clamp(view.elT + step[1], EL_MIN, EL_MAX); e.preventDefault(); }
@@ -1051,7 +1148,7 @@ export async function createShowroom({
     setView, reset, zoomBy, lightsOn,
     setAutoRotate: (on) => { auto = on && !reducedMotion; touchNote(); kick(); emit(); },
     get autoRotate() { return auto; },
-    setFullMode: (on) => { fullMode = on; canvas.style.touchAction = on ? 'none' : 'pan-y'; resize(); },
+    setFullMode: (on) => { fullMode = on; canvas.style.touchAction = on ? 'none' : 'pan-y'; drag = null; touch = null; resize(); },
     onChange: (fn) => { listeners.add(fn); return () => listeners.delete(fn); },
     whenRendered: () => new Promise((r) => { pending.push(r); kick(); }),
     kick,

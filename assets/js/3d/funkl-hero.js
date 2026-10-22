@@ -12,13 +12,14 @@ const TAU = Math.PI * 2;
 const { lerp, clamp } = THREE.MathUtils;
 
 /* ---------- Hintergrund: fließender Farbverlauf mit Sonnenstrahlen ---------- */
-function backdrop() {
+function backdrop(octaves = 4) {
   const mat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 }, uAspect: { value: 1 },
       uC1: { value: new THREE.Color() }, uC2: { value: new THREE.Color() }, uC3: { value: new THREE.Color() },
       uReveal: { value: 0 }, uRays: { value: 0 }, uFlash: { value: 0 },
     },
+    defines: { OCT: octaves }, // Handys: 3 statt 4 Rauschebenen, kaum sichtbar, spürbar schneller
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.9999, 1.0); }',
     fragmentShader: /* glsl */`
       uniform float uTime, uAspect, uReveal, uRays, uFlash;
@@ -27,7 +28,7 @@ function backdrop() {
       float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
       float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
         return mix(mix(hash(i), hash(i+vec2(1,0)), u.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), u.x), u.y); }
-      float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }
+      float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < OCT; i++) { v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }
       void main(){
         vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0);
         float t = uTime * 0.12;
@@ -85,7 +86,7 @@ function shapeKinds() {
 }
 
 /* ---------- Szene ---------- */
-export async function createHero({ container, reducedMotion = false, quality, gsap, onFlavor }) {
+export async function createHero({ container, reducedMotion = false, quality, gsap, onFlavor, onLost }) {
   const low = quality === 'low' || window.innerWidth < 768;
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, low ? 1.5 : 1.5));
@@ -95,6 +96,8 @@ export async function createHero({ container, reducedMotion = false, quality, gs
   const canvas = renderer.domElement;
   canvas.style.cssText = 'display:block;width:100%;height:100%;';
   container.appendChild(canvas);
+  // iOS gibt bei Speichermangel den 3D-Kontext frei: dann das Standbild zeigen statt einer leeren Fläche
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); visible = false; onLost?.(); });
 
   const scene = new THREE.Scene();
   scene.environment = await studioHDR(renderer);
@@ -102,7 +105,7 @@ export async function createHero({ container, reducedMotion = false, quality, gs
   scene.environmentIntensity = 1.05;
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
 
-  const bg = backdrop();
+  const bg = backdrop(low ? 3 : 4);
   scene.add(bg);
 
   // Licht für Farbe auf den Formen (Umgebung macht die Spiegelungen)
@@ -318,8 +321,7 @@ export async function createHero({ container, reducedMotion = false, quality, gs
     canPivot.scale.setScalar(S.canScale);
 
     // Kondenswasser
-    cond.step(dt);
-    cond.render(dt);
+    cond.tick(dt);
 
     // Bänder
     ribbons.forEach((rb, k) => {
@@ -375,9 +377,26 @@ export async function createHero({ container, reducedMotion = false, quality, gs
     camera.position.set(pointer.x * 0.15, 0.1 - pointer.y * 0.1, camera.position.z);
     camera.lookAt(0, lookY, 0); // Platz für Logo oben und Text unten
     renderer.render(scene, camera);
+    adapt(dt);
     if (visible) raf = requestAnimationFrame(frame); else running = false;
   }
   function kick() { if (running || !visible) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
+  const onDpr = (d) => { fizzMat.uniforms.uPx.value = d; };
+
+  // Auflösung an das Gerät anpassen: Läuft es nach dem Anlauf nicht flüssig (unter ~48 Bildern pro Sekunde),
+  // werden schrittweise weniger Pixel gezeichnet. So bleibt es auch auf älteren Handys flüssig.
+  const perf = { n: 0, sum: 0, dpr: renderer.getPixelRatio(), done: false };
+  function adapt(dt) {
+    if (perf.done) return;
+    if (++perf.n <= 30) return; // Anlauf (Shader, Texturen) nicht mitzählen
+    perf.sum += dt;
+    if (perf.n < 120) return;
+    const avg = perf.sum / 90;
+    perf.n = 0; perf.sum = 0;
+    if (avg > 0.021 && perf.dpr > 1) { perf.dpr = Math.max(1, perf.dpr - 0.25); renderer.setPixelRatio(perf.dpr); onDpr?.(perf.dpr); resize(); }
+    else perf.done = true;
+  }
+
 
   function resize(w = container.clientWidth, h = container.clientHeight) {
     if (!w || !h) return;
@@ -412,6 +431,15 @@ export async function createHero({ container, reducedMotion = false, quality, gs
   let paused = false;
   return {
     play() { play(); kick(); },
+    /** Antippen: Spritzer, Lichtblitz und ein kleiner Hüpfer der Dose */
+    poke() {
+      if (!gsap || reducedMotion) return;
+      burstSplash();
+      gsap.fromTo(bg.material.uniforms.uFlash, { value: 0 }, { value: 0.45, duration: 0.14, yoyo: true, repeat: 1, ease: 'power1.out' });
+      gsap.fromTo(S, { canScale: 1 }, { canScale: 1.1, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out' });
+      gsap.fromTo(S, { canSpinT: S.canSpinT % TAU }, { canSpinT: (S.canSpinT % TAU) + TAU, duration: 0.9, ease: 'expo.out' });
+      kick();
+    },
     pause() { paused = true; master?.pause(); visible = false; },
     resume() { paused = false; master?.resume(); visible = true; kick(); },
     canvas, renderer, scene, camera, state: S,

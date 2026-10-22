@@ -202,3 +202,38 @@
 
 /* ---------- Bewegung ---------- */
 .js-motion .fz [data-hero]:not(.fz-hero__media) { opacity: 0; } /* Hauptbild bleibt sichtbar (LCP) */
+
+/* ---------- Hintergrundfilm im Startbereich (22.10.2026) ---------- */
+.film { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.film__poster img, .film__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film__clip { opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.film__clip.is-on { opacity: 1; }
+.film__pause {
+  position: absolute; right: var(--gutter); bottom: clamp(18px, 3vh, 28px); z-index: 3;
+  width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center;
+  background: rgba(246, 242, 234, 0.82); color: var(--r-ink);
+}
+.film__pause[hidden] { display: none; }
+.film__pause svg { width: 18px; height: 18px; grid-area: 1 / 1; }
+.film__pause .i-play, .film__pause[aria-pressed='true'] .i-pause { display: none; }
+.film__pause[aria-pressed='true'] .i-play { display: block; }
+@media (prefers-reduced-motion: reduce) { .film__clip { transition: none; } }
+
+/* Restaurant: Film über die ganze Breite, heller Schleier für den Text (Seite bleibt hell) */
+.fz-hero--film {
+  position: relative; isolation: isolate; overflow: hidden; max-width: none; margin: 0;
+  display: flex; align-items: center;
+  min-height: calc(100svh - var(--nav-h));
+  padding: clamp(40px, 7vw, 96px) max(var(--gutter), calc((100vw - 1320px) / 2)) clamp(64px, 9vw, 120px);
+}
+.fz-hero--film::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(246, 242, 234, 0.94) 0%, rgba(246, 242, 234, 0.82) 34%, rgba(246, 242, 234, 0.25) 62%, rgba(246, 242, 234, 0) 78%);
+}
+.fz-hero--film .fz-hero__text { max-width: 38rem; }
+@media (max-width: 899px) {
+  .fz-hero--film { align-items: flex-end; padding-top: 48svh; }
+  .fz-hero--film::after { background: linear-gradient(180deg, rgba(246, 242, 234, 0) 22%, rgba(246, 242, 234, 0.86) 48%, rgba(246, 242, 234, 0.97) 64%); }
+  .fz-hero--film .film__clip, .fz-hero--film .film__poster img { object-position: 50% 30%; }
+  .fz-hero--film .film__pause { top: 16px; bottom: auto; }
+}

@@ -316,3 +316,9 @@ html.is-locked { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .hut-stage__poster, .hut-stage__canvas { transition: none; }
 }
+
+/* Hinweis „Betrachte mich von allen Seiten“: dezent, das Pfeil-Symbol wiegt sich sanft hin und her */
+.hut-stage__hint { font-family: var(--j-serif, inherit); font-style: italic; font-size: 13px; letter-spacing: 0.01em; background: rgba(253, 252, 250, 0.78); }
+.hut-stage__hint svg { animation: hut-sway 2.4s ease-in-out infinite; }
+@keyframes hut-sway { 0%, 100% { transform: translateX(0) rotate(0); } 30% { transform: translateX(-3px) rotate(-8deg); } 70% { transform: translateX(3px) rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .hut-stage__hint svg { animation: none; } }

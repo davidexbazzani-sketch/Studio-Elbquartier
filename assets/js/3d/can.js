@@ -491,6 +491,18 @@ export class Condensation {
     this.drops = D.filter((_, i) => !dead[i]).concat(add);
   }
 
+  /** Physik und Karten im festen 30-Hz-Takt: Tropfen sind langsam, so halbiert sich die Rechenzeit auf Handys. */
+  tick(dt) {
+    this.tickAcc = (this.tickAcc || 0) + dt;
+    if (this.tickAcc < 1 / 30) return false;
+    const d = Math.min(this.tickAcc, 0.1);
+    this.tickAcc = 0;
+    this.step(d);
+    this.fadeDt = (this.fadeDt || 0) + d;
+    this.compose();
+    return true;
+  }
+
   /** Karten neu zeichnen (gedrosselt auf ~30 Hz). */
   render(dt = 1 / 60) {
     this.acc += dt;

@@ -176,6 +176,8 @@ Die Filme der sechs Bar-Drinks stammen ebenfalls von Pexels (gleiche Lizenz, am 
 
 Die Standbilder in `assets/img/bar/drinks/` sind Einzelbilder aus diesen Filmen.
 
+Hintergrundfilme im Startbereich von Restaurant und Bar (22.10.2026): `assets/video/restaurant/film-1..2-{l,p}.mp4` (Gastraum mit Elbblick und Containerschiff, angerichtete Scholle) und `assets/video/bar/film-1..2-{l,p}.mp4` (Drink über Eiswürfel, flambierte Orangenzeste), jeweils mit Standbild `film-N-{l,p}.webp`. KI-generiert mit Higgsfield (Startbilder GPT Image 2.5, Bewegung Kling 3.0 pro, 5 s, ohne Ton), auf 60 Bilder/s interpoliert mit ffmpeg. Nutzungsrechte laut Higgsfield-Bedingungen (Plan Plus, kommerziell erlaubt). Keine echten Personen (nur Hände), Läden oder Marken. Gekennzeichnet in `lizenzen.html`. Kosten und Prompts: `Kunden/Studio Elbquartier/Higgsfield.md`.
+
 Der Intro-Film des Autohauses stammt ebenfalls von Pexels (gleiche Lizenz, am 14. Oktober 2026 heruntergeladen und geprüft): eine nächtliche Fahrt durch einen Tunnel, ohne erkennbare Fahrzeuge, Marken oder Personen. Auf 10 Sekunden gekürzt und in Schwarz-Weiß umgewandelt (`tools/video/cut.swift --mono`).
 
 | Datei | Motiv | Filmer/in | Quelle |

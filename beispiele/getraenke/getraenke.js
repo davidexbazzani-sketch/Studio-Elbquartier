@@ -201,7 +201,10 @@ async function startHero() {
     const { createHero } = await import('../../assets/js/3d/funkl-hero.js');
     const { loadFonts } = await import('../../assets/js/3d/can.js');
     await loadFonts('../../assets/fonts/');
-    hero = await createHero({ container: $('#hero-canvas'), reducedMotion: !motion, gsap: motion ? gsap : null, onFlavor: onHeroFlavor });
+    hero = await createHero({ container: $('#hero-canvas'), reducedMotion: !motion, gsap: motion ? gsap : null, onFlavor: onHeroFlavor,
+      onLost: () => heroEl.classList.remove('is-live') });
+    // Antippen oder Klicken ins Intro: Spritzer und ein Hüpfer der Dose (nicht auf Knöpfen)
+    heroEl.addEventListener('click', (e) => { if (!e.target.closest('a, button')) hero.poke?.(); });
     heroEl.classList.add('is-live');
     hero.play();
     if (motion) logoTimeline();
@@ -226,7 +229,7 @@ async function startShowcase() {
     const { createShowcase } = await import('../../assets/js/3d/funkl-showcase.js');
     const { loadFonts } = await import('../../assets/js/3d/can.js');
     await loadFonts('../../assets/fonts/');
-    showcase = await createShowcase({ container: $('#stage-canvas'), reducedMotion: !motion });
+    showcase = await createShowcase({ container: $('#stage-canvas'), reducedMotion: !motion, onLost: () => $('#sorten').classList.remove('is-live') });
     $('#sorten').classList.add('is-live');
     showcase.setFlavor(currentPanel);
     showcase.onInteract(() => $('#wipe-hint').classList.add('is-done'));
@@ -235,10 +238,58 @@ async function startShowcase() {
   }
 }
 
+/* ---------- Kohlensäure-Perlen und Kondenstropfen ----------
+   Web Animations mit festen Zahlen: Das rechnet die Grafikkarte allein, der Hauptfaden bleibt frei. */
+const rnd = (a, b) => a + Math.random() * (b - a);
+const fx = { sorten: [], cold: [] };
+if (!reducedMotion && Element.prototype.animate) {
+  const stageBox = $('#stage-bubbles');
+  stageBox.innerHTML = '<span></span>'.repeat(14);
+  const rise = () => stageBox.clientHeight + 60;
+  $$('span', stageBox).forEach((el) => {
+    const s = rnd(6, 22), w = rnd(-26, 26), h = rise();
+    Object.assign(el.style, { left: `${rnd(4, 92).toFixed(1)}%`, width: `${s}px`, height: `${s}px` });
+    const a = el.animate([
+      { transform: 'translate3d(0,0,0) scale(0.6)', opacity: 0 },
+      { transform: `translate3d(${w * 0.4}px,${-h * 0.12}px,0) scale(0.7)`, opacity: 0.9, offset: 0.12 },
+      { transform: `translate3d(${w}px,${-h * 0.5}px,0) scale(0.85)`, opacity: 0.85, offset: 0.5 },
+      { transform: `translate3d(${-w * 0.3}px,${-h * 0.88}px,0) scale(0.95)`, opacity: 0.8, offset: 0.88 },
+      { transform: `translate3d(0,${-h}px,0) scale(1)`, opacity: 0 },
+    ], { duration: rnd(5000, 10000), iterations: Infinity, easing: 'linear', delay: -rnd(0, 10000) });
+    a.pause();
+    fx.sorten.push(a);
+  });
+  const coldBox = $('#cold-drops');
+  coldBox.innerHTML = '<span></span>'.repeat(8);
+  $$('span', coldBox).forEach((el, i) => {
+    const s = rnd(12, 28), h = rnd(220, 480);
+    Object.assign(el.style, { left: `${(i < 4 ? rnd(2, 20) : rnd(80, 96)).toFixed(1)}%`, width: `${s}px`, height: `${s * 1.25}px` });
+    // läuft stockend: hängen, rutschen, hängen, rutschen
+    const a = el.animate([
+      { transform: 'translate3d(0,0,0) scale(0.7)', opacity: 0 },
+      { transform: 'translate3d(0,40px,0) scale(1)', opacity: 1, offset: 0.08 },
+      { transform: 'translate3d(0,40px,0) scale(1)', opacity: 1, offset: 0.3, easing: 'cubic-bezier(0.5,0,0.6,1)' },
+      { transform: `translate3d(2px,${h * 0.45}px,0) scale(1,1.08)`, opacity: 1, offset: 0.48 },
+      { transform: `translate3d(2px,${h * 0.45}px,0) scale(1,1)`, opacity: 1, offset: 0.64, easing: 'cubic-bezier(0.5,0,0.6,1)' },
+      { transform: `translate3d(-1px,${h}px,0) scale(1,1.12)`, opacity: 1, offset: 0.92 },
+      { transform: `translate3d(-1px,${h * 1.1}px,0) scale(1,1)`, opacity: 0 },
+    ], { duration: rnd(7000, 13000), iterations: Infinity, delay: -rnd(0, 12000) });
+    a.pause();
+    fx.cold.push(a);
+  });
+  // nur laufen, wenn der Abschnitt in der Nähe ist
+  const nearIO = new IntersectionObserver((list) => list.forEach((e) => {
+    fx[e.target.id === 'sorten' ? 'sorten' : 'cold'].forEach((a) => (e.isIntersecting ? a.play() : a.pause()));
+  }), { rootMargin: '100px 0px' });
+  ['#sorten', '.fk-cold'].forEach((s) => nearIO.observe($(s)));
+}
+
+const bgs = $$('.fk-flavors__bgs i');
 let currentPanel = 0;
 function choosePanel(i) {
   currentPanel = i;
   setPageFlavor(i);
+  bgs.forEach((b, k) => b.classList.toggle('is-on', k === i));
   showcase?.setFlavor(i);
   $('#stage-poster').src = `${IMG}dose-${FLAVORS[i].id}.webp`;
 }
@@ -253,7 +304,15 @@ if (cap.ok) {
   // 3D-Dose erst nach dem Seitenaufbau starten: Das Dosenfoto ist sofort da, die Seite sofort bedienbar
   const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
   if (document.readyState === 'complete') idle(startHero); else addEventListener('load', () => idle(startHero), { once: true });
-  const near = new IntersectionObserver(([e]) => { if (!e.isIntersecting) return; near.disconnect(); startShowcase(); }, { rootMargin: '100% 0px' });
+  // Aufbau der Dose (Früchte laden, Shader) kostet einen Moment: erst starten, wenn das Scrollen kurz ruht, sonst hakt das Wischen
+  const whenScrollRests = (fn, ms = 220) => {
+    let t = 0;
+    const done = () => { removeEventListener('scroll', on); fn(); };
+    const on = () => { clearTimeout(t); t = setTimeout(done, ms); };
+    addEventListener('scroll', on, { passive: true });
+    on();
+  };
+  const near = new IntersectionObserver(([e]) => { if (!e.isIntersecting) return; near.disconnect(); whenScrollRests(startShowcase); }, { rootMargin: '100% 0px' });
   afterInteraction(() => near.observe($('#sorten')), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] }); // erst beim Scrollen
 } else {
   $('#wipe-hint').hidden = true;
@@ -277,14 +336,66 @@ if (motion && ScrollTrigger) {
       scrollTrigger: { trigger: h, start: 'top 85%' },
     });
   });
-  // Produkte ploppen auf
-  ScrollTrigger.batch('.fk-product', {
-    start: 'top 90%', once: true,
-    onEnter: (els) => gsap.from(els, { y: 80, rotation: () => (Math.random() - 0.5) * 8, opacity: 0, duration: 0.9, ease: 'back.out(1.6)', stagger: 0.08 }),
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  const euroText = (n) => n.toFixed(2).replace('.', ',') + ' €';
+
+  // Sorten-Karten: rollen von unten herein, Etikett schnappt ein, Preis zählt hoch, Knopf ploppt
+  $$('.fk-panel').forEach((panel) => {
+    const card = $('.fk-panel__card', panel);
+    const price = $('.fk-panel__price', panel);
+    const priceNode = price.firstChild; // „2,49 €“ vor dem <small>
+    const tl = gsap.timeline({ scrollTrigger: { trigger: panel, start: 'top 75%', once: true } });
+    tl.from(card, { y: 90, rotation: -3, scale: 0.94, opacity: 0, duration: 0.95, ease: 'back.out(1.3)', clearProps: 'transform,opacity' })
+      .from($('.fk-panel__tag', panel), { scale: 0, rotation: -24, duration: 0.6, ease: 'back.out(3)', clearProps: 'transform' }, 0.35)
+      .from($$('.fk-chips li', panel), { y: 14, opacity: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }, 0.45)
+      .from($('[data-add]', panel), { scale: 0.6, opacity: 0, duration: 0.7, ease: 'elastic.out(1.1, 0.5)', clearProps: 'transform,opacity' }, 0.55);
+    if (priceNode?.nodeType === 3) {
+      const o = { v: 0 };
+      tl.to(o, { v: 2.49, duration: 0.8, ease: 'power2.out', onUpdate: () => { priceNode.textContent = euroText(o.v); } }, 0.4);
+    }
   });
-  gsap.from('.fk-cold > *', { y: 40, opacity: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '.fk-cold', start: 'top 80%' } });
-  // Laufband kippt beim Scrollen leicht
-  gsap.to('.fk-ticker', { rotation: 1.4, ease: 'none', scrollTrigger: { trigger: '.fk-ticker', start: 'top bottom', end: 'bottom top', scrub: true } });
+
+  // Angeber-Band: Wörter fallen einzeln herein
+  const cold = $('#cold-title');
+  // Wörter einzeln; der farbige Teil (em mit Verlauf) bleibt ein Stück, sonst bricht der Farbverlauf
+  cold.innerHTML = cold.innerHTML.replace(/^([^<]*)/, (m) => m.trim().split(' ').map((w) => `<span class="w">${w}</span>`).join(' ') + ' ')
+    .replace(/<em>[\s\S]*?<\/em>/, (m) => `<span class="w">${m}</span>`);
+  $$('.w', cold).forEach((w) => { w.style.display = 'inline-block'; });
+  gsap.timeline({ scrollTrigger: { trigger: '.fk-cold', start: 'top 78%', once: true } })
+    .from('.fk-cold .fk-eyebrow', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' })
+    .from($$('.w', cold), { yPercent: 120, rotation: () => rnd(-14, 14), opacity: 0, duration: 0.8, stagger: 0.07, ease: 'back.out(1.8)' }, 0.1)
+    .from('.fk-cold .fk-lead', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' }, 0.45);
+
+  // Shop: Karten klappen nach vorn, Dosen ploppen hinein, Abzeichen schwingen ein
+  ScrollTrigger.batch('.fk-product', {
+    start: 'top 92%', once: true,
+    onEnter: (els) => els.forEach((el, k) => {
+      const imgs = $$('.fk-product__media img', el);
+      gsap.timeline({ delay: k * 0.1 })
+        .from(el, { y: 70, rotationX: -22, transformPerspective: 900, transformOrigin: '50% 100%', opacity: 0, duration: 0.9, ease: 'power3.out', clearProps: 'transform,opacity' })
+        .from(imgs, { y: 50, scale: 0.55, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'back.out(2.2)', clearProps: 'transform,opacity' }, 0.15)
+        .from($('.fk-product__badge', el), { scale: 0, rotation: -60, duration: 0.6, ease: 'back.out(3)', clearProps: 'transform' }, 0.45);
+    }),
+  });
+
+  // Nährwerte: Zeilen gleiten herein, Zahlen zählen hoch
+  const rows = $$('.fk-table tr');
+  gsap.timeline({ scrollTrigger: { trigger: '.fk-table', start: 'top 82%', once: true } })
+    .from(rows, { x: -24, opacity: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out', clearProps: 'all' });
+  rows.forEach((tr, k) => {
+    const td = $('td', tr);
+    const txt = td.textContent;
+    const m = txt.match(/^(\d+(?:,\d+)?)/);
+    if (!m || m[1] === '0') return;
+    const target = parseFloat(m[1].replace(',', '.')), dec = (m[1].split(',')[1] || '').length;
+    const rest = txt.slice(m[1].length), o = { v: 0 };
+    gsap.to(o, { v: target, duration: 1.1, delay: 0.1 + k * 0.06, ease: 'power2.out',
+      scrollTrigger: { trigger: '.fk-table', start: 'top 82%', once: true },
+      onUpdate: () => { td.textContent = o.v.toFixed(dec).replace('.', ',') + rest; } });
+  });
+
+  // Laufband kippt beim Scrollen leicht (nur mit Maus: auf Handys hinken an den Scrollweg gekoppelte Bewegungen hinterher)
+  if (!touch) gsap.to('.fk-ticker', { rotation: 1.4, ease: 'none', scrollTrigger: { trigger: '.fk-ticker', start: 'top bottom', end: 'bottom top', scrub: true } });
 } else {
   $$('[data-intro], .fk-hero__flavor').forEach((el) => { el.style.opacity = 1; });
 }

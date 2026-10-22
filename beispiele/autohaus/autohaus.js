@@ -129,8 +129,8 @@ function setFull(on) {
   document.documentElement.classList.toggle('is-locked', on);
   showroom?.setFullMode(on);
   $('#hint span').textContent = on
-    ? 'Ziehen zum Umrunden · Mausrad oder zwei Finger zum Zoomen'
-    : (matchMedia('(pointer: fine)').matches ? 'Ziehen zum Umrunden · Doppelklick fährt heran' : 'Seitlich wischen zum Umrunden · zwei Finger zum Zoomen');
+    ? (matchMedia('(pointer: fine)').matches ? 'Ziehen zum Umrunden · Mausrad zum Zoomen' : 'Mit einem Finger drehen und neigen · zwei Finger zoomen')
+    : (matchMedia('(pointer: fine)').matches ? 'Ziehen zum Umrunden · Doppelklick fährt heran' : 'Seitlich wischen zum Drehen · zwei Finger zoomen · doppelt tippen fährt heran');
 }
 addEventListener('keydown', (e) => { if (e.key === 'Escape' && stage.classList.contains('is-full')) setFull(false); });
 
@@ -154,9 +154,12 @@ async function start3D() {
       showroom.lightsOn();
     }, { threshold: 0.35 });
     io.observe(stage);
-    // die anderen Fahrzeuge im Hintergrund vorladen
-    const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 2500));
-    idle(() => ORDER.filter((id) => id !== carId).reduce((p, id) => p.then(() => showroom.preload(id)), Promise.resolve()));
+    // die anderen Fahrzeuge im Hintergrund vorladen – nur am Computer: Auf Handys blockierte das Entpacken der Modelle
+    // die Seite für 1–2 Sekunden, oft genau beim Drehen. Dort lädt jedes Auto erst bei Auswahl (mit Ladebalken).
+    if (matchMedia('(pointer: fine)').matches) {
+      const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 2500));
+      idle(() => ORDER.filter((id) => id !== carId).reduce((p, id) => p.then(() => showroom.preload(id)), Promise.resolve()));
+    }
   } catch (err) {
     console.warn('3D konnte nicht geladen werden:', err);
     $('#load3d-why').textContent = 'Auf diesem Gerät nicht verfügbar.';

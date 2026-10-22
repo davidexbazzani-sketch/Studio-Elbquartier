@@ -190,8 +190,10 @@ export async function createViewer({
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
     const idle = now - lastInteract > 3500;
-    if (auto && idle && !drag) view.yawT += dt * 0.32;
-    const k = reducedMotion ? 1 : 1 - Math.exp(-dt * 7);
+    if (auto && idle && !drag && !touch) view.yawT += dt * 0.32;
+    // Schwung nach dem Loslassen
+    if (!drag && Math.abs(velYaw) > 0.005) { view.yawT += velYaw * dt; velYaw *= Math.exp(-dt * 3); } else if (!drag) velYaw = 0;
+    const k = reducedMotion ? 1 : 1 - Math.exp(-dt * (drag || touch?.mode === 'pinch' ? 22 : 7));
     view.yaw += (view.yawT - view.yaw) * k;
     view.pitch += (view.pitchT - view.pitch) * k;
     view.zoom += (view.zoomT - view.zoom) * (reducedMotion ? 1 : 1 - Math.exp(-dt * 6));
@@ -201,8 +203,8 @@ export async function createViewer({
     if (firstFrame.length) { const cbs = firstFrame; firstFrame = []; cbs.forEach((cb) => cb()); }
 
     const moving = Math.abs(view.yawT - view.yaw) > 1e-4 || Math.abs(view.pitchT - view.pitch) > 1e-4
-      || Math.abs(view.zoomT - view.zoom) > 1e-4;
-    if (visible && container && (moving || (auto && !reducedMotion) || drag)) raf = requestAnimationFrame(frame);
+      || Math.abs(view.zoomT - view.zoom) > 1e-4 || Math.abs(velYaw) > 0.005;
+    if (visible && container && (moving || (auto && !reducedMotion) || drag || touch)) raf = requestAnimationFrame(frame);
     else running = false;
   }
   function kick() {
@@ -245,55 +247,115 @@ export async function createViewer({
   }
 
   // ---------- Eingabe ----------
-  const pointers = new Map();
-  let drag = null;
-  let pinch = null;
+  // Maus: ziehen dreht und kippt. Finger: seitlich wischen dreht (und kippt, mit Schwung), senkrecht scrollt die Seite;
+  // zwei Finger zoomen; doppelt tippen zeigt den Stein. Im Vollbild (Dialog) dreht ein Finger sofort in alle Richtungen.
+  let drag = null, touch = null, velYaw = 0, lastTap = 0, lastTapPos = { x: 0, y: 0 }, lastTouchAt = 0;
   const touchNote = () => { lastInteract = performance.now(); };
+  const rotScale = () => 5.2 / Math.max(320, canvas.clientWidth);
 
+  function startDrag(x, y) {
+    velYaw = 0;
+    drag = { x, y, yaw: view.yawT, pitch: view.pitchT, lastX: x, lastT: performance.now(), v: 0 };
+  }
+  function rotateTo(x, y) {
+    const sc = rotScale();
+    view.yawT = drag.yaw + (x - drag.x) * sc;
+    view.pitchT = clamp(drag.pitch + (y - drag.y) * sc * 0.7, -0.2, 1.15);
+    const now = performance.now(), dts = Math.max(0.008, (now - drag.lastT) / 1000);
+    drag.v = drag.v * 0.55 + ((x - drag.lastX) * sc / dts) * 0.45;
+    drag.lastX = x; drag.lastT = now;
+    touchNote(); kick();
+  }
+  function release() {
+    if (drag && performance.now() - drag.lastT < 90 && !reducedMotion) velYaw = clamp(drag.v, -8, 8);
+    drag = null;
+    kick();
+  }
+
+  // Maus und Stift
   canvas.addEventListener('pointerdown', (e) => {
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (e.pointerType === 'touch') return;
     touchNote();
-    if (pointers.size === 2) {
-      const [a, b] = [...pointers.values()];
-      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), z: view.zoomT };
-      drag = null;
-      return;
-    }
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, yaw: view.yawT, pitch: view.pitchT, mode: e.pointerType === 'mouse' ? 'rotate' : null };
-    if (drag.mode) { canvas.setPointerCapture(e.pointerId); canvas.style.cursor = 'grabbing'; }
+    startDrag(e.clientX, e.clientY);
+    drag.id = e.pointerId;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = 'grabbing';
     kick();
   });
-  canvas.addEventListener('pointermove', (e) => {
-    if (!pointers.has(e.pointerId)) return;
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pinch && pointers.size === 2) {
-      const [a, b] = [...pointers.values()];
-      const d = Math.hypot(a.x - b.x, a.y - b.y);
-      view.zoomT = clamp(pinch.z * (pinch.d / Math.max(d, 1)), ZMIN, ZMAX);
-      touchNote(); kick();
-      return;
-    }
-    if (!drag || drag.id !== e.pointerId) return;
-    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!drag.mode && Math.hypot(dx, dy) > 6) {
-      // Touch: waagerecht = drehen, senkrecht = Seite scrollen
-      drag.mode = Math.abs(dx) > Math.abs(dy) ? 'rotate' : 'scroll';
-      if (drag.mode === 'rotate') canvas.setPointerCapture(e.pointerId);
-    }
-    if (drag.mode === 'rotate') {
-      const s = 5.2 / Math.max(320, canvas.clientWidth);
-      view.yawT = drag.yaw + dx * s;
-      view.pitchT = clamp(drag.pitch + dy * s * 0.7, -0.2, 1.15);
-      touchNote(); kick();
-    }
-  });
-  const up = (e) => {
-    pointers.delete(e.pointerId);
-    if (pointers.size < 2) pinch = null;
-    if (drag && drag.id === e.pointerId) { drag = null; canvas.style.cursor = 'grab'; }
-  };
+  canvas.addEventListener('pointermove', (e) => { if (drag && drag.id === e.pointerId) rotateTo(e.clientX, e.clientY); });
+  const up = (e) => { if (drag && drag.id === e.pointerId) { release(); canvas.style.cursor = 'grab'; } };
   canvas.addEventListener('pointerup', up);
   canvas.addEventListener('pointercancel', up);
+
+  // Finger
+  const pt = (t) => ({ x: t.clientX, y: t.clientY });
+  const inDialog = () => !!container?.closest?.('dialog');
+  function startPinch(e) {
+    const [p, q] = [pt(e.touches[0]), pt(e.touches[1])];
+    touch = { mode: 'pinch', d: Math.max(1, Math.hypot(p.x - q.x, p.y - q.y)), z: view.zoomT };
+    drag = null; velYaw = 0;
+  }
+  canvas.addEventListener('touchstart', (e) => {
+    touchNote();
+    lastTouchAt = performance.now();
+    if (e.touches.length >= 2) { startPinch(e); e.preventDefault(); kick(); return; }
+    const p = pt(e.touches[0]);
+    const now = performance.now();
+    if (now - lastTap < 320 && Math.hypot(p.x - lastTapPos.x, p.y - lastTapPos.y) < 36) {
+      lastTap = 0; touch = null; drag = null;
+      e.preventDefault();
+      toggleCloseup();
+      return;
+    }
+    lastTap = now; lastTapPos = p;
+    const full = inDialog();
+    touch = { mode: full ? 'rotate' : null, sx: p.x, sy: p.y };
+    startDrag(p.x, p.y);
+    if (full) e.preventDefault();
+    kick();
+  }, { passive: false });
+  canvas.addEventListener('touchmove', (e) => {
+    if (!touch) return;
+    if (e.touches.length >= 2) {
+      if (touch.mode !== 'pinch') startPinch(e);
+      if (e.cancelable) e.preventDefault();
+      const [p, q] = [pt(e.touches[0]), pt(e.touches[1])];
+      view.zoomT = clamp(touch.z * (touch.d / Math.max(Math.hypot(p.x - q.x, p.y - q.y), 1)), ZMIN, ZMAX);
+      touchNote(); kick(); emit();
+      return;
+    }
+    if (!drag) return;
+    const p = pt(e.touches[0]);
+    if (!touch.mode) {
+      const dx = p.x - touch.sx, dy = p.y - touch.sy;
+      if (Math.hypot(dx, dy) < 6) return;
+      // eher waagerecht: drehen (die Seite bleibt stehen); eher senkrecht: Seite scrollen
+      touch.mode = Math.abs(dx) > Math.abs(dy) * 0.75 ? 'rotate' : 'scroll';
+      if (touch.mode === 'scroll') { drag = null; return; }
+      startDrag(p.x, p.y);
+    }
+    if (touch.mode !== 'rotate') return;
+    if (e.cancelable) e.preventDefault();
+    rotateTo(p.x, p.y);
+  }, { passive: false });
+  const touchEnd = (e) => {
+    lastTouchAt = performance.now();
+    if (!touch) return;
+    if (touch.mode === 'pinch' && e.touches.length === 1) {
+      const p = pt(e.touches[0]);
+      touch = { mode: 'rotate', sx: p.x, sy: p.y };
+      startDrag(p.x, p.y);
+      return;
+    }
+    if (e.touches.length === 0) {
+      if (touch.mode === 'rotate' && drag) release(); else drag = null;
+      touch = null;
+      kick();
+    }
+  };
+  canvas.addEventListener('touchend', touchEnd);
+  canvas.addEventListener('touchcancel', touchEnd);
+  canvas.addEventListener('gesturestart', (e) => e.preventDefault());
 
   // Trackpad-Pinch (ctrlKey) oder Strg+Mausrad zoomt; normales Scrollen bleibt der Seite
   canvas.addEventListener('wheel', (e) => {
@@ -303,7 +365,7 @@ export async function createViewer({
     touchNote(); kick();
   }, { passive: false });
 
-  canvas.addEventListener('dblclick', () => toggleCloseup());
+  canvas.addEventListener('dblclick', () => { if (performance.now() - lastTouchAt > 800) toggleCloseup(); });
   canvas.addEventListener('keydown', (e) => {
     const step = { ArrowLeft: [-0.3, 0], ArrowRight: [0.3, 0], ArrowUp: [0, -0.15], ArrowDown: [0, 0.15] }[e.key];
     if (step) {

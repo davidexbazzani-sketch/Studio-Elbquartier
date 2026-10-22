@@ -33,7 +33,11 @@ export function can3D() {
   if (!hasWebGL2()) return { ok: false, why: 'Ihr Browser unterstützt kein WebGL 2.' };
   if (reducedMotion) return { ok: false, why: 'Reduzierte Bewegung ist aktiv, daher die ruhige Ansicht.' };
   if (navigator.connection?.saveData) return { ok: false, why: 'Datensparmodus aktiv, daher die leichte Ansicht.' };
-  if ((navigator.deviceMemory ?? 8) < 4 || (navigator.hardwareConcurrency ?? 8) < 4) {
+  // iPhone und iPad melden aus Datenschutzgründen immer nur 2 Prozessorkerne (Safari-Vorgabe, gilt für alle
+  // Browser auf iOS). Ohne diese Ausnahme bekam jedes iPhone die Ersatzansicht ohne 3D.
+  const apple = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const cores = apple ? 8 : (navigator.hardwareConcurrency ?? 8);
+  if ((navigator.deviceMemory ?? 8) < 4 || cores < 4) {
     return { ok: false, why: 'Vereinfachte Ansicht für dieses Gerät.' };
   }
   return { ok: true };
