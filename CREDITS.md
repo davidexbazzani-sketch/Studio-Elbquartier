@@ -248,7 +248,11 @@ Alle Quellen am 11. Oktober 2026 heruntergeladen und geprüft.
 
 Nicht genutzte Sketchfab-Modelle liegen nur in `tools/models/quelle/` (Sofa, Spülen-Set, Pendelleuchte). Seit 13.10.2026 ebenfalls nicht mehr genutzt (Nachbauten bekannter, noch geschützter Designs): Harvey-Probber-Sessel, Noguchi-Couchtisch und die AAC-Stühle des „Dining Set“ – ersetzt durch eigene Entwürfe (`tools/wohnung/nachtrag_recht.py`).
 
-## Blütenkontor: echte Blumen im Strauß-Konfigurator (`assets/models/blumen/`)
+## Blütenkontor: Foto-Strauß im Konfigurator (`assets/img/blumen/strauss/`, seit 22.10.2026)
+
+Freigestellte Einzelblumen (Rosen in 4 Farben, Pfingstrosen in 3, Tulpen in 5, Eukalyptus, Schleierkraut, Lavendel), drei Papiere und vier Schleifen: KI-generiert mit Higgsfield (GPT Image 2.5, high, 1k, transparenter Hintergrund) am 22.10.2026, zugeschnitten und vermessen mit ffmpeg (`strauss-meta.json`: Blütenmitte und Bindepunkt je Bild). Nutzungsrechte laut Higgsfield-Bedingungen (Plan Plus, kommerziell erlaubt). Zusammengesetzt zum Strauß in `beispiele/blumenladen/bouquet-photo.js`. Gekennzeichnet in `lizenzen.html`. Kosten: `Kunden/Studio Elbquartier/Higgsfield.md`.
+
+## Blütenkontor: echte Blumen im Strauß-Konfigurator (`assets/models/blumen/`) – nicht mehr angezeigt
 
 Seit 11. Oktober 2026 bindet der 3D-Konfigurator echte Blumen. Rosen, Pfingstrosen und Tulpen sind 3D-Fotoscans echter Blüten; sie wurden mit `tools/blumen/koepfe.py` (Blender) vom Stiel getrennt, aufgerichtet, verkleinert und reduziert. Farbvarianten ohne eigenen Scan entstehen im Browser durch Umfärben der Fototextur (`assets/js/3d/real-flowers.js`). Eukalyptus, Schleierkraut und Lavendel sind freigestellte Fotos echter Zweige (`tools/blumen/fueller.py`). Die gezeichneten Blüten aus `flowers.js` bleiben nur noch als Ersatz, falls das Laden scheitert.
 

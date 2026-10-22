@@ -1,5 +1,6 @@
 import { can3D, reducedMotion, whenScrolledNear } from '../../assets/js/capability.js';
 import { createFlatBouquet, icon } from './bouquet-2d.js';
+import { createPhotoBouquet } from './bouquet-photo.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -222,22 +223,40 @@ options($('#cfg-delivery'), DELIVERY, () => state.delivery, (k) => { state.deliv
 
 $('#cfg-card').addEventListener('change', (e) => { state.card = e.target.checked; render(); });
 
-/* ---------- Strauß-Ansichten ---------- */
+/* ---------- Strauß-Ansichten ----------
+   Standard: Strauß aus echten Fotos, wie von der Floristin gebunden (bouquet-photo.js, ohne 3D, läuft überall).
+   Gezeichneter Strauß (SVG) nur, falls die Fotos nicht laden. */
 const stageWrap = $('#cfg-stage-wrap');
 stageWrap.dataset.mode = 'flat';
 const flat = createFlatBouquet($('#cfg-flat'), { reducedMotion });
+let photo = null, photoFailed = false;
 let bouquet3d = null;
 let stage3d = null;
 
 function pushBouquet() {
   const comp = { stems: stemsOf(), paperStyle: state.paper, ribbonColor: state.ribbon };
-  flat.set(comp);
+  // gezeichneten Strauß nur bauen, wenn die Fotos nicht laden (spart beim Seitenaufbau Rechenzeit)
+  if (photo) photo.set(comp); else if (photoFailed) flat.set(comp);
   if (bouquet3d) {
     const { cap } = bouquet3d.set(comp);
     stage3d.setFrame({ x: 0, y: 0.2, z: 0 }, 1.05 + cap * 0.34);
     stage3d.kick();
   }
 }
+
+// Fotos erst laden, wenn der Konfigurator in die Nähe kommt
+whenScrolledNear(stageWrap, async () => {
+  try {
+    photo = await createPhotoBouquet($('#cfg-stage'), { reducedMotion });
+    stageWrap.dataset.mode = 'photo';
+    pushBouquet();
+    render(); // Vorschaubilder der Blumenliste als Fotos
+  } catch (err) {
+    console.warn('Foto-Strauß nicht verfügbar:', err);
+    photoFailed = true;
+    pushBouquet();
+  }
+}, { margin: '700px 0px' });
 
 async function load3D() {
   if (stage3d) return;
@@ -264,15 +283,8 @@ async function load3D() {
   }
 }
 
-const cap = can3D();
-if (cap.ok) {
-  // 3D erst laden, wenn jemand scrollt und der Konfigurator in Sichtweite kommt
-  whenScrolledNear(stageWrap, load3D, { margin: '500px 0px' });
-} else {
-  $('#cfg-load3d').hidden = false;
-  $('#cfg-load3d').title = cap.why;
-  $('#cfg-load3d').addEventListener('click', load3D);
-}
+// Die frühere 3D-Ansicht (Fotoscans) bleibt im Code, wird aber nicht mehr geladen: Der Foto-Strauß wirkt echter.
+void load3D; void can3D;
 
 /* ---------- Preis ---------- */
 let shownTotal = 0;
@@ -314,7 +326,17 @@ function render() {
     $('[data-step="-1"]', row).disabled = count === 0;
     $('[data-step="1"]', row).disabled = count >= f.max || n >= MAX_STEMS;
     $$('[data-color]', row).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.color === state.colors[type])));
-    $('.bk-flower__icon', row).innerHTML = icon(type, paletteOf(type));
+    const iconEl = $('.bk-flower__icon', row);
+    if (photo) {
+      const name = FLOWERS[type].colors ? `${type}-${state.colors[type]}` : type;
+      if (iconEl.dataset.name !== name) {
+        const m = photo.meta[name], zoom = { rose: 3.4, peony: 2.1, tulip: 4.6, eucalyptus: 1.9, gypsophila: 2.3, lavender: 2.2 }[type];
+        const ih = 52 * zoom, iw = ih * m.w / m.h;
+        iconEl.dataset.name = name;
+        iconEl.innerHTML = '';
+        iconEl.style.cssText = `background-image:url(${photo.src(name)});background-size:${iw.toFixed(0)}px ${ih.toFixed(0)}px;background-position:${(26 - m.hx * iw).toFixed(1)}px ${(26 - m.hy * ih).toFixed(1)}px;background-repeat:no-repeat`;
+      }
+    } else iconEl.innerHTML = icon(type, paletteOf(type));
   }
   groups.forEach((sync) => sync());
   $('#cfg-card').checked = state.card;
