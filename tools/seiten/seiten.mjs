@@ -55,7 +55,7 @@ const beispiele = (n = 10) => `<ul class="examples">
         </ul>
         <p class="examples__note">Alle Namen sind erfunden, die Ideen sind echt.</p>`;
 
-function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, body }) {
+function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, body, faq }) {
   const url = `${BASE}/${slug}/`;
   const ld = {
     '@context': 'https://schema.org',
@@ -65,6 +65,7 @@ function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, 
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Studio Elbquartier', item: `${BASE}/` },
         { '@type': 'ListItem', position: 2, name: crumb, item: url } ] },
+      ...(faq ? [{ '@type': 'FAQPage', mainEntity: faq.list.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }] : []),
     ],
   };
   return `<!doctype html>
@@ -132,7 +133,7 @@ ${JSON.stringify(ld, null, 2)}
         <p class="page-hero__note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlich vor Ort in Hamburg. Bezahlt wird erst, wenn Ihnen der Entwurf gefällt.</p>
       </div>
     </section>
-${body}
+${body}${faq ? faqHtml(faq.list, faq.title, faq.titleB) : ''}
     <section class="section">
       <div class="container">
         <div class="cta-band">
@@ -154,8 +155,8 @@ ${body}
       <p>© <span id="year">2026</span> Studio Elbquartier · Hamburg · <a href="mailto:hallo@studio-elbquartier.de">hallo@studio-elbquartier.de</a></p>
       <nav aria-label="Leistungen und Rechtliches">
         <a href="/webdesign-hamburg/">Webdesign Hamburg</a>
-        <a href="/fotografie-hamburg/">Fotografie</a>
-        <a href="/software-hamburg/">Software</a>
+        <a href="/fotografie-hamburg/">Fotografie Hamburg</a>
+        <a href="/software-hamburg/">Softwarelösungen Hamburg</a>
         <a href="/impressum.html">Impressum</a>
         <a href="/datenschutz.html">Datenschutz</a>
         <a href="/lizenzen.html">Bildnachweise</a>
@@ -168,6 +169,84 @@ ${body}
 `;
 }
 
+// Fragen & Antworten (nur Fakten, die auch auf der Startseite stehen)
+const FAQ = {
+  "web": [
+    [
+      "Was kostet eine Website bei Studio Elbquartier?",
+      "Unsere Website-Pakete kosten 750 € (Starter), 1.200 € (Pro) und 3.000 € (Max). Das sind Endpreise: Als Kleinunternehmer berechnen wir keine Umsatzsteuer. Laufende Kosten für Hosting und Domain beim Anbieter Ihrer Wahl kommen gegebenenfalls hinzu."
+    ],
+    [
+      "Wann bezahle ich?",
+      "Erst wenn Ihnen der fertige Entwurf gefällt. Statt Skizzen bekommen Sie Ihre fertig gestaltete Website zum Anschauen und Ausprobieren. Ein Abo gibt es nicht: einmal zahlen, für immer behalten."
+    ],
+    [
+      "Ich habe schon eine Website oder einen Shopify-Shop. Geht das?",
+      "Ja. Ihre bisherige Seite läuft weiter, bis die neue überzeugt. Shopify bleibt Ihr Shop-System. Texte, Bilder und Domain übernehmen wir und leiten alte Adressen sauber um, damit Ihre Google-Platzierungen erhalten bleiben."
+    ],
+    [
+      "Werde ich mit der neuen Website bei Google gefunden?",
+      "Darum kümmern wir uns: Technik, Ladezeit, Seitenstruktur und Texte richten wir auf die Suchen aus, die für Ihr Geschäft zählen. Ihr Google-Unternehmensprofil pflegen wir mit, und wir richten die Google Search Console ein. Auf Wunsch erhöhen wir die Reichweite zusätzlich mit gezielter Werbung."
+    ],
+    [
+      "Kommen Sie zu mir in den Laden?",
+      "Gern, persönlich vor Ort in Hamburg. Lieber am Telefon? Auch gut."
+    ]
+  ],
+  "foto": [
+    [
+      "Was fotografieren Sie?",
+      "Ihre Räume, Ihre Produkte und Ihr Team, für Ihre Website, Ihren Shop und Ihre Social-Media-Kanäle."
+    ],
+    [
+      "Wo findet das Fotoshooting statt?",
+      "Bei Ihnen vor Ort in Hamburg, damit Ihre Kundschaft Ihren Laden so sieht, wie sie ihn erlebt."
+    ],
+    [
+      "Ist ein Fotoshooting in einem Website-Paket enthalten?",
+      "Ja, im Paket Max (3.000 €): professionelles Fotoshooting in Ihrem Laden, Bildbearbeitung und Bildauswahl für Website und Social Media. Ein einzelnes Fotoshooting besprechen wir gern mit Ihnen."
+    ],
+    [
+      "Kann ich meine eigenen Bilder verwenden?",
+      "Ja. Wir arbeiten auch mit dem Material, das Sie schon haben, wählen sorgfältig aus und bereiten es auf."
+    ]
+  ],
+  "soft": [
+    [
+      "Welche Softwarelösungen bieten Sie an?",
+      "Zum Beispiel Online-Reservierung, Vorbestellen und Abholen, Gutscheine und Treuekarten, digitale Speise- und Preiskarten per QR-Code, Werkzeuge für Ihr Team wie Dienstpläne und Checklisten sowie Automatisierung."
+    ],
+    [
+      "Was kostet eine Softwarelösung?",
+      "Der Preis richtet sich nach Ihrem Bedarf und wird nach Absprache festgelegt. Das erste Gespräch ist unverbindlich und ohne Fachchinesisch."
+    ],
+    [
+      "Funktioniert das mit meiner Website?",
+      "Ja. Eine Online-Reservierung läuft zum Beispiel direkt über Ihre Website, mit automatischer Bestätigung und Erinnerung."
+    ],
+    [
+      "Können Kasse, Onlineshop und Buchhaltung zusammenarbeiten?",
+      "Genau dafür gibt es Automatisierung: Wiederkehrende Aufgaben erledigen sich von selbst. Welche Ihrer Programme sich verbinden lassen, prüfen wir im Gespräch."
+    ]
+  ]
+};
+const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const faqHtml = (list, title, titleB) => `
+    <section class="section faq" aria-labelledby="faq-title">
+      <div class="container container--narrow">
+        <header class="section-head">
+          <p class="eyebrow">Häufige Fragen</p>
+          <h2 class="t-h2" id="faq-title">${title}<br><span class="t-serif-italic">${titleB}</span></h2>
+        </header>
+        <div class="faq__list">
+${list.map(([q, a], i) => `          <details class="faq__item"${i === 0 ? ' open' : ''}>
+            <summary class="faq__q">${esc(q)}</summary>
+            <p class="faq__a">${esc(a)}</p>
+          </details>`).join('\n')}
+        </div>
+      </div>
+    </section>`;
+
 const PAKET_ANGEBOTE = [['Website Starter', 750], ['Website Pro', 1200], ['Website Max', 3000]]
   .map(([name, price]) => ({ '@type': 'Offer', name, price: String(price), priceCurrency: 'EUR' }));
 
@@ -175,6 +254,7 @@ const seiten = [
   {
     slug: 'webdesign-hamburg',
     title: 'Webdesign Hamburg: Websites für Läden &amp; Gastronomie | Studio Elbquartier',
+    faq: { list: FAQ.web, title: 'Website erstellen lassen:', titleB: 'kurz beantwortet.' },
     description: 'Website erstellen lassen in Hamburg: individuelles Webdesign für Läden, Restaurants, Cafés, Bars und Boutiquen. Pakete ab 750 € Endpreis, bezahlt wird erst, wenn Ihnen der Entwurf gefällt.',
     crumb: 'Webdesign Hamburg',
     h1: 'Webdesign in Hamburg', h1b: 'für Läden, Restaurants und Boutiquen.',
@@ -228,7 +308,8 @@ const seiten = [
   },
   {
     slug: 'fotografie-hamburg',
-    title: 'Fotograf für Laden, Produkte &amp; Team in Hamburg | Studio Elbquartier',
+    title: 'Fotografie Hamburg: Fotos für Laden, Produkte &amp; Team | Studio Elbquartier',
+    faq: { list: FAQ.foto, title: 'Fotografie in Hamburg:', titleB: 'kurz beantwortet.' },
     description: 'Professionelle Fotos für Ihren Laden in Hamburg: Räume, Produkte und Team für Website und Social Media. Oder wir holen das Beste aus den Bildern heraus, die Sie schon haben.',
     crumb: 'Fotografie Hamburg',
     h1: 'Fotografie in Hamburg', h1b: 'für Laden, Produkte und Team.',
@@ -285,9 +366,10 @@ const seiten = [
   },
   {
     slug: 'software-hamburg',
-    title: 'Software für Gastronomie &amp; Einzelhandel in Hamburg | Studio Elbquartier',
+    title: 'Softwarelösungen Hamburg für Gastronomie &amp; Einzelhandel | Studio Elbquartier',
+    faq: { list: FAQ.soft, title: 'Softwarelösungen:', titleB: 'kurz beantwortet.' },
     description: 'Softwarelösungen aus Hamburg: Online-Reservierung, Vorbestellen und Abholen, Gutscheine, digitale Karten, Werkzeuge für Ihr Team und Automatisierung, zugeschnitten auf Ihren Betrieb.',
-    crumb: 'Software Hamburg',
+    crumb: 'Softwarelösungen Hamburg',
     h1: 'Software für Ihren Betrieb', h1b: 'aus Hamburg.',
     lead: 'Unser Schwerpunkt sind Websites. Doch im Alltag steckt oft noch mehr Potenzial. Darum entwickeln wir auch Programme, die genau zu Ihrem Betrieb passen und Ihnen Arbeit abnehmen.',
     ctas: '<a class="btn" href="/?interesse=Software#kontakt">Software-Idee besprechen</a><a class="btn btn--secondary" href="#loesungen">Beispiele ansehen</a>',

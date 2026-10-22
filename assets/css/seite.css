@@ -44,3 +44,12 @@
 .icon-tile--sand { --icon-bg: #E6D9C2; }
 .icon-tile--rose { --icon-bg: #EAD5CC; }
 .icon-tile--elbe { --icon-bg: #D3E1DF; }
+
+/* Häufige Fragen (aufklappbar, für Google vollständig lesbar) */
+.faq__list { display: grid; gap: 10px; margin-top: var(--space-6); }
+.faq__item { border: 1.5px solid var(--c-line-strong); border-radius: 18px; background: var(--c-bg); }
+.faq__q { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 22px; font-family: var(--font-serif); font-size: clamp(1.15rem, 1rem + 0.4vw, 1.35rem); line-height: 1.25; }
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after { content: "+"; flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--c-bg-alt); font-family: var(--font-sans); font-size: 18px; transition: transform 0.3s ease; }
+.faq__item[open] .faq__q::after { transform: rotate(45deg); }
+.faq__a { margin: 0; padding: 0 22px 20px; font-size: 1rem; line-height: 1.6; color: var(--c-ink-2); max-width: 60ch; }
