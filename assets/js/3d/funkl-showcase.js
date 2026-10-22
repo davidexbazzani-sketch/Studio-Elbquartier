@@ -46,7 +46,7 @@ function citrusSlice(outer, inner, seg) {
 
 function ingredients(id) {
   const items = [];
-  const add = (obj, n, scale = 1) => { for (let i = 0; i < n; i++) items.push({ obj: i === 0 ? obj : obj.clone(), scale: scale * (0.75 + Math.random() * 0.5) }); };
+  const add = (obj, n, scale = 1) => { for (let i = 0; i < n; i++) items.push({ obj: i === 0 ? obj : obj.clone(), scale: scale * 0.7 * (0.75 + Math.random() * 0.5) }); }; // etwas kleiner, passend zu den Scans
   if (id === 'mango') {
     const cube = new THREE.Mesh(new RoundedBoxGeometry(0.17, 0.17, 0.17, 3, 0.04), mat('#ffb11f', { roughness: 0.3, sheen: 0.6, sheenColor: '#ffe08a' }));
     add(cube, 7);
@@ -107,7 +107,8 @@ async function loadFruit(base, def) {
       const holder = new THREE.Group();
       root.position.sub(box.getCenter(new THREE.Vector3()));
       holder.add(root);
-      const k = def.size / Math.max(size.x, size.y, size.z);
+      // Früchte deutlich kleiner als die Dose (Wunsch 22.10.2026), Beeren nur etwas
+      const k = def.size * (def.berry ? 0.85 : 0.58) / Math.max(size.x, size.y, size.z);
       root.traverse((o) => {
         if (!o.isMesh) return;
         let m = o.material;
