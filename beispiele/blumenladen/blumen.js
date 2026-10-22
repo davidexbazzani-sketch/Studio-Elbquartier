@@ -249,6 +249,11 @@ whenScrolledNear(stageWrap, async () => {
   try {
     photo = await createPhotoBouquet($('#cfg-stage'), { reducedMotion });
     stageWrap.dataset.mode = 'photo';
+    const hint = $('#cfg-hint');
+    if (hint) {
+      hint.textContent = matchMedia('(pointer: fine)').matches ? 'Ziehen zum Drehen' : 'Seitlich wischen zum Drehen';
+      photo.onTouched(() => hint.classList.add('is-gone'));
+    }
     pushBouquet();
     render(); // Vorschaubilder der Blumenliste als Fotos
   } catch (err) {

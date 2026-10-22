@@ -334,12 +334,14 @@ html.is-locked { overflow: hidden; }
 }
 
 /* ---------- Strauß aus echten Fotos (22.10.2026) ---------- */
-.bk-config__stage[data-mode="photo"] .bk-config__flat, .bk-config__stage[data-mode="photo"] .bk-config__hint, .bk-config__stage[data-mode="photo"] .bk-config__load { display: none; }
+.bk-config__stage[data-mode="photo"] .bk-config__flat, .bk-config__stage[data-mode="photo"] .bk-config__load { display: none; }
+.bk-config__hint { transition: opacity 0.5s ease; pointer-events: none; }
+.bk-config__hint.is-gone { opacity: 0; }
 .pb { position: absolute; inset: 0; overflow: hidden; }
 .pb__space { position: absolute; left: 0; top: 0; width: 1000px; height: 1000px; transform-origin: 0 0; }
 .pb__bunch { position: absolute; inset: 0; transform-origin: 500px 720px; }
 .pb__stems { position: absolute; inset: 0; z-index: 1; }
-.pb__stem { position: absolute; left: 0; top: 0; will-change: transform; }
+.pb__stem { position: absolute; left: 0; top: 0; will-change: transform; transition: filter 0.45s ease; }
 .pb__stem img, .pb__paper img, .pb__ribbon img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; -webkit-user-select: none; user-select: none; pointer-events: none; }
 .pb__paper { position: absolute; left: 0; top: 0; z-index: 0; }
 /* vorderer Einschlag: dasselbe Papier gespiegelt, nur der untere Teil (Rand senkt sich zur Mitte wie bei echtem Papier) */
