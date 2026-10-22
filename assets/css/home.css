@@ -458,11 +458,10 @@ section.examples { overflow: hidden; padding-top: clamp(2.5rem, 1.5rem + 3vw, 4r
 .ab-list__row .ab-list__title { margin-bottom: 6px; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.15; color: var(--c-ink); }
 
 /* ---------- 05 Pakete ---------- */
-.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); border: 1.5px solid var(--c-ink); border-radius: 4px; overflow: hidden; background: var(--c-bg); }
-.plan { position: relative; display: flex; flex-direction: column; gap: 28px; padding: clamp(28px, 2rem + 1vw, 40px) clamp(24px, 1.5rem + 1vw, 36px); background: transparent; box-shadow: none; border-radius: 0; }
-.plan + .plan { border-top: 1.5px dashed var(--c-ink); }
-@media (min-width: 960px) { .plan + .plan { border-top: 0; border-left: 1.5px dashed var(--c-ink); } }
-.plan--featured { background: var(--accent); color: var(--accent-ink); top: 0; }
+/* drei eigene Karten mit runden Ecken (Wunsch 22.10.2026), Pro dunkelblau */
+.plans { display: grid; gap: clamp(14px, 1rem + 0.6vw, 22px); grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.plan { position: relative; display: flex; flex-direction: column; gap: 28px; padding: clamp(28px, 2rem + 1vw, 40px) clamp(24px, 1.5rem + 1vw, 36px); background: var(--c-bg); border: 1.5px solid var(--c-line-strong); border-radius: 24px; box-shadow: 0 24px 50px -38px rgba(22, 33, 50, 0.45); }
+.plan--featured { background: var(--accent); color: var(--accent-ink); top: 0; border-color: var(--accent); box-shadow: 0 30px 60px -34px rgba(22, 33, 50, 0.6); }
 .plan--featured .plan__desc { color: rgba(246, 242, 234, 0.72); }
 .plan--featured .plan__list li::before { color: var(--gold-light); }
 .plan--featured .plan__badge { background: var(--gold-light); color: #1D2B40; }

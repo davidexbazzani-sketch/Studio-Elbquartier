@@ -93,8 +93,8 @@ function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, 
   <meta name="geo.placename" content="Hamburg">
   <link rel="preload" href="/assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022n">
-  <link rel="stylesheet" href="/assets/css/home.css?v=20261022n">
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022o">
+  <link rel="stylesheet" href="/assets/css/home.css?v=20261022o">
   <link rel="stylesheet" href="/assets/css/seite.css">
   <script type="application/ld+json">
 ${JSON.stringify(ld, null, 2)}
