@@ -291,3 +291,31 @@
 .nf-footer p:last-child { max-width: 40rem; }
 .nf-footer a { color: var(--n-ink-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(239, 230, 216, 0.3); }
 .nf-logo--small span { font-size: 1.45rem; color: var(--n-ink); }
+
+/* ---------- Hintergrundfilm im Startbereich (22.10.2026) ---------- */
+.film { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.film__poster img, .film__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film__clip { opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.film__clip.is-on { opacity: 1; }
+.film__pause {
+  position: absolute; right: var(--gutter); bottom: clamp(18px, 3vh, 28px); z-index: 3;
+  width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center;
+  background: rgba(16, 12, 16, 0.5); color: #efe6d8; box-shadow: inset 0 0 0 1px rgba(239, 230, 216, 0.25);
+}
+.film__pause[hidden] { display: none; }
+.film__pause svg { width: 18px; height: 18px; grid-area: 1 / 1; }
+.film__pause .i-play, .film__pause[aria-pressed='true'] .i-pause { display: none; }
+.film__pause[aria-pressed='true'] .i-play { display: block; }
+@media (prefers-reduced-motion: reduce) { .film__clip { transition: none; } }
+
+.nf-hero .film { z-index: -2; }
+@media (max-width: 700px) { .nf-hero .film__pause { top: 16px; bottom: auto; } }
+/* PC: erster Film gespiegelt, damit der Drink rechts neben dem Text eingegossen wird (ohne Schrift im Bild, daher unauffällig) */
+@media (min-width: 701px) {
+  .nf-hero .film__clip:first-of-type, .nf-hero .film__poster img { transform: scaleX(-1); }
+  .nf-hero::after {
+    background:
+      linear-gradient(180deg, rgba(16, 12, 16, 0.35) 0%, rgba(16, 12, 16, 0.06) 28%, rgba(16, 12, 16, 0.5) 66%, var(--n-bg) 100%),
+      linear-gradient(90deg, rgba(16, 12, 16, 0.72), rgba(16, 12, 16, 0) 62%);
+  }
+}

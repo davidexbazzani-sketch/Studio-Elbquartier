@@ -1,3 +1,4 @@
+import { bgFilm } from '../../assets/js/bg-film.js';
 import { reducedMotion } from '../../assets/js/capability.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -251,11 +252,14 @@ function initMotion() {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out' });
   gsap.fromTo('[data-hero]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09, delay: 0.15 });
-  gsap.fromTo('.nf-hero__media img', { scale: 1.12 }, { scale: 1, duration: 2.6, ease: 'power2.out' });
-  gsap.to('.nf-hero__media img', {
-    yPercent: 10, ease: 'none',
-    scrollTrigger: { trigger: '.nf-hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
+  gsap.fromTo('.nf-hero__media', { scale: 1.1 }, { scale: 1, duration: 2.6, ease: 'power2.out' });
+  // Film gleitet beim Scrollen langsamer (nur mit Maus: auf Handys hinken an den Scrollweg gekoppelte Bewegungen hinterher)
+  if (!matchMedia('(hover: none), (pointer: coarse)').matches) {
+    gsap.to('.nf-hero__media', {
+      yPercent: 10, ease: 'none',
+      scrollTrigger: { trigger: '.nf-hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+  }
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 88%',
     once: true,
@@ -263,3 +267,6 @@ function initMotion() {
   });
 }
 initMotion();
+
+/* ---------- Hintergrundfilm im Startbereich ---------- */
+bgFilm(document.querySelector('[data-film]'));

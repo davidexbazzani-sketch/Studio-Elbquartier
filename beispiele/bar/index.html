@@ -54,10 +54,30 @@
 
     <!-- Hero -->
     <section class="nf-hero" id="top" aria-labelledby="hero-title">
-      <picture class="nf-hero__media">
-        <source media="(max-width: 700px)" srcset="../../assets/img/bar/bar-tresen-mobil-640.webp" width="640" height="880">
-        <img src="../../assets/img/bar/bar-tresen.webp" width="1600" height="1000" alt="Langer Tresen im warmen Licht, dahinter beleuchtete Regale voller Flaschen" fetchpriority="high">
-      </picture>
+      <div class="film nf-hero__media" data-film data-count="2" data-src="../../assets/video/bar/film-{n}-{f}.mp4" data-poster="../../assets/video/bar/film-{n}-{f}.webp" aria-hidden="true">
+        <picture class="film__poster">
+          <source media="(max-aspect-ratio: 1/1)" srcset="../../assets/video/bar/film-1-p.webp" width="608" height="1080">
+          <img src="../../assets/video/bar/film-1-l.webp" width="1600" height="900" alt="Ein Barkeeper gießt einen bernsteinfarbenen Drink über einen großen Eiswürfel" fetchpriority="high">
+        </picture>
+        <video class="film__clip" muted playsinline preload="none" disablepictureinpicture></video>
+        <video class="film__clip" muted playsinline preload="none" disablepictureinpicture></video>
+        <script>
+          /* Ersten Film sofort anfordern, noch während die Seite lädt (assets/js/bg-film.js übernimmt danach) */
+          (function () {
+            var r = document.currentScript.parentNode, n = navigator.connection || {};
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches || n.saveData || /(^|-)2g$/.test(n.effectiveType || '')) return;
+            var v = r.querySelector('video'), f = matchMedia('(max-aspect-ratio: 1/1)').matches ? 'p' : 'l';
+            v.src = r.dataset.src.replace('{n}', 1).replace('{f}', f);
+            v.poster = r.dataset.poster.replace('{n}', 1).replace('{f}', f);
+            v.preload = 'auto'; v.autoplay = true; v.dataset.early = '1'; v.classList.add('is-on');
+            v.addEventListener('playing', function () { v.dataset.playing = '1'; }, { once: true });
+          })();
+        </script>
+      </div>
+      <button class="film__pause" type="button" aria-pressed="false" aria-label="Hintergrundfilm anhalten" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M9 7l8 5-8 5z" fill="currentColor"/></svg>
+      </button>
       <div class="nf-hero__text">
         <p class="nf-eyebrow" data-hero>Cocktailbar · Sternschanze</p>
         <h1 class="nf-hero__title" id="hero-title" data-hero>Gute Drinks.<br><em>Lange Nächte.</em></h1>
