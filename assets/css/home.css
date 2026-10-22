@@ -380,7 +380,7 @@ body { background: var(--c-bg); font-family: var(--font-sans); color: var(--c-in
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- 01 Beispiele: Drehscheibe direkt nach der Einleitung ---------- */
-.examples { overflow: hidden; padding-top: clamp(2.5rem, 1.5rem + 3vw, 4rem); }
+section.examples { overflow: hidden; padding-top: clamp(2.5rem, 1.5rem + 3vw, 4rem); }
 .examples__head { display: grid; justify-items: center; gap: 16px; max-width: 42rem; margin: 0 auto; text-align: center; }
 .examples__kicker { display: inline-flex; align-items: center; gap: 16px; margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-ink-2); }
 .examples__orn { position: relative; width: clamp(28px, 1rem + 2vw, 48px); height: 1px; background: var(--gold); }
@@ -533,6 +533,116 @@ body { background: var(--c-bg); font-family: var(--font-sans); color: var(--c-in
 .software__code { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--c-ink-2); }
 .software__title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.875rem; line-height: 1.1; }
 .software__item p { margin: 0; font-size: 1rem; line-height: 1.6; color: #2E3539; }
+
+/* ---------- 07 Software: Kacheln mit kleinen Beispiel-Oberflächen (Reservierung und Checkliste zum Ausprobieren) ---------- */
+.sw-grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) {
+  .sw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sw-card--booking { grid-column: 1 / -1; }
+}
+@media (min-width: 1040px) {
+  .sw-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .sw-card--booking { grid-column: 1 / 4; grid-row: 1 / 3; }
+  .sw-card--order, .sw-card--voucher { grid-column: 4 / 7; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; }
+  .sw-card--menu { grid-column: 1 / 3; }
+  .sw-card--check { grid-column: 3 / 5; }
+  .sw-card--flow { grid-column: 5 / 7; }
+}
+.sw-card { display: grid; gap: 24px; align-content: start; padding: clamp(20px, 1rem + 1vw, 30px); border-radius: 16px; background: var(--c-bg-alt); }
+.sw-card--booking { background: var(--petrol-tint); align-content: space-between; }
+.sw-card--voucher { background: var(--accent); color: var(--accent-ink); }
+.section--alt .sw-card--order, .section--alt .sw-card--menu, .section--alt .sw-card--check, .section--alt .sw-card--flow { background: var(--c-bg); }
+.sw-card__text { display: grid; gap: 8px; align-content: start; }
+.sw-card__code { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--c-ink-2); }
+.sw-card__title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem); line-height: 1.1; letter-spacing: -0.01em; }
+.sw-card--booking .sw-card__title { font-size: clamp(1.75rem, 1.3rem + 1.2vw, 2.5rem); }
+.sw-card__text p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #2E3539; }
+.sw-card--voucher .sw-card__code { color: rgba(246, 242, 234, 0.7); }
+.sw-card--voucher .sw-card__text p { color: rgba(246, 242, 234, 0.84); }
+
+.ui { position: relative; padding: 16px; border-radius: 12px; background: #FFFDF8; color: var(--c-ink); font-size: 0.8125rem; line-height: 1.4; box-shadow: 0 0 0 1px rgba(18, 22, 25, 0.06), 0 22px 40px -28px rgba(22, 33, 50, 0.5); }
+.ui__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.ui__title { font-family: var(--font-serif); font-size: 1.125rem; }
+.ui__label { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-ink-3); }
+:where(.ui) button { font: inherit; color: inherit; cursor: pointer; }
+.ui button:focus-visible, .ui input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Reservierung */
+.ui--booking { width: 100%; max-width: 480px; justify-self: center; padding: 18px; }
+.ui__dates, .ui__times { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.ui__date, .ui__time { border: 1px solid rgba(18, 22, 25, 0.14); border-radius: 8px; background: #fff; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
+.ui__date { display: grid; justify-items: center; padding: 6px 0 8px; font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.1; }
+.ui__date small { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-ink-3); }
+.ui__date[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ui__date[aria-pressed="true"] small { color: rgba(246, 242, 234, 0.7); }
+.ui__time { padding: 8px 0; font-family: var(--font-mono); font-size: 0.75rem; }
+.ui__time:disabled { background: transparent; color: var(--c-ink-3); text-decoration: line-through; cursor: not-allowed; }
+.ui__time[aria-pressed="true"] { background: var(--gold-light); border-color: var(--gold-light); color: #1D2B40; font-weight: 600; }
+@media (hover: hover) { .ui__date:hover, .ui__time:not(:disabled):hover, .ui__stepper button:hover { border-color: var(--accent); } }
+.ui__row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0 10px; }
+.ui__stepper { display: inline-flex; align-items: center; gap: 10px; }
+.ui__stepper button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(18, 22, 25, 0.2); background: #fff; line-height: 1; }
+.ui__stepper output { min-width: 2ch; text-align: center; font-weight: 600; }
+.ui__confirm { display: flex; align-items: center; gap: 12px; margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); }
+.ui__confirm b { display: block; font-weight: 600; }
+.ui__confirm small { display: block; font-size: 0.6875rem; color: rgba(246, 242, 234, 0.72); }
+.ui__check, .ui__seal { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--gold-light); color: #1D2B40; }
+.ui__check svg, .ui__seal svg { width: 14px; height: 14px; }
+
+/* Vorbestellen */
+.ui__lines { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 6px; }
+.ui__lines li, .ui__menu li { display: flex; justify-content: space-between; gap: 12px; }
+.ui__bar { position: relative; display: block; height: 4px; margin: 0 5px; border-radius: 4px; background: rgba(18, 22, 25, 0.1); }
+.ui__bar i { position: absolute; inset: 0; border-radius: inherit; background: var(--gold); transform-origin: left center; transition: transform 1.6s var(--ease-out) 0.4s; }
+.js-motion .sw-grid:not(.is-in) .ui__bar i { transform: scaleX(0.05); }
+.ui__bar b { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 3px #FFFDF8; }
+.ui__bar b:nth-of-type(1) { left: 0; } .ui__bar b:nth-of-type(2) { left: 50%; } .ui__bar b:nth-of-type(3) { left: 100%; }
+.ui__progress ol { list-style: none; display: flex; justify-content: space-between; margin: 10px 0 0; padding: 0; font-size: 0.6875rem; color: var(--c-ink-3); }
+.ui__progress .is-now { color: var(--c-ink); font-weight: 600; }
+
+/* Gutschein und Treuekarte */
+.ui--voucher { display: grid; gap: 10px; padding: 0; background: none; box-shadow: none; }
+.ui__ticket { position: relative; display: grid; gap: 6px; padding: 14px 16px; border-radius: 10px; background: #FFFDF8; color: var(--c-ink); }
+.ui__ticket::after { content: ""; position: absolute; top: 10px; bottom: 10px; right: 58px; border-left: 1.5px dashed rgba(18, 22, 25, 0.18); }
+.ui__amount { font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: 2.5rem; line-height: 1; }
+.ui__seal { position: absolute; right: 16px; top: 50%; width: 28px; height: 28px; margin-top: -14px; }
+.ui__stamps { display: grid; gap: 8px; padding: 12px 14px; border-radius: 10px; background: #FFFDF8; color: var(--c-ink); }
+.ui__dots { display: flex; gap: 6px; }
+.ui__dots i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--gold); }
+.ui__dots i.is-on { background: var(--gold); }
+.ui__stamps small { font-size: 0.6875rem; color: var(--c-ink-2); }
+
+/* Digitale Karte */
+.ui--menu { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 14px; align-items: start; }
+.ui__qr { width: 68px; height: 68px; padding: 4px; border-radius: 6px; background: #fff; box-shadow: 0 0 0 1px rgba(18, 22, 25, 0.1); color: var(--c-ink); }
+.ui__menu { list-style: none; margin: 6px 0 8px; padding: 0; }
+.ui__menu li { padding: 4px 0; border-bottom: 1px dotted rgba(18, 22, 25, 0.25); }
+.ui__allergens { display: flex; gap: 4px; }
+.ui__allergens i { display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid rgba(18, 22, 25, 0.3); border-radius: 4px; font-style: normal; font-family: var(--font-mono); font-size: 0.625rem; color: var(--c-ink-2); }
+
+/* Checkliste */
+.ui__meter { display: block; height: 4px; margin-bottom: 8px; border-radius: 4px; background: rgba(18, 22, 25, 0.1); overflow: hidden; }
+.ui__meter i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--accent); transition: width 0.4s var(--ease-out); }
+.ui__task { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
+.ui__task input { appearance: none; -webkit-appearance: none; flex: none; display: grid; place-items: center; width: 20px; height: 20px; margin: 0; border: 1.5px solid rgba(18, 22, 25, 0.35); border-radius: 5px; background: #fff; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
+.ui__task input:checked { background: var(--accent); border-color: var(--accent); }
+.ui__task input:checked::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); }
+.ui__task input:checked + span { color: var(--c-ink-3); text-decoration: line-through; }
+
+/* Automatisierung: Punkte wandern von Kasse zu Buchhaltung */
+.ui--flow { display: grid; gap: 12px; }
+.ui__node { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid rgba(18, 22, 25, 0.12); background: #fff; }
+.ui__node b { font-weight: 600; }
+.ui__node span { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-ink-3); }
+.ui__node--dark { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ui__node--dark span { color: var(--gold-light); }
+.ui__node + .ui__node::before { content: ""; position: absolute; left: 50%; top: -13px; height: 12px; border-left: 1.5px dashed var(--gold); }
+.ui__node + .ui__node::after { content: ""; position: absolute; left: 50%; top: -14px; width: 6px; height: 6px; margin-left: -2.25px; border-radius: 50%; background: var(--gold); animation: sw-flow 2.4s ease-in-out infinite; }
+.ui__node:nth-child(3)::after { animation-delay: 1.2s; }
+.sw-grid:not(.is-in) .ui__node::after { animation-play-state: paused; opacity: 0; }
+@keyframes sw-flow { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ui__node + .ui__node::after { animation: none; opacity: 0; } .ui__bar i, .ui__meter i { transition: none; } }
+.sw-grid + .cta-band { margin-top: 16px; border-radius: 16px; }
 .cta-band {
   margin-top: 40px; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: center;
   padding: clamp(32px, 2rem + 1.5vw, 48px) clamp(24px, 4vw, 56px); border-radius: 4px; background: var(--petrol-tint);

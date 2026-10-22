@@ -1,6 +1,7 @@
 import { SHOPS, facadeSVG } from './shops.js';
 import { afterInteraction, can3D, hasWebGL2, reducedMotion } from './capability.js';
 import './hero-video.js';
+import './software-demos.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 

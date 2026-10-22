@@ -30,7 +30,7 @@ const plans = fit(block('<div class="plans"', 'div'));
 const plansNote = fit(index.match(/<p class="plans__note"[^>]*>[\s\S]*?<\/p>/)[0]);
 const steps = fit(block('<ol class="steps__list">', 'ol'));
 const umstieg = fit(block('<div class="umstieg__grid">', 'div')).replace(/<(\/?)h4\b/g, '<$1h3'); // auf Themenseiten folgt die Karte direkt auf eine H2
-const software = fit(block('<ul class="software__list"', 'ul'));
+const software = fit(block('<div class="sw-grid"', 'div'));
 
 const LOGO = `<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
           <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
@@ -93,8 +93,8 @@ function seite({ slug, title, description, h1, h1b, lead, ctas, crumb, service, 
   <meta name="geo.placename" content="Hamburg">
   <link rel="preload" href="/assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022j">
-  <link rel="stylesheet" href="/assets/css/home.css?v=20261022j">
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022m">
+  <link rel="stylesheet" href="/assets/css/home.css?v=20261022m">
   <link rel="stylesheet" href="/assets/css/seite.css">
   <script type="application/ld+json">
 ${JSON.stringify(ld, null, 2)}
@@ -162,7 +162,7 @@ ${body}
       </nav>
     </div>
   </footer>
-  <script src="/assets/js/seite.js" defer></script>
+  <script src="/assets/js/seite.js" defer></script>${body.includes('data-demo') ? '\n  <script src="/assets/js/software-demos.js" defer></script>' : ''}
 </body>
 </html>
 `;

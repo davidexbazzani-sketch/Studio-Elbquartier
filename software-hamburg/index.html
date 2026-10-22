@@ -24,8 +24,8 @@
   <meta name="geo.placename" content="Hamburg">
   <link rel="preload" href="/assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022j">
-  <link rel="stylesheet" href="/assets/css/home.css?v=20261022j">
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=20261022m">
+  <link rel="stylesheet" href="/assets/css/home.css?v=20261022m">
   <link rel="stylesheet" href="/assets/css/seite.css">
   <script type="application/ld+json">
 {
@@ -121,14 +121,72 @@
           <h2 class="t-h2" id="loesungen-title">Software, die Ihnen<br><span class="t-serif-italic">Arbeit abnimmt.</span></h2>
           <p class="t-lead">Zum Beispiel:</p>
         </header>
-        <ul class="software__list">
-          <li class="software__item"><span class="software__code">S/01</span><h3 class="software__title">Online-Reservierung</h3><p>Tische, Termine oder Beratungen direkt über Ihre Website buchen lassen, mit automatischer Bestätigung und Erinnerung.</p></li>
-          <li class="software__item"><span class="software__code">S/02</span><h3 class="software__title">Vorbestellen und abholen</h3><p>Ihre Kundschaft bestellt online und holt bei Ihnen ab. Ohne Telefonstress und ohne Warteschlange.</p></li>
-          <li class="software__item"><span class="software__code">S/03</span><h3 class="software__title">Gutscheine und Treuekarten</h3><p>Gutscheine rund um die Uhr online verkaufen und Ihre Stammkundschaft mit einer digitalen Treuekarte belohnen.</p></li>
-          <li class="software__item"><span class="software__code">S/04</span><h3 class="software__title">Digitale Karten</h3><p>Speise- oder Preislisten per QR-Code, mit Allergenen und Tagesangeboten. Änderungen machen Sie in Sekunden selbst.</p></li>
-          <li class="software__item"><span class="software__code">S/05</span><h3 class="software__title">Werkzeuge für Ihr Team</h3><p>Dienstpläne, Lagerlisten oder Checklisten, zugeschnitten auf Ihre Abläufe statt von der Stange.</p></li>
-          <li class="software__item"><span class="software__code">S/06</span><h3 class="software__title">Automatisierung</h3><p>Wiederkehrende Aufgaben erledigen sich von selbst, und Ihre Programme arbeiten zusammen, etwa Kasse, Onlineshop und Buchhaltung.</p></li>
-        </ul>
+        <div class="sw-grid">
+          <article class="sw-card sw-card--booking">
+            <div class="ui ui--booking" data-demo="booking" role="group" aria-label="Beispiel zum Ausprobieren: Tischreservierung">
+              <div class="ui__head"><span class="ui__title">Tisch reservieren</span><span class="ui__label">Beispiel</span></div>
+              <div class="ui__dates" data-dates>
+                <button type="button" class="ui__date" aria-pressed="false" data-label="Fr, 23.10."><small>Fr</small>23</button>
+                <button type="button" class="ui__date" aria-pressed="true" data-label="Sa, 24.10."><small>Sa</small>24</button>
+                <button type="button" class="ui__date" aria-pressed="false" data-label="So, 25.10."><small>So</small>25</button>
+                <button type="button" class="ui__date" aria-pressed="false" data-label="Mo, 26.10."><small>Mo</small>26</button>
+              </div>
+              <div class="ui__row"><span>Personen</span><span class="ui__stepper"><button type="button" data-step="-1" aria-label="Eine Person weniger">−</button><output data-persons aria-live="polite">4</output><button type="button" data-step="1" aria-label="Eine Person mehr">+</button></span></div>
+              <div class="ui__times" data-times>
+                <button type="button" class="ui__time" aria-pressed="false">17:30</button>
+                <button type="button" class="ui__time" aria-pressed="false">18:00</button>
+                <button type="button" class="ui__time" disabled aria-label="18:30 ausgebucht">18:30</button>
+                <button type="button" class="ui__time" aria-pressed="false">19:00</button>
+                <button type="button" class="ui__time" aria-pressed="true">19:30</button>
+                <button type="button" class="ui__time" aria-pressed="false">20:00</button>
+                <button type="button" class="ui__time" aria-pressed="false">20:30</button>
+                <button type="button" class="ui__time" aria-pressed="false">21:00</button>
+              </div>
+              <p class="ui__confirm"><span class="ui__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Bestätigt: <span data-summary>Sa, 24.10. · 19:30 · 4 Personen</span></b><small>Erinnerung kommt automatisch am Vortag</small></span></p>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/01</span><h3 class="sw-card__title">Online-Reservierung</h3><p>Tische, Termine oder Beratungen direkt über Ihre Website buchen lassen, mit automatischer Bestätigung und Erinnerung.</p></div>
+          </article>
+          <article class="sw-card sw-card--order">
+            <div class="ui ui--order" aria-hidden="true">
+              <div class="ui__head"><span class="ui__label">Bestellung 024</span><span class="ui__label">Abholung 8:15</span></div>
+              <ul class="ui__lines"><li><span>1 × Cappuccino</span><span>3,60 €</span></li><li><span>2 × Franzbrötchen</span><span>5,40 €</span></li></ul>
+              <div class="ui__progress"><span class="ui__bar"><i></i><b></b><b></b><b></b></span><ol><li>Eingegangen</li><li>In Arbeit</li><li class="is-now">Abholbereit</li></ol></div>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/02</span><h3 class="sw-card__title">Vorbestellen und abholen</h3><p>Ihre Kundschaft bestellt online und holt bei Ihnen ab. Ohne Telefonstress und ohne Warteschlange.</p></div>
+          </article>
+          <article class="sw-card sw-card--voucher">
+            <div class="ui ui--voucher" aria-hidden="true">
+              <div class="ui__ticket"><span class="ui__label">Gutschein · online gekauft</span><span class="ui__amount">50 €</span><span class="ui__seal"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="ui__stamps"><span class="ui__dots"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></span><small>Treuekarte: noch 2 Besuche bis zum Dankeschön</small></div>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/03</span><h3 class="sw-card__title">Gutscheine und Treuekarten</h3><p>Gutscheine rund um die Uhr online verkaufen und Ihre Stammkundschaft mit einer digitalen Treuekarte belohnen.</p></div>
+          </article>
+          <article class="sw-card sw-card--menu">
+            <div class="ui ui--menu" aria-hidden="true">
+              <svg class="ui__qr" viewBox="0 0 21 21" aria-hidden="true"><path d="M0 0h7v7h-7zM1 1v5h5v-5zM2 2h3v3h-3zM14 0h7v7h-7zM15 1v5h5v-5zM16 2h3v3h-3zM0 14h7v7h-7zM1 15v5h5v-5zM2 16h3v3h-3zM9 0h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM9 3h1v1h-1zM11 3h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM9 7h1v1h-1zM12 7h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM11 8h1v1h-1zM18 8h1v1h-1zM19 8h1v1h-1zM20 8h1v1h-1zM4 9h1v1h-1zM9 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM10 10h1v1h-1zM13 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM8 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM15 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM8 13h1v1h-1zM12 13h1v1h-1zM18 13h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM19 14h1v1h-1zM20 14h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM19 15h1v1h-1zM20 15h1v1h-1zM8 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM15 17h1v1h-1zM20 17h1v1h-1zM9 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM14 18h1v1h-1zM18 18h1v1h-1zM19 18h1v1h-1zM16 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM16 20h1v1h-1zM20 20h1v1h-1z" fill="currentColor" fill-rule="evenodd"/></svg>
+              <div><span class="ui__label">Mittagstisch</span><ul class="ui__menu"><li><span>Labskaus</span><span>14,50</span></li><li><span>Fischbrötchen</span><span>6,90</span></li></ul><span class="ui__allergens"><i>A</i><i>C</i><i>D</i></span></div>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/04</span><h3 class="sw-card__title">Digitale Karten</h3><p>Speise- oder Preislisten per QR-Code, mit Allergenen und Tagesangeboten. Änderungen machen Sie in Sekunden selbst.</p></div>
+          </article>
+          <article class="sw-card sw-card--check">
+            <div class="ui ui--check" data-demo="checklist" role="group" aria-label="Beispiel zum Ausprobieren: Schicht-Checkliste">
+              <div class="ui__head"><span class="ui__title">Schicht-Checkliste</span><span class="ui__label" data-count>2/3</span></div>
+              <span class="ui__meter"><i data-meter style="--p: 0.667"></i></span>
+              <label class="ui__task"><input type="checkbox" checked><span>Kasse gezählt</span></label>
+              <label class="ui__task"><input type="checkbox" checked><span>Kühlung geprüft</span></label>
+              <label class="ui__task"><input type="checkbox"><span>Lieferung angenommen</span></label>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/05</span><h3 class="sw-card__title">Werkzeuge für Ihr Team</h3><p>Dienstpläne, Lagerlisten oder Checklisten, zugeschnitten auf Ihre Abläufe statt von der Stange.</p></div>
+          </article>
+          <article class="sw-card sw-card--flow">
+            <div class="ui ui--flow" aria-hidden="true">
+              <div class="ui__node"><b>Kasse</b><span>Verkauf erfasst</span></div>
+              <div class="ui__node"><b>Onlineshop</b><span>Bestand aktuell</span></div>
+              <div class="ui__node ui__node--dark"><b>Buchhaltung</b><span>automatisch gebucht</span></div>
+            </div>
+            <div class="sw-card__text"><span class="sw-card__code">S/06</span><h3 class="sw-card__title">Automatisierung</h3><p>Wiederkehrende Aufgaben erledigen sich von selbst, und Ihre Programme arbeiten zusammen, etwa Kasse, Onlineshop und Buchhaltung.</p></div>
+          </article>
+        </div>
         <div class="cta-band">
           <div class="cta-band__text">
             <h3 class="t-h3">Ihre Idee ist nicht dabei?<br><span class="t-serif-italic">Erzählen Sie uns davon.</span></h3>
@@ -200,5 +258,6 @@
     </div>
   </footer>
   <script src="/assets/js/seite.js" defer></script>
+  <script src="/assets/js/software-demos.js" defer></script>
 </body>
 </html>

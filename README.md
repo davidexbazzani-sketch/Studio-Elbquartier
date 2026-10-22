@@ -27,7 +27,7 @@ Tipps zum Testen:
 | `impressum.html`, `datenschutz.html` | Entwürfe, die markierten Stellen vor dem Livegang ausfüllen |
 | `design-system.html` | Übersicht aller Farben, Schriften, Abstände und Bausteine |
 | `assets/css/design-system.css` | Design System (Tokens und Komponenten), von allen Seiten genutzt |
-| `assets/js/` | Startseite, Drehscheibe, gemeinsame Helfer (`capability.js` entscheidet, ob 3D läuft) |
+| `assets/js/` | Startseite, Drehscheibe, gemeinsame Helfer (`capability.js` entscheidet, ob 3D läuft), kleine Software-Beispiele zum Ausprobieren (`software-demos.js`, auch auf der Software-Seite) |
 | `assets/js/3d/` | 3D: Autohaus-Showroom (`showroom.js`, `cars.js`), Bühne (`stage.js`), Schmuck (`brilliant.js`, `diamond-material.js`, `jewelry.js`, `viewer.js`), Blumen (`flowers.js`, `bouquet.js`), Boutique (`cloth.js`) |
 | `assets/video/cafe/`, `assets/video/bar/` | Kurze Filme der vier Café-Getränke und der sechs Bar-Drinks (H.264, 720 × 900), Standbilder dazu in `assets/img/cafe/getraenke/` und `assets/img/bar/drinks/` |
 | `beispiele/<laden>/` | Die Muster-Websites: Juwelier, Blumenladen, Restaurant, Bar, Café, Boutique, Getränke-Shop (FUNKL), Immobilienmakler (Solmund), Optiker (Klarsund), Autohaus (Halden Automobile) |
