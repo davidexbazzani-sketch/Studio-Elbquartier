@@ -86,8 +86,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preload" href="assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022m">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261022m">
+  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022n">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261022n">
   <script>
     // Bewegung nur, wenn das Gerät keine reduzierte Bewegung wünscht
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
@@ -150,6 +150,25 @@
             </picture>
             <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
             <video class="hero__clip" muted playsinline preload="none" disablepictureinpicture></video>
+            <script>
+              /* Erstes Startvideo sofort anfordern, noch während die Seite lädt (auf dem Handy startet es so Sekunden früher).
+                 Nicht bei Datensparmodus, sehr langsamer Verbindung oder „Bewegung reduzieren“. assets/js/hero-video.js übernimmt danach. */
+              (function () {
+                var n = navigator.connection || {};
+                if (matchMedia('(prefers-reduced-motion: reduce)').matches || n.saveData || /(^|-)2g$/.test(n.effectiveType || '')) return;
+                var v = document.querySelector('.hero__clip');
+                var f = matchMedia('(max-aspect-ratio: 1/1)').matches ? 'p' : 'l';
+                v.src = 'assets/video/hero60/hero-1-' + f + '.mp4';
+                // gleiches Standbild wie darunter: das Video ist sofort sichtbar und läuft los, sobald genug geladen ist,
+                // ohne auf die übrigen Skripte zu warten (kein schwarzes Bild, kein Sprung)
+                v.poster = 'assets/video/hero/hero-1-' + f + '.webp';
+                v.preload = 'auto';
+                v.autoplay = true;
+                v.dataset.early = '1';
+                v.classList.add('is-on');
+                v.addEventListener('playing', function () { v.dataset.playing = '1'; }, { once: true });
+              })();
+            </script>
             <div class="hero__sting"></div>
           </div>
           <div class="hero__veil" aria-hidden="true"></div>
@@ -664,6 +683,6 @@
 
   <script src="assets/vendor/gsap/gsap.min.js" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="assets/js/main.js?v=20261022m"></script>
+  <script type="module" src="assets/js/main.js?v=20261022n"></script>
 </body>
 </html>

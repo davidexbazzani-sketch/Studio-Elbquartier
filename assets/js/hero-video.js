@@ -100,22 +100,33 @@ function start() {
     if (on) { if (cur.classList.contains('is-on')) tryPlay(cur); loop(); } else cur.pause();
   }
 
-  // Erst nach dem Seitenaufbau laden, damit Text und Standbild sofort da sind
+  // Erstes Video laden, sobald Schriften und erstes Bild stehen (nicht erst nach dem kompletten Seitenaufbau:
+  // auf dem Handy dauerte das mehrere Sekunden). Das zweite Video lädt erst, wenn das erste läuft.
+  let started = false;
   const go = () => {
-    load(cur, 0);
-    cur.addEventListener('playing', function first() {
-      cur.removeEventListener('playing', first);
+    if (!cur.dataset.early) load(cur, 0); // meist schon im HTML angefordert und gestartet (Inline-Skript unter den Videos)
+    const first = () => {
+      started = true;
       cur.classList.add('is-on');
       hero.classList.add('has-video');
       if (pauseBtn) pauseBtn.hidden = false;
       load(nxt, 1);
       loop();
-    });
-    cur.addEventListener('canplay', () => { if (running()) tryPlay(cur); }, { once: true });
+    };
+    if (cur.dataset.playing) first();
+    else cur.addEventListener('playing', first, { once: true });
+    if (cur.readyState >= 3) { if (running()) tryPlay(cur); }
+    else cur.addEventListener('canplay', () => { if (running()) tryPlay(cur); }, { once: true });
   };
-  const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
-  if (document.readyState === 'complete') idle(go, { timeout: 1500 });
-  else addEventListener('load', () => idle(go, { timeout: 1500 }), { once: true });
+  go();
+
+  // iPhone im Stromsparmodus spielt Videos nur nach einer Berührung ab: beim ersten Tippen nachholen
+  const unlock = () => {
+    if (started) { removeEventListener('touchend', unlock); removeEventListener('click', unlock); return; }
+    if (running() && cur.src) tryPlay(cur);
+  };
+  addEventListener('touchend', unlock, { passive: true });
+  addEventListener('click', unlock);
 
   new IntersectionObserver(([e]) => { inView = e.isIntersecting; setRunning(); }).observe(hero);
   document.addEventListener('visibilitychange', setRunning);

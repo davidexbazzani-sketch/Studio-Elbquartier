@@ -44,16 +44,20 @@ function initMotion() {
   tl.from('[data-hero]', { opacity: 0, y: 24, duration: 1.2, stagger: 0.09 })
     .from('.hero__title .char', { opacity: 0, yPercent: 40, rotateX: -50, duration: 1.1, stagger: 0.025 }, 0.15);
 
-  // Hero gleitet beim Scrollen sanft zurück (auf dem Handy ohne Verblassen, sonst wirken die Buttons ausgegraut)
-  const wide = matchMedia('(min-width: 760px)').matches;
-  gsap.to('.hero__inner', {
-    yPercent: wide ? -12 : -4, opacity: wide ? 0.2 : 1, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
-  gsap.to('.hero__media', {
-    yPercent: 14, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
+  // An den Scrollweg gekoppelte Bewegungen nur mit Maus: Auf Handys scrollt der Browser auf einem eigenen Faden,
+  // JS-Bewegungen kommen dort einen Moment zu spät und wirken ruckelig
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  if (!touch) {
+    // Hero gleitet beim Scrollen sanft zurück
+    gsap.to('.hero__inner', {
+      yPercent: -12, opacity: 0.2, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+    gsap.to('.hero__media', {
+      yPercent: 14, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+  }
   // Elemente erscheinen beim Hineinscrollen
   ScrollTrigger.batch('[data-reveal]', {
     // früh und zügig, damit beim schnellen Wischen keine leeren Flächen stehen bleiben
@@ -66,43 +70,33 @@ function initMotion() {
     }),
   });
 
-  // Bilder öffnen sich beim Hereinscrollen: Ausschnitt zieht auf, Bild zoomt leicht zurück
+  // Bilder erscheinen beim Hereinscrollen: blenden auf, wachsen leicht, das Bild zoomt sanft zurück
+  // (nur Deckkraft und Größe – das rechnet die Grafikkarte, ohne jedes Bild neu zu malen)
   gsap.utils.toArray('[data-img]').forEach((fig) => {
     const img = fig.querySelector('img');
     const round = fig.classList.contains('row__media');
     gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 92%', once: true } })
-      .fromTo(fig, { clipPath: round ? 'circle(30% at 50% 50%)' : 'inset(12% 8% 12% 8% round 4px)' },
-        { clipPath: round ? 'circle(50% at 50% 50%)' : 'inset(0% 0% 0% 0% round 4px)', duration: 1.3, clearProps: 'clipPath' })
-      .fromTo(img, { scale: 1.16 }, { scale: 1, duration: 1.6, clearProps: 'transform' }, 0);
+      .fromTo(fig, { opacity: 0, scale: round ? 0.86 : 0.97 }, { opacity: 1, scale: 1, duration: 1.1, clearProps: 'opacity,transform' })
+      .fromTo(img, { scale: 1.12 }, { scale: 1, duration: 1.5, clearProps: 'transform' }, 0);
   });
 
-  // Bildband: Bild gleitet langsamer als die Seite (Tiefenwirkung)
-  gsap.fromTo('.band__img', { yPercent: -7 }, {
-    yPercent: 7, ease: 'none',
-    scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true },
-  });
-
-  // Laufband: läuft ruhig, beim Scrollen kurz etwas schneller; außerhalb des Bildschirms angehalten
-  const track = document.querySelector('.ribbons .ribbon__track');
-  if (track) {
-    document.documentElement.classList.add('js-ribbons');
-    const loop = gsap.fromTo(track, { xPercent: 0 }, { xPercent: -50, duration: 90, ease: 'none', repeat: -1, paused: true });
-    ScrollTrigger.create({
-      trigger: '.ribbons', start: 'top bottom', end: 'bottom top',
-      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
-      onUpdate: (self) => {
-        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 600, 2.5);
-        gsap.to(loop, { timeScale: boost, duration: 0.3, overwrite: true,
-          onComplete: () => gsap.to(loop, { timeScale: 1, duration: 1.6, ease: 'power2.out' }) });
-      },
+  // Bildband: Bild gleitet langsamer als die Seite (Tiefenwirkung, nur mit Maus)
+  if (!touch) {
+    gsap.fromTo('.band__img', { yPercent: -7 }, {
+      yPercent: 7, ease: 'none',
+      scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true },
     });
   }
 
-  // Drehscheibe zoomt beim Hereinscrollen leicht heran
-  gsap.fromTo('.stage', { scale: 0.94 }, { // nur Zoom, kein Verblassen (wirkte auf dem Handy wie ein Ladefehler)
-    scale: 1, ease: 'none',
-    scrollTrigger: { trigger: '.stage', start: 'top bottom', end: 'top 45%', scrub: true },
-  });
+  // Laufband: läuft per CSS (home.css) auf der Grafikkarte, ohne JS
+
+  // Drehscheibe zoomt beim Hereinscrollen leicht heran (nur mit Maus)
+  if (!touch) {
+    gsap.fromTo('.stage', { scale: 0.94 }, { // nur Zoom, kein Verblassen (wirkte auf dem Handy wie ein Ladefehler)
+      scale: 1, ease: 'none',
+      scrollTrigger: { trigger: '.stage', start: 'top bottom', end: 'top 45%', scrub: true },
+    });
+  }
 }
 initMotion();
 
@@ -209,9 +203,17 @@ const cap = can3D();
 if (cap.ok) {
   // 3D erst laden, wenn der Abschnitt bald sichtbar wird – und erst, wenn jemand die Seite bedient
   // (scrollen, tippen, Maus). Sonst rechnet das Handy schon beim Seitenaufbau am 3D und die Startanimation hakt.
+  // Aufbau kostet einen Moment Rechenzeit: erst starten, wenn das Scrollen kurz ruht, damit es beim Wischen nicht hakt
+  const whenScrollRests = (fn, ms = 250) => {
+    let t = 0;
+    const done = () => { removeEventListener('scroll', on); (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(fn, { timeout: 700 }); };
+    const on = () => { clearTimeout(t); t = setTimeout(done, ms); };
+    addEventListener('scroll', on, { passive: true });
+    on();
+  };
   const io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load3D(); }
-  }, { rootMargin: '300px 0px' });
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); whenScrollRests(load3D); }
+  }, { rootMargin: '600px 0px' });
   // Erst beim Scrollen starten (nicht nach Zeit oder Mausbewegung): Der 3D-Aufbau blockiert kurz den Browser
   // und würde sonst das Video im Startbereich stocken lassen.
   if (scrollY > 0) io.observe(stage);

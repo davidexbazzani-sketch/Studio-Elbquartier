@@ -356,7 +356,7 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
   try { await document.fonts.load('italic 100px "Instrument Serif"'); } catch (_) { /* Fallback-Schrift */ }
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  const dprCap = window.innerWidth < 768 ? 1.75 : 2;
+  const dprCap = window.innerWidth < 768 ? 1.5 : 2; // Handy: etwas weniger Pixel, dafür flüssig
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
@@ -558,6 +558,9 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
   // ---------- Schleife ----------
   const clock = { t: 0 };
   function frame(now) {
+    // Während gescrollt wird, nicht zeichnen: Die Grafikkarte gehört dann dem Scrollen (vor allem auf Handys).
+    // Sobald das Scrollen ruht, geht es weiter (kick unten).
+    if (scrolling && !drag) { running = false; return; }
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     clock.t += dt;
@@ -595,6 +598,13 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
     if (visible && (!reducedMotion || busy)) raf = requestAnimationFrame(frame);
     else running = false;
   }
+
+  let scrolling = false, scrollRest = 0;
+  addEventListener('scroll', () => {
+    scrolling = true;
+    clearTimeout(scrollRest);
+    scrollRest = setTimeout(() => { scrolling = false; kick(); }, 140);
+  }, { passive: true });
 
   function kick() {
     if (running || !visible) return;
