@@ -22,8 +22,8 @@ Tipps zum Testen:
 
 | Pfad | Inhalt |
 |---|---|
-| `index.html` | Startseite im Stil „Hamburg-Editorial“, helle Fassung (seit 22.10.2026, Vorlage `Vorlagen/studio-elbquartier-startseite.html`): Startvideo, Einleitung, Laufband, zehn Beispiel-Kacheln (auf dem Handy als Wischreihe) und darunter die 3D-Drehscheibe, Leistungen, Ablauf, Fotografie, Website-Pakete, Umstieg, Softwarelösungen, Team, Kontakt |
-| `assets/css/home.css` | Stil der Startseite und der drei Themenseiten: Schriften Fraunces (Überschriften), Geist (Text), IBM Plex Mono (kleine Kennzeilen), Farben Creme/Sand/helles Petrol mit Orange als Akzent. Keine dunklen Flächen. CSS und JS werden mit `?v=Datum` verlinkt; nach Änderungen die Nummer in `index.html` und `tools/seiten/seiten.mjs` hochzählen |
+| `index.html` | Startseite im Stil „Hamburg-Editorial“, helle Fassung (seit 22.10.2026, Vorlage `Vorlagen/studio-elbquartier-startseite.html`): Startvideo, Einleitung mit Bild, zwei gekreuzte Laufbänder, direkt danach die 3D-Drehscheibe, vier Leistungen mit Bild (Webdesign, Fotografie, Software, Reichweite: Werbung & SEO), Bildband, Ablauf, Fotografie, Website-Pakete, Umstieg, Softwarelösungen, Team, Kontakt. Bilder in `assets/img/bild-*.webp` und `foto-*.webp` sind KI-Visualisierungen (siehe CREDITS.md) |
+| `assets/css/home.css` | Stil der Startseite und der drei Themenseiten: Schriften Fraunces (Überschriften), Geist (Text), IBM Plex Mono (kleine Kennzeilen), Farben Creme/Sand/helles Petrol, Akzent gedecktes Dunkelblau (#2E4361, nur Schrift, Buttons, schmale Bänder). Keine dunklen Flächen. CSS und JS werden mit `?v=Datum` verlinkt; nach Änderungen die Nummer in `index.html` und `tools/seiten/seiten.mjs` hochzählen |
 | `impressum.html`, `datenschutz.html` | Entwürfe, die markierten Stellen vor dem Livegang ausfüllen |
 | `design-system.html` | Übersicht aller Farben, Schriften, Abstände und Bausteine |
 | `assets/css/design-system.css` | Design System (Tokens und Komponenten), von allen Seiten genutzt |

@@ -86,8 +86,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preload" href="assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022c">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261022c">
+  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022e">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261022e">
   <script>
     // Bewegung nur, wenn das Gerät keine reduzierte Bewegung wünscht
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
@@ -173,6 +173,8 @@
     <!-- Kurz vorgestellt -->
     <section class="intro" aria-labelledby="intro-title">
       <div class="container">
+        <div class="intro__grid">
+        <div class="intro__text">
         <p class="kicker" data-reveal>53°33′ N · 9°59′ O — Webdesign, Fotografie &amp; Software aus Hamburg</p>
         <h2 class="intro__title" id="intro-title" data-reveal>Ihr Laden. Online so schön wie <em>vor&nbsp;Ort.</em></h2>
         <div class="intro__row" data-reveal>
@@ -185,98 +187,25 @@
             <p class="note"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Sie zahlen erst, wenn Ihnen der fertige Entwurf gefällt.</p>
           </div>
         </div>
+        </div>
+        <figure class="intro__media" data-img>
+          <img src="assets/img/bild-arbeitsplatz-800.webp" srcset="assets/img/bild-arbeitsplatz-800.webp 800w, assets/img/bild-arbeitsplatz-1200.webp 1200w" sizes="(min-width: 900px) 420px, 92vw" width="800" height="1000" alt="Heller Arbeitstisch aus Marmor mit Laptop, Cappuccino, Notizbuch und weißen Hortensien im Nachmittagslicht" loading="lazy" decoding="async">
+        </figure>
+        </div>
       </div>
     </section>
 
-    <!-- Laufband -->
-    <div class="marquee" role="img" aria-label="Für Blumenläden, Cafés, Juweliere, Restaurants, Boutiquen, Bars, Feinkost, Buchläden und Friseure">
-      <div class="marquee__track" aria-hidden="true"><span>Blumenläden · Cafés · Juweliere · Restaurants · Boutiquen · Bars · Feinkost · Buchläden · Friseure · </span><span>Blumenläden · Cafés · Juweliere · Restaurants · Boutiquen · Bars · Feinkost · Buchläden · Friseure · </span></div>
+    <!-- Laufband: zwei gekreuzte Bänder -->
+    <div class="ribbons" role="img" aria-label="Für Blumenläden, Cafés, Juweliere, Restaurants, Boutiquen, Bars, Feinkost, Buchläden und Friseure: Webdesign, Fotografie, Software, Werbung und SEO aus Hamburg">
+      <div class="ribbon ribbon--back" aria-hidden="true"><div class="ribbon__track"><span class="ribbon__group"><span class="ribbon__item">Webdesign<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Fotografie<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Software<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Werbung &amp; SEO<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Persönlich vor Ort<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Aus Hamburg<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Webdesign<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Fotografie<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Software<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Werbung &amp; SEO<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Persönlich vor Ort<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Aus Hamburg<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Webdesign<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Fotografie<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Software<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Werbung &amp; SEO<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Persönlich vor Ort<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Aus Hamburg<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Webdesign<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Fotografie<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Software<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Werbung &amp; SEO<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Persönlich vor Ort<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span><span class="ribbon__item">Aus Hamburg<svg viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg></span></span></div></div>
+      <div class="ribbon ribbon--front" aria-hidden="true"><div class="ribbon__track"><span class="ribbon__group"><span class="ribbon__item">Blumenläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Cafés<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Juweliere<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Restaurants<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Boutiquen<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Bars<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Feinkost<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Buchläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Friseure<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Blumenläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Cafés<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Juweliere<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Restaurants<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Boutiquen<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Bars<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Feinkost<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Buchläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Friseure<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Blumenläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Cafés<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Juweliere<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Restaurants<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Boutiquen<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Bars<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Feinkost<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Buchläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Friseure<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span></span><span class="ribbon__group"><span class="ribbon__item">Blumenläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Cafés<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Juweliere<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Restaurants<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Boutiquen<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Bars<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Feinkost<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Buchläden<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="ribbon__item">Friseure<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 17.5c3.3-2.6 6.7-2.6 10 0s6.7 2.6 10 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 21.5c2.7-2 5.3-2 8 0s5.3 2 8 0" fill="none" stroke="#C8A97A" stroke-width="1.3" stroke-linecap="round"/></svg></span></span></div></div>
     </div>
 
-    <!-- 01 · Beispiele: Kacheln für alle Läden, darunter die Drehscheibe -->
+    <!-- 01 · Beispiele: die Drehscheibe mit allen zehn Läden -->
     <section class="section examples" id="beispiele" aria-labelledby="beispiele-title">
       <div class="container">
-        <header class="split-head" data-reveal>
-          <div>
-            <p class="kicker">01 — Beispiele</p>
-            <h2 class="display" id="beispiele-title">So könnte <em>Ihre</em> Website aussehen.</h2>
-          </div>
-          <p class="split-head__aside">Zehn erfundene Läden, zehn echte Ideen. Öffnen Sie ein Beispiel und klicken Sie sich durch.</p>
-        </header>
-        <ul class="tiles">
-          <li class="tile tile--petrol tile--feature">
-            <a class="tile__link" href="beispiele/juwelier/">
-              <span class="tile__meta"><span>Juwelier · Neuer Wall</span><span>01 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Holst &amp; Tochter</span><span class="tile__text">Schmuck in 3D – drehen, zoomen, funkeln lassen.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--sage">
-            <a class="tile__link" href="beispiele/blumenladen/">
-              <span class="tile__meta"><span>Blumenladen · Ottensen</span><span>02 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Blütenkontor</span><span class="tile__text">Strauß selbst zusammenstellen, Preis live sehen.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--rose">
-            <a class="tile__link" href="beispiele/restaurant/">
-              <span class="tile__meta"><span>Restaurant · Övelgönne</span><span>03 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Fährhaus Zwölf</span><span class="tile__text">Karte ansehen, Team kennenlernen, Tisch reservieren.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--sand">
-            <a class="tile__link" href="beispiele/cafe/">
-              <span class="tile__meta"><span>Café · Altona</span><span>04 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Kaffeehaus Möwe</span><span class="tile__text">Vier Lieblingsgetränke in kurzen Filmen, zum Vorbestellen.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--orange">
-            <a class="tile__link" href="beispiele/bar/">
-              <span class="tile__meta"><span>Bar · Sternschanze</span><span>05 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Nachtfalter</span><span class="tile__text">Jeder Drink in seinem schönsten Moment, als Film.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--sage">
-            <a class="tile__link" href="beispiele/boutique/">
-              <span class="tile__meta"><span>Boutique · Eppendorf</span><span>06 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Linnen &amp; Lou</span><span class="tile__text">Leinen zum Anfassen in 3D, Lookbook und Anprobe.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--petrol">
-            <a class="tile__link" href="beispiele/autohaus/">
-              <span class="tile__meta"><span>Autohaus · HafenCity</span><span>07 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Halden Automobile</span><span class="tile__text">Showroom in 3D: jedes Auto umrunden, heranzoomen, Farbe wählen.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--rose">
-            <a class="tile__link" href="beispiele/getraenke/">
-              <span class="tile__meta"><span>Getränke-Shop · Online</span><span>08 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">FUNKL</span><span class="tile__text">Energy-Drink mit Motion Graphics und beschlagenen Dosen in 3D.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--sand">
-            <a class="tile__link" href="beispiele/immobilien/">
-              <span class="tile__meta"><span>Immobilienmakler · Elbvororte</span><span>09 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Solmund</span><span class="tile__text">Film, fünf Objekte und eine Wohnung mit Elbblick zum Begehen in 3D.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-          <li class="tile tile--orange tile--wide">
-            <a class="tile__link" href="beispiele/brillen/">
-              <span class="tile__meta"><span>Optiker · Winterhude</span><span>10 / 10</span></span>
-              <span class="tile__body"><span class="tile__name">Klarsund</span><span class="tile__text">Brillen in 3D und Live-Anprobe mit der Kamera – Foto inklusive.</span></span>
-              <span class="tile__go">Beispiel-Website öffnen <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-            </a>
-          </li>
-        </ul>
         <div class="examples__stage-head">
-          <span class="kicker">Alle zehn Läden auf der Scheibe</span>
+          <h2 class="kicker" id="beispiele-title">01 — Beispiele: zehn Läden auf der Scheibe</h2>
           <p class="stage-lead" id="stage-lead">Drehen Sie die Scheibe und klicken Sie auf einen Laden.</p>
         </div>
       </div>
@@ -333,12 +262,13 @@
         <header class="split-head" data-reveal>
           <div>
             <p class="kicker">02 — Leistungen</p>
-            <h2 class="display" id="leistungen-title">Drei Dinge. <em>Aus einer Hand.</em></h2>
+            <h2 class="display" id="leistungen-title">Vier Dinge. <em>Aus einer Hand.</em></h2>
           </div>
           <p class="split-head__aside">Für Läden, Restaurants, Cafés, Bars und Boutiquen in Hamburg: persönlich bei Ihnen vor Ort, ohne Abo und ohne Fachchinesisch.</p>
         </header>
         <div class="rows">
           <article class="row" data-reveal>
+            <figure class="row__media" data-img><img src="assets/img/bild-moodboard-720.webp" srcset="assets/img/bild-moodboard-400.webp 400w, assets/img/bild-moodboard-720.webp 720w" sizes="(min-width: 1100px) 190px, (min-width: 900px) 150px, 92vw" width="720" height="900" alt="Moodboard mit Farbmustern in Salbei, Sand, Terrakotta und Petrol und Fotos von Läden" loading="lazy" decoding="async"></figure>
             <div class="row__head"><span class="row__num">01</span><h3 class="row__title">Webdesign &amp; Websites</h3></div>
             <div class="row__body">
               <p>Ihre Website zeigt, was Ihren Laden ausmacht: auf dem Handy wie am Computer schnell, klar und für Google vorbereitet. Bestehende Websites und Shopify-Shops machen wir neu.</p>
@@ -347,6 +277,7 @@
             <p class="row__price"><span>ab</span>500&nbsp;€</p>
           </article>
           <article class="row" data-reveal>
+            <figure class="row__media" data-img><img src="assets/img/bild-kamera-720.webp" srcset="assets/img/bild-kamera-400.webp 400w, assets/img/bild-kamera-720.webp 720w" sizes="(min-width: 1100px) 190px, (min-width: 900px) 150px, 92vw" width="720" height="900" alt="Kamera auf einer Holztheke im Blumenladen, dahinter Pfingstrosen und Ranunkeln" loading="lazy" decoding="async"></figure>
             <div class="row__head"><span class="row__num">02</span><h3 class="row__title">Fotografie</h3></div>
             <div class="row__body">
               <p>Unser Fotograf setzt Ihre Räume, Ihre Produkte und Ihr Team in Szene, für die Website und Ihre Social-Media-Kanäle. Oder wir holen das Beste aus den Bildern heraus, die Sie schon haben.</p>
@@ -355,6 +286,7 @@
             <p class="row__price row__price--text"><span>enthalten in</span>Paket Max</p>
           </article>
           <article class="row" data-reveal>
+            <figure class="row__media" data-img><img src="assets/img/bild-theke-720.webp" srcset="assets/img/bild-theke-400.webp 400w, assets/img/bild-theke-720.webp 720w" sizes="(min-width: 1100px) 190px, (min-width: 900px) 150px, 92vw" width="720" height="900" alt="Café-Theke mit Tablet am Ständer und Kartenterminal" loading="lazy" decoding="async"></figure>
             <div class="row__head"><span class="row__num">03</span><h3 class="row__title">Software&shy;lösungen</h3></div>
             <div class="row__body">
               <p>Online-Reservierung, Vorbestellen und Abholen, Gutscheine, digitale Karten oder Automatisierung: Software, die genau zu Ihrem Betrieb passt.</p>
@@ -362,9 +294,23 @@
             </div>
             <p class="row__price row__price--text"><span>Preis</span>nach Absprache</p>
           </article>
+          <article class="row" data-reveal>
+            <figure class="row__media" data-img><img src="assets/img/bild-reichweite-720.webp" srcset="assets/img/bild-reichweite-400.webp 400w, assets/img/bild-reichweite-720.webp 720w" sizes="(min-width: 1100px) 190px, (min-width: 900px) 150px, 92vw" width="720" height="900" alt="Cappuccino auf einem Marmortisch, dahinter eine belebte Einkaufsstraße im Nachmittagslicht" loading="lazy" decoding="async"></figure>
+            <div class="row__head"><span class="row__num">04</span><h3 class="row__title">Reichweite: Werbung &amp; SEO</h3></div>
+            <div class="row__body">
+              <p>Damit Ihre Website auch gefunden wird: Wir erhöhen ihre Reichweite mit gezielter Werbung bei den Menschen in Ihrer Umgebung und mit Suchmaschinen&shy;optimierung (SEO), damit Sie bei Google weiter oben stehen.</p>
+              <p class="row__links"><a class="link-strong" href="#kontakt">Reichweite besprechen</a><a class="link-quiet" href="#umstieg">Wie wir SEO angehen →</a></p>
+            </div>
+            <p class="row__price row__price--text"><span>Preis</span>nach Absprache</p>
+          </article>
         </div>
       </div>
     </section>
+
+    <!-- Bildband: Arbeitstisch im Abendlicht (bewegt sich beim Scrollen leicht mit) -->
+    <figure class="band" data-band>
+      <img class="band__img" src="assets/img/bild-skizzenbuch-1600.webp" srcset="assets/img/bild-skizzenbuch-1600.webp 1600w, assets/img/bild-skizzenbuch-2400.webp 2400w" sizes="100vw" width="1600" height="686" alt="Holztisch im Abendlicht mit Skizzenbuch voller Ladenfassaden, Stoffmustern, Kaffee und Hortensien" loading="lazy" decoding="async">
+    </figure>
 
     <!-- 03 · Ablauf -->
     <section class="section section--petrol steps" id="ablauf" aria-labelledby="ablauf-title">
@@ -387,9 +333,8 @@
     <section class="section photo" id="fotografie" aria-labelledby="foto-title">
       <div class="container photo__inner">
         <div class="photo__media" data-reveal>
-          <img class="photo__main" src="assets/img/foto-boutique.webp" width="720" height="900" alt="Schaufenster einer Modeboutique mit zwei Schaufensterpuppen (KI-Visualisierung)" loading="lazy" decoding="async">
-          <img class="photo__detail" src="assets/img/foto-restaurant.webp" width="480" height="562" alt="Restaurant mit Bistrotischen vor dem Eingang (KI-Visualisierung)" loading="lazy" decoding="async">
-          <span class="photo__label">Abb. 02 — KI-Visualisierung</span>
+          <img class="photo__main" src="assets/img/foto-laden-800.webp" srcset="assets/img/foto-laden-800.webp 800w, assets/img/foto-laden-1200.webp 1200w" sizes="(min-width: 1100px) 460px, 86vw" width="800" height="1000" alt="Heller Café-Innenraum mit Holztheke voller Gebäck und Messinglampen (Beispielbild)" loading="lazy" decoding="async">
+          <img class="photo__detail" src="assets/img/foto-produkt-640.webp" width="640" height="800" alt="Cappuccino mit zwei Croissants und Ranunkeln auf einer Steintheke (Beispielbild)" loading="lazy" decoding="async">
         </div>
         <div class="photo__text" data-reveal>
           <p class="kicker">04 — Fotografie</p>
@@ -641,6 +586,6 @@
 
   <script src="assets/vendor/gsap/gsap.min.js" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="assets/js/main.js?v=20261022c"></script>
+  <script type="module" src="assets/js/main.js?v=20261022e"></script>
 </body>
 </html>

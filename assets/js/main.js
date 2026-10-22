@@ -65,6 +65,39 @@ function initMotion() {
     }),
   });
 
+  // Bilder öffnen sich beim Hereinscrollen: Ausschnitt zieht auf, Bild zoomt leicht zurück
+  gsap.utils.toArray('[data-img]').forEach((fig) => {
+    const img = fig.querySelector('img');
+    gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 92%', once: true } })
+      .fromTo(fig, { clipPath: 'inset(12% 8% 12% 8% round 4px)' }, { clipPath: 'inset(0% 0% 0% 0% round 4px)', duration: 1.3, clearProps: 'clipPath' })
+      .fromTo(img, { scale: 1.16 }, { scale: 1, duration: 1.6, clearProps: 'transform' }, 0);
+  });
+
+  // Bildband: Bild gleitet langsamer als die Seite (Tiefenwirkung)
+  gsap.fromTo('.band__img', { yPercent: -7 }, {
+    yPercent: 7, ease: 'none',
+    scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true },
+  });
+
+  // Gekreuzte Bänder: laufen gegeneinander, beim Scrollen kurz schneller; außerhalb des Bildschirms angehalten
+  const ribbons = document.querySelector('.ribbons');
+  if (ribbons) {
+    document.documentElement.classList.add('js-ribbons');
+    const loops = [...ribbons.querySelectorAll('.ribbon__track')].map((track) => {
+      const back = track.closest('.ribbon--back');
+      return gsap.fromTo(track, { xPercent: back ? -50 : 0 }, { xPercent: back ? 0 : -50, duration: back ? 70 : 80, ease: 'none', repeat: -1, paused: true });
+    });
+    ScrollTrigger.create({
+      trigger: ribbons, start: 'top bottom', end: 'bottom top',
+      onToggle: (self) => loops.forEach((l) => (self.isActive ? l.play() : l.pause())),
+      onUpdate: (self) => {
+        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 350, 5);
+        loops.forEach((l) => gsap.to(l, { timeScale: boost, duration: 0.25, overwrite: true,
+          onComplete: () => gsap.to(l, { timeScale: 1, duration: 1.4, ease: 'power2.out' }) }));
+      },
+    });
+  }
+
   // Drehscheibe zoomt beim Hereinscrollen leicht heran
   gsap.fromTo('.stage', { scale: 0.94 }, { // nur Zoom, kein Verblassen (wirkte auf dem Handy wie ein Ladefehler)
     scale: 1, ease: 'none',
