@@ -79,21 +79,18 @@ function initMotion() {
     scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true },
   });
 
-  // Gekreuzte Bänder: laufen gegeneinander, beim Scrollen kurz schneller; außerhalb des Bildschirms angehalten
-  const ribbons = document.querySelector('.ribbons');
-  if (ribbons) {
+  // Laufband: läuft ruhig, beim Scrollen kurz etwas schneller; außerhalb des Bildschirms angehalten
+  const track = document.querySelector('.ribbons .ribbon__track');
+  if (track) {
     document.documentElement.classList.add('js-ribbons');
-    const loops = [...ribbons.querySelectorAll('.ribbon__track')].map((track) => {
-      const back = track.closest('.ribbon--back');
-      return gsap.fromTo(track, { xPercent: back ? -50 : 0 }, { xPercent: back ? 0 : -50, duration: back ? 70 : 80, ease: 'none', repeat: -1, paused: true });
-    });
+    const loop = gsap.fromTo(track, { xPercent: 0 }, { xPercent: -50, duration: 90, ease: 'none', repeat: -1, paused: true });
     ScrollTrigger.create({
-      trigger: ribbons, start: 'top bottom', end: 'bottom top',
-      onToggle: (self) => loops.forEach((l) => (self.isActive ? l.play() : l.pause())),
+      trigger: '.ribbons', start: 'top bottom', end: 'bottom top',
+      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
       onUpdate: (self) => {
-        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 350, 5);
-        loops.forEach((l) => gsap.to(l, { timeScale: boost, duration: 0.25, overwrite: true,
-          onComplete: () => gsap.to(l, { timeScale: 1, duration: 1.4, ease: 'power2.out' }) }));
+        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 600, 2.5);
+        gsap.to(loop, { timeScale: boost, duration: 0.3, overwrite: true,
+          onComplete: () => gsap.to(loop, { timeScale: 1, duration: 1.6, ease: 'power2.out' }) });
       },
     });
   }

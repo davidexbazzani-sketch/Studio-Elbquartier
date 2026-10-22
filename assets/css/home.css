@@ -360,26 +360,21 @@ body { background: var(--c-bg); font-family: var(--font-sans); color: var(--c-in
 .intro__lead { flex: 1 1 21rem; max-width: 28rem; margin: 0; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.55; color: var(--c-ink-2); }
 .intro__actions { flex: 1 1 18rem; display: flex; flex-direction: column; gap: var(--space-4); }
 
-/* ---------- Laufband: zwei gekreuzte Bänder, laufen gegeneinander, beim Scrollen kurz schneller (main.js) ---------- */
-.ribbons { position: relative; height: clamp(132px, 7rem + 4vw, 196px); overflow: hidden; }
-.ribbon { position: absolute; left: -6%; width: 112%; top: 50%; overflow: hidden; }
-.ribbon--back { transform: translateY(-50%) rotate(2.4deg); background: var(--accent-tint); color: var(--accent); border-block: 1px solid rgba(46, 67, 97, 0.25); }
-.ribbon--front { transform: translateY(-50%) rotate(-2.4deg); background: var(--accent); color: var(--accent-ink); box-shadow: 0 22px 40px -26px rgba(22, 33, 50, 0.55); }
-.ribbon__track { display: flex; width: max-content; white-space: nowrap; animation: marquee 80s linear infinite; }
-.ribbon--back .ribbon__track { animation-duration: 70s; animation-direction: reverse; }
-.ribbon--front .ribbon__track { padding: 16px 0; font-family: var(--font-serif); font-style: italic; font-weight: 320; font-size: clamp(1.5rem, 1.05rem + 1.6vw, 2.375rem); line-height: 1.1; }
-.ribbon--back .ribbon__track { padding: 13px 0; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.16em; text-transform: uppercase; }
-.ribbon__group { display: flex; align-items: center; }
-.ribbon__item { display: inline-flex; align-items: center; gap: clamp(18px, 1rem + 1vw, 30px); padding-right: clamp(18px, 1rem + 1vw, 30px); }
-.ribbon__item svg { width: 1.05em; height: 1.05em; flex: none; opacity: 0.85; }
-.ribbon--back .ribbon__item svg { width: 8px; height: 8px; }
-.js-ribbons .ribbon__track { animation: none; }
-/* Handy: Bänder weiter auseinander, damit beide sichtbar bleiben */
-@media (max-width: 759px) {
-  .ribbons { height: 168px; }
-  .ribbon--back { transform: translateY(calc(-50% + 38px)) rotate(3.5deg); }
-  .ribbon--front { transform: translateY(calc(-50% - 18px)) rotate(-3deg); }
+/* ---------- Laufband: ein ruhiges Band in Dunkelblau mit feinen Goldlinien (läuft beim Scrollen etwas schneller, main.js) ---------- */
+.ribbons { position: relative; overflow: hidden; background: var(--accent); color: var(--accent-ink); }
+.ribbons::before, .ribbons::after { content: ""; position: absolute; left: 0; right: 0; height: 1px; background: rgba(200, 169, 122, 0.55); pointer-events: none; }
+.ribbons::before { top: 7px; }
+.ribbons::after { bottom: 7px; }
+.ribbon { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+.ribbon__track {
+  display: flex; width: max-content; white-space: nowrap; padding: clamp(22px, 1rem + 1vw, 30px) 0;
+  font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(1.4rem, 1rem + 1.3vw, 2.125rem); line-height: 1.1; letter-spacing: 0.01em;
+  animation: marquee 90s linear infinite;
 }
+.ribbon__group { display: flex; align-items: center; }
+.ribbon__item { display: inline-flex; align-items: center; gap: clamp(22px, 1rem + 1.4vw, 40px); padding-right: clamp(22px, 1rem + 1.4vw, 40px); }
+.ribbon__item svg { width: 7px; height: 7px; flex: none; color: #C8A97A; }
+.js-ribbons .ribbon__track { animation: none; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- 01 Beispiele: Drehscheibe direkt nach der Einleitung ---------- */
