@@ -352,7 +352,7 @@ function buildShop(shop, index) {
 
 // ---------- Öffentliche API ----------
 
-export async function createTurntable({ container, hint, onChange, onOpen, reducedMotion = false }) {
+export async function createTurntable({ container, hint, onChange, onOpen, reducedMotion = false, settle = true }) {
   try { await document.fonts.load('italic 100px "Instrument Serif"'); } catch (_) { /* Fallback-Schrift */ }
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -420,7 +420,7 @@ export async function createTurntable({ container, hint, onChange, onOpen, reduc
   }
 
   // ---------- Zustand ----------
-  let rot = reducedMotion ? 0 : STEP * 1.6; // kleine Einschwing-Drehung beim ersten Sichtbarwerden
+  let rot = reducedMotion || !settle ? 0 : STEP * 1.6; // kleine Einschwing-Drehung (ohne, wenn ein Standbild übergibt)
   let target = 0;
   let active = 0;
   let hovered = -1;

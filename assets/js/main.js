@@ -187,6 +187,7 @@ async function load3D() {
       container: canvasWrap,
       hint: $('#stage-hint'),
       reducedMotion,
+      settle: !$('.stage__poster'), // Standbild zeigt die Ruhelage: nahtlos übernehmen
       onChange: (i) => setActive(i),
       onOpen: (i) => { location.href = SHOPS[i].url; },
     });
@@ -211,13 +212,15 @@ if (cap.ok) {
     addEventListener('scroll', on, { passive: true });
     on();
   };
-  const io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); whenScrollRests(load3D); }
-  }, { rootMargin: '600px 0px' });
-  // Erst beim Scrollen starten (nicht nach Zeit oder Mausbewegung): Der 3D-Aufbau blockiert kurz den Browser
-  // und würde sonst das Video im Startbereich stocken lassen.
-  if (scrollY > 0) io.observe(stage);
-  else afterInteraction(() => io.observe(stage), { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] });
+  // Standbild der Scheibe sofort zeigen (statt der flachen Ersatzansicht), 3D ersetzt es nahtlos
+  stage.dataset.mode = '3d';
+  // Aufbau beim ersten Scroll-Halt irgendwo auf der Seite: Bis man unten bei der Scheibe ist, steht sie meist schon.
+  // (Nicht beim Seitenaufbau: Das Handy soll zuerst Startvideo und Text zeigen.)
+  const go = () => whenScrollRests(load3D);
+  if (scrollY > 0) go();
+  else afterInteraction(go, { fallback: Infinity, events: ['scroll', 'wheel', 'keydown', 'touchmove'] });
+  // Module schon im Leerlauf laden (nur Download, kein Aufbau), damit es nach dem ersten Scrollen schneller geht
+  addEventListener('load', () => (window.requestIdleCallback || ((cb) => setTimeout(cb, 2500)))(() => import('./turntable.js').catch(() => {}), { timeout: 4000 }), { once: true });
 } else {
   const lead = $('#stage-lead'); if (lead) lead.textContent = 'Wischen Sie durch die Läden und tippen Sie auf einen, um das Beispiel zu öffnen.';
   $('#stage-toggle-text').textContent = cap.why;
