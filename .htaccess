@@ -53,14 +53,15 @@ RedirectMatch 404 /\.git(/|$)
 
 # ---------- Zwischenspeichern im Browser ----------
 # HTML: immer kurz nachfragen, ob es Neues gibt (Änderungen sind sofort sichtbar).
-# CSS und JavaScript: 1 Stunde (Dateinamen ändern sich bei Updates nicht, daher kurz).
+# CSS und JavaScript: ebenfalls jedes Mal kurz nachfragen (unverändert = winzige 304-Antwort). Mit einer Stunde Speicherzeit
+# passten nach Updates neue Seite und alte Stildatei nicht zusammen (22.10.2026: riesiges Logo, gezoomtes Video).
 # Bilder, Schriften, Videos, 3D-Modelle, Licht: 30 Tage (ändern sich selten, sind groß).
 <IfModule mod_headers.c>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
   <FilesMatch "\.(css|js|mjs|json)$">
-    Header set Cache-Control "public, max-age=3600"
+    Header set Cache-Control "no-cache"
   </FilesMatch>
   <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico|woff2|mp4|glb|hdr|wasm|task)$">
     Header set Cache-Control "public, max-age=2592000"
