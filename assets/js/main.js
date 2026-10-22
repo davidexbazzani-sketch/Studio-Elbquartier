@@ -68,8 +68,10 @@ function initMotion() {
   // Bilder öffnen sich beim Hereinscrollen: Ausschnitt zieht auf, Bild zoomt leicht zurück
   gsap.utils.toArray('[data-img]').forEach((fig) => {
     const img = fig.querySelector('img');
+    const round = fig.classList.contains('row__media');
     gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 92%', once: true } })
-      .fromTo(fig, { clipPath: 'inset(12% 8% 12% 8% round 4px)' }, { clipPath: 'inset(0% 0% 0% 0% round 4px)', duration: 1.3, clearProps: 'clipPath' })
+      .fromTo(fig, { clipPath: round ? 'circle(30% at 50% 50%)' : 'inset(12% 8% 12% 8% round 4px)' },
+        { clipPath: round ? 'circle(50% at 50% 50%)' : 'inset(0% 0% 0% 0% round 4px)', duration: 1.3, clearProps: 'clipPath' })
       .fromTo(img, { scale: 1.16 }, { scale: 1, duration: 1.6, clearProps: 'transform' }, 0);
   });
 

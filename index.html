@@ -86,8 +86,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preload" href="assets/fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022f">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261022f">
+  <link rel="stylesheet" href="assets/css/design-system.css?v=20261022h">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261022h">
   <script>
     // Bewegung nur, wenn das Gerät keine reduzierte Bewegung wünscht
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
@@ -401,24 +401,44 @@
     </section>
 
     <!-- 06 · Umstieg -->
-    <section class="section section--accent umstieg" id="umstieg" aria-labelledby="umstieg-title">
+    <section class="section umstieg" id="umstieg" aria-labelledby="umstieg-title">
       <div class="container">
-        <p class="kicker kicker--ink" data-reveal>06 — Umstieg</p>
-        <h2 class="display display--lg" id="umstieg-title" data-reveal>Schon eine Website oder einen Shopify-Shop? <em>Kein Problem.</em></h2>
-        <p class="umstieg__lead" data-reveal>Für Sie ändert sich nur, wie gut Ihr Auftritt aussieht und gefunden wird.</p>
+        <header class="split-head" data-reveal>
+          <div>
+            <p class="kicker">06 — Umstieg</p>
+            <h2 class="display" id="umstieg-title">Schon eine Website oder einen Shopify-Shop? <em>Kein Problem.</em></h2>
+          </div>
+          <p class="split-head__aside">Für Sie ändert sich nur, wie gut Ihr Auftritt aussieht und gefunden wird.</p>
+        </header>
+        <div class="umstieg__visual" data-reveal role="img" aria-label="Vorher: Ihre bisherige Website. Nachher: Ihr neuer Auftritt von uns.">
+          <div class="mock mock--old" aria-hidden="true">
+            <span class="mock__label">Heute</span>
+            <div class="mock__bar"><i></i><i></i><i></i></div>
+            <div class="mock__old-body"><b class="w60"></b><b class="w40"></b><span class="mock__ph"></span><b class="w80"></b><b class="w70"></b><b class="w50"></b></div>
+          </div>
+          <span class="umstieg__arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="mock mock--new" aria-hidden="true">
+            <span class="mock__label mock__label--gold">Neu</span>
+            <div class="mock__bar"><i></i><i></i><i></i></div>
+            <div class="mock__new-body">
+              <div class="mock__copy"><p class="mock__title">Ihr Shop. <em>Neu erstellt.</em></p><span class="mock__btn">Jetzt ansehen</span></div>
+              <img src="assets/img/foto-laden-800.webp" width="800" height="1000" alt="" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
         <div class="umstieg__grid">
           <article class="umstieg__card" data-reveal>
             <h3 class="umstieg__title">Ihre bisherige Seite bleibt, bis die neue überzeugt</h3>
-            <ul class="line-list">
+            <ul class="dot-list">
               <li>Ihre aktuelle Website oder Ihr Shop läuft unverändert weiter. Umgestellt wird erst, wenn Sie zustimmen.</li>
               <li>Shopify bleibt Ihr Shop-System: Produkte, Bestellungen, Kundendaten und Zahlungsarten bleiben, wo sie sind.</li>
               <li>Texte, Bilder und Domain übernehmen wir. Alte Adressen leiten wir sauber um, damit Ihre Google-Platzierungen erhalten bleiben.</li>
               <li>Passt der Entwurf nicht, behalten Sie einfach Ihre bisherige Seite.</li>
             </ul>
           </article>
-          <article class="umstieg__card" data-reveal>
-            <h3 class="umstieg__title">Um die Suchmaschinen&shy;optimierung kümmern wir uns komplett</h3>
-            <ul class="line-list">
+          <article class="umstieg__card umstieg__card--dark" data-reveal>
+            <h3 class="umstieg__title">Um die Suchmaschinen&shy;optimierung <em>kümmern wir uns komplett</em></h3>
+            <ul class="dot-list">
               <li>Technik, Ladezeit, Seitenstruktur und Texte richten wir darauf aus, dass Google Sie für die Suchen findet, die für Ihr Geschäft zählen.</li>
               <li>Ihr Google-Unternehmensprofil mit Öffnungszeiten, Fotos und Standort pflegen wir mit, damit Sie in der Kartensuche auffallen.</li>
               <li>Wir richten die Google Search Console (Googles kostenloses Auswertungs-Werkzeug) für Sie ein und zeigen Ihnen, wie sich Aufrufe und Platzierungen entwickeln.</li>
@@ -585,6 +605,6 @@
 
   <script src="assets/vendor/gsap/gsap.min.js" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="assets/js/main.js?v=20261022f"></script>
+  <script type="module" src="assets/js/main.js?v=20261022h"></script>
 </body>
 </html>
